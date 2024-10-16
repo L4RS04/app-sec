@@ -1,12 +1,17 @@
+import { Genre } from './genre';
+
 export class Media {
     private title: string;
     private description: string;
     private release_year: number;
+    private genres: Genre[];
 
-    constructor(title: string, description: string, release_year: number) {
+
+    constructor(title: string, description: string, release_year: number, genres: Genre[]) {
         this.title = title;
         this.description = description;
         this.release_year = release_year;
+        this.genres = genres;
     }
 
     // Getters
@@ -21,6 +26,11 @@ export class Media {
     public getReleaseYear(): number {
         return this.release_year;
     }
+
+    public getGenres(): Genre[] {
+        return this.genres;
+    }
+
 
     // Setters
     public setTitle(title: string): void {
