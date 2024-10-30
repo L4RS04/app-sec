@@ -7,13 +7,23 @@ export class Media {
     private release_year: number;
     private genres: Genre[];
     private ratings: Rating[];
+    private type: string;
 
-    constructor(title: string, description: string, release_year: number, genres: Genre[]) {
-        this.title = title;
-        this.description = description;
-        this.release_year = release_year;
-        this.genres = genres;
+    constructor(media: {
+        title: string,
+        description: string,
+        release_year: number,
+        genres: Genre[],
+        type: string
+    }) {
+        this.validate(media);
+
+        this.title = media.title;
+        this.description = media.description;
+        this.release_year = media.release_year;
+        this.genres = media.genres;
         this.ratings = [];
+        this.type = media.type;
     }
 
     // Getters
@@ -37,6 +47,10 @@ export class Media {
         return this.ratings;
     }
 
+    public getType(): string {
+        return this.type;
+    }
+
     // Setters
     public setTitle(title: string): void {
         this.title = title;
@@ -50,6 +64,10 @@ export class Media {
         this.release_year = release_year;
     }
 
+    public setType(type: string): void {
+        this.type = type;
+    }
+
     // Add methods
     public addGenre(genre: Genre): void {
         this.genres.push(genre);
@@ -58,6 +76,26 @@ export class Media {
     public addRating(rating: Rating): void {
         this.ratings.push(rating);
     }
+
+    // Validation
+    private validate(media: {
+        title: string,
+        description: string,
+        release_year: number,
+        genres: Genre[],
+        type: string
+
+    }) {
+    if (!media.title?.trim()) {
+        throw new Error('Title is required');
+    }
+    if (!media.description?.trim()) {
+        throw new Error('Description is required');
+    }
+    if (!media.release_year?.toString().trim()) {
+        throw new Error('Year of release is required');
+    }
+}
 
     // Other methods
     public getAverageRating(): number {

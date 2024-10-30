@@ -1,8 +1,12 @@
 export class Genre {
     private name: string;
 
-    constructor(name: string) {
-        this.name = name;
+    constructor(genre: {
+        name: string;
+    }) {
+        this.validate(genre);
+
+        this.name = genre.name;
     }
 
     // Getters
@@ -14,4 +18,13 @@ export class Genre {
     public set setName(name: string) {
         this.name = name;
     }
+
+    // Validation
+    public validate(genre: {
+        name: string;
+    }) {
+        if (!genre.name?.trim()) {
+            throw new Error('Name is required');
+    }
+}
 }

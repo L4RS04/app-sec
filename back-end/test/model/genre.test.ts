@@ -7,7 +7,7 @@ test('given: valid name for genre, when: genre is created, then: genre is create
     // given
     
     // when
-    const genre = new Genre(genreName);
+    const genre = new Genre({ name: genreName });
 
     // then
     expect(genre.getName).toEqual(genreName);

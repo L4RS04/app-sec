@@ -1,16 +1,26 @@
 import { Media } from "./media";
+import { User } from "./user";
 
 export class Watchlist {
     private name: string;
     private description: string;
     private creation_date: Date;
     private media_items: Media[];
+    private creator: User;
 
-    constructor(name: string, description: string, media_items: Media[]) {
-        this.name = name;
-        this.description = description;
+    constructor(watchlist: {
+        name: string,
+        description: string,
+        media_items: Media[],
+        creator: User
+    }) {
+        this.validate(watchlist);
+
+        this.name = watchlist.name;
+        this.description = watchlist.description;
         this.creation_date = new Date();
-        this.media_items = media_items;
+        this.media_items = watchlist.media_items;
+        this.creator = watchlist.creator;
     }
 
     // Getters
@@ -29,6 +39,10 @@ export class Watchlist {
     public getMedia(): Media[] {
         return this.media_items;
     }
+
+    public getCreator(): User {
+        return this.creator;
+    }
     
     // Setters
     public setName(name: string): void {
@@ -43,8 +57,33 @@ export class Watchlist {
         this.creation_date = creation_date;
     }
 
+    public setCreator(creator: User): void {
+        this.creator = creator;
+    }
+
+    // Add methods
     public addMedia(media: Media): void {
         this.media_items.push(media);
+    }
+
+    // Validation
+    private validate(watchlist: {
+        name: string,
+        description: string,
+        media_items: Media[],
+        creator: User
+    }): void {
+        if (!watchlist.name.trim()) {
+            throw new Error("Name is required.");
+        }
+
+        if (!watchlist.description.trim()) {
+            throw new Error("Description is required.");
+        }
+
+        if (!watchlist.creator) {
+            throw new Error("Creator is required.");
+        }
     }
 }
 

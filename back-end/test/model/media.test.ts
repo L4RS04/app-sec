@@ -6,17 +6,18 @@ import { Rating } from '../../model/rating';
 const title = 'Inception';
 const description = 'A mind-bending thriller';
 const release_year = 2010;
-const genre1 = new Genre('Action');
-const genre2 = new Genre('Sci-Fi');
+const genre1 = new Genre({ name: 'Action' });
+const genre2 = new Genre({ name: 'Sci-Fi' });
 const genres = [genre1];
 const rating1 = new Rating(5);
 const rating2 = new Rating(4);
+const type = 'movie';
 
 test('given: valid values for media, when: media is created, then: media is created with those values', () => {
     // given
     
     // when
-    const media = new Media(title, description, release_year, genres);
+    const media = new Media({ title, description, release_year, genres, type });
 
     // then
     expect(media.getTitle()).toEqual(title);
@@ -27,7 +28,7 @@ test('given: valid values for media, when: media is created, then: media is crea
 
 test('given: a genre, when: addGenre is called, then: the genre is added to the media', () => {
     // given
-    const media = new Media(title, description, release_year, genres);
+    const media = new Media({ title, description, release_year, genres, type });
 
     // when
     media.addGenre(genre2);
@@ -38,7 +39,7 @@ test('given: a genre, when: addGenre is called, then: the genre is added to the 
 
 test('given: a rating, when: addRating is called, then: the rating is added to the media', () => {
     // given
-    const media = new Media(title, description, release_year, genres);
+    const media = new Media({ title, description, release_year, genres, type });
 
     // when
     media.addRating(rating1);
@@ -49,7 +50,7 @@ test('given: a rating, when: addRating is called, then: the rating is added to t
 
 test('given: multiple ratings, when: getAverageRating is called, then: the average rating is returned', () => {
     // given
-    const media = new Media(title, description, release_year, genres);
+    const media = new Media({ title, description, release_year, genres, type });
     media.addRating(rating1);
     media.addRating(rating2);
 
@@ -62,7 +63,7 @@ test('given: multiple ratings, when: getAverageRating is called, then: the avera
 
 test('given: no ratings, when: getAverageRating is called, then: the average rating is 0', () => {
     // given
-    const media = new Media(title, description, release_year, genres);
+    const media = new Media({ title, description, release_year, genres, type });
 
     // when
     const averageRating = media.getAverageRating();

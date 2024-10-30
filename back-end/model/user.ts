@@ -7,10 +7,16 @@ export class User {
     private creationDate: Date;
     private watchlists: Watchlist[];
 
-    constructor(name: string, password: string, email: string) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
+    constructor(user: { 
+        name: string, 
+        password: string, 
+        email: string 
+    }) {
+        this.validate(user);
+
+        this.name = user.name;
+        this.password = user.password;
+        this.email = user.email;
         this.creationDate = new Date();
         this.watchlists = [];
     }
@@ -58,4 +64,22 @@ export class User {
         const index = this.watchlists.indexOf(watchlist);
         this.watchlists.splice(index, 1);  
     }
+
+    public validate(user: {
+        name: string;
+        password: string;
+        email: string;
+    }) {
+        if (!user.name?.trim()) {
+            throw new Error('Username is required');
+        }
+        if (!user.password?.trim()) {
+            throw new Error('Email is required');
+        }
+        if (!user.email?.trim()) {
+            throw new Error('Password is required');
+        }
+    }
 }
+
+

@@ -10,7 +10,7 @@ test('given: valid values for user, when: user is created, then: user is created
     // given
     
     // when
-    const user = new User(name, password, email);
+    const user = new User({name: name, password: password, email: email});
 
     // then
     expect(user.getName()).toEqual(name);
@@ -20,8 +20,8 @@ test('given: valid values for user, when: user is created, then: user is created
 
 test('given: a watchlist, when: addWatchlistToUser is called, then: the watchlist is added to the user', () => {
     // given
-    const user = new User(name, password, email);
-    const watchlist = new Watchlist('My Watchlist', 'Description', []);
+    const user = new User({name: name, password: password, email: email});
+    const watchlist = new Watchlist({ name: 'My Watchlist', description: 'Description', media_items: [], creator: user });
 
     // when
     user.addWatchlistToUser(watchlist);
@@ -32,8 +32,8 @@ test('given: a watchlist, when: addWatchlistToUser is called, then: the watchlis
 
 test('given: a watchlist, when: deleteWatchlistFromUser is called, then: the watchlist is removed from the user', () => {
     // given
-    const user = new User(name, password, email);
-    const watchlist = new Watchlist('My Watchlist', 'Description', []);
+    const user = new User({name: name, password: password, email: email});
+    const watchlist = new Watchlist({ name: 'My Watchlist', description: 'Description', media_items: [], creator: user });
     user.addWatchlistToUser(watchlist);
 
     // when
