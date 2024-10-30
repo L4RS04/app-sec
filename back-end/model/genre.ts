@@ -6,12 +6,12 @@ export class Genre {
     }
 
     // Getters
-    get getName(): string {
+    public get getName(): string {
         return this.name;
     }
 
     // Setters
-    set setName(name: string) {
+    public set setName(name: string) {
         this.name = name;
     }
 }

@@ -1,43 +1,61 @@
+import { Watchlist } from './watchlist';
+
 export class User {
     private name: string;
     private password: string;
     private email: string;
     private creationDate: Date;
+    private watchlists: Watchlist[];
 
     constructor(name: string, password: string, email: string) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.creationDate = new Date();
+        this.watchlists = [];
     }
 
     // Getters
-    getName(): string {
+    public getName(): string {
         return this.name;
     }
 
-    getEmail(): string {
+    public getEmail(): string {
         return this.email;
     }
 
-    getCreationDate(): Date {
+    public getCreationDate(): Date {
         return this.creationDate;
     }
 
-    getPassword(): string {
+    public getPassword(): string {
         return this.password;
     }
 
+    public getWatchlists(): Watchlist[] {
+        return this.watchlists;
+    }
+
     // Setters
-    setName(name: string): void {
+    public setName(name: string): void {
         this.name = name;
     }
 
-    setPassword(password: string): void {
+    public setPassword(password: string): void {
         this.password = password;
     }
 
-    setEmail(email: string): void {
+    public setEmail(email: string): void {
         this.email = email;
+    }
+
+    // Methods to manage watchlists
+    public addWatchlistToUser(watchlist: Watchlist): void {
+        this.watchlists.push(watchlist);
+    }
+
+    public deleteWatchlistFromUser(watchlist: Watchlist): void {
+        const index = this.watchlists.indexOf(watchlist);
+        this.watchlists.splice(index, 1);  
     }
 }

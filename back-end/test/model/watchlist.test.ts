@@ -8,7 +8,7 @@ test('given: valid values for watchlist, when: watchlist is created, then: watch
     // given
 
     // when
-    const watchlist = new Watchlist(name, description);
+    const watchlist = new Watchlist(name, description, []);
 
     // then
     expect(watchlist.getName()).toEqual(name);
