@@ -24,7 +24,7 @@ export class Genre {
         name: string;
     }) {
         if (!genre.name?.trim()) {
-            throw new Error('Name is required');
+            throw new Error('Genre name is required');
     }
 }
 }

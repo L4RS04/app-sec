@@ -52,7 +52,7 @@ export class Movie extends Media {
         director: string
     }): void {
         if (!movie.duration || movie.duration < 0) {
-            throw new Error("Movie duration is required");
+            throw new Error("Movie duration is required and must be a non-negative number");
         }
 
         if (!movie.director || movie.director.length < 1) {

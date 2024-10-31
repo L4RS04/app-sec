@@ -71,3 +71,27 @@ test('given: no ratings, when: getAverageRating is called, then: the average rat
     // then
     expect(averageRating).toBe(0);
 });
+test('given: no title, when: media is created, then: an error is thrown', () => {
+    // given
+    const invalidTitle = '';
+
+    // when & then
+    expect(() => new Media({ title: invalidTitle, description, release_year, genres, type })).toThrow('Title is required');
+});
+
+test('given: no description, when: media is created, then: an error is thrown', () => {
+    // given
+    const invalidDescription = '';
+
+    // when & then
+    expect(() => new Media({ title, description: invalidDescription, release_year, genres, type })).toThrow('Description is required');
+});
+
+test('given: no release year, when: media is created, then: an error is thrown', () => {
+    // given
+    const invalidReleaseYear = null as unknown as number;
+
+    // when & then
+    expect(() => new Media({ title, description, release_year: invalidReleaseYear, genres, type })).toThrow('Year of release is required');
+});
+

@@ -13,3 +13,14 @@ test('given: valid name for genre, when: genre is created, then: genre is create
     expect(genre.getName).toEqual(genreName);
 });
 
+test('given: invalid name for genre, when: genre is created, then: error is thrown', () => {
+    // given
+    const invalidName = '';
+
+    // when
+    const createGenre = () => new Genre({ name: invalidName });
+
+    // then
+    expect(createGenre).toThrowError('Genre name is required');
+});
+

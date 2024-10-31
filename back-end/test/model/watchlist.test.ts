@@ -1,5 +1,6 @@
 import { User } from '../../model/user';
 import { Watchlist } from '../../model/watchlist';
+import { Media } from '../../model/media';
 
 // Test data
 const name = 'My Watchlist';
@@ -16,4 +17,34 @@ test('given: valid values for watchlist, when: watchlist is created, then: watch
     expect(watchlist.getName()).toEqual(name);
     expect(watchlist.getDescription()).toEqual(description);
     expect(watchlist.getCreationDate()).toBeInstanceOf(Date);
+});
+
+test('given: empty name, when: watchlist is created, then: error is thrown', () => {
+    expect(() => {
+        new Watchlist({ name: '', description, media_items: [], creator });
+    }).toThrowError("Name is required and cannot be empty.");
+});
+
+test('given: empty description, when: watchlist is created, then: error is thrown', () => {
+    expect(() => {
+        new Watchlist({ name, description: '', media_items: [], creator });
+    }).toThrowError("Description is required and cannot be empty.");
+});
+
+test('given: media_items is not an array, when: watchlist is created, then: error is thrown', () => {
+    expect(() => {
+        new Watchlist({ name, description, media_items: null as any, creator });
+    }).toThrowError("Media items must be an array.");
+});
+
+test('given: creator is not provided, when: watchlist is created, then: error is thrown', () => {
+    expect(() => {
+        new Watchlist({ name, description, media_items: [], creator: null as any });
+    }).toThrowError("Creator is required.");
+});
+
+test('given: creator is not a valid User instance, when: watchlist is created, then: error is thrown', () => {
+    expect(() => {
+        new Watchlist({ name, description, media_items: [], creator: {} as any });
+    }).toThrowError("Creator must be a valid User instance.");
 });

@@ -73,16 +73,24 @@ export class Watchlist {
         media_items: Media[],
         creator: User
     }): void {
-        if (!watchlist.name.trim()) {
-            throw new Error("Name is required.");
+        if (!watchlist.name || !watchlist.name.trim()) {
+            throw new Error("Name is required and cannot be empty.");
         }
 
-        if (!watchlist.description.trim()) {
-            throw new Error("Description is required.");
+        if (!watchlist.description || !watchlist.description.trim()) {
+            throw new Error("Description is required and cannot be empty.");
+        }
+
+        if (!Array.isArray(watchlist.media_items)) {
+            throw new Error("Media items must be an array.");
         }
 
         if (!watchlist.creator) {
             throw new Error("Creator is required.");
+        }
+
+        if (!(watchlist.creator instanceof User)) {
+            throw new Error("Creator must be a valid User instance.");
         }
     }
 }

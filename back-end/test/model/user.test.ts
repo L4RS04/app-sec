@@ -43,3 +43,27 @@ test('given: a watchlist, when: deleteWatchlistFromUser is called, then: the wat
     expect(user.getWatchlists()).not.toContain(watchlist);
 });
 
+// Validation tests
+test('given: empty name, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: '', password: password, email: email})).toThrow('Username is required');
+});
+
+test('given: short name, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: 'Jo', password: password, email: email})).toThrow('Username must be at least 3 characters long');
+});
+
+test('given: empty password, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: name, password: '', email: email})).toThrow('Password is required');
+});
+
+test('given: short password, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: name, password: 'short', email: email})).toThrow('Password must be at least 8 characters long');
+});
+
+test('given: empty email, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: name, password: password, email: ''})).toThrow('Email is required');
+});
+
+test('given: invalid email, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: name, password: password, email: 'invalid-email'})).toThrow('Email is not valid');
+});

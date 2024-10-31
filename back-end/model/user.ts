@@ -73,11 +73,21 @@ export class User {
         if (!user.name?.trim()) {
             throw new Error('Username is required');
         }
+        if (user.name.length < 3) {
+            throw new Error('Username must be at least 3 characters long');
+        }
         if (!user.password?.trim()) {
-            throw new Error('Email is required');
+            throw new Error('Password is required');
+        }
+        if (user.password.length < 8) {
+            throw new Error('Password must be at least 8 characters long');
         }
         if (!user.email?.trim()) {
-            throw new Error('Password is required');
+            throw new Error('Email is required');
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(user.email)) {
+            throw new Error('Email is not valid');
         }
     }
 }
