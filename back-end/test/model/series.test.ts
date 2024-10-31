@@ -6,7 +6,7 @@ const title = 'Breaking Bad';
 const description = 'A high school chemistry teacher turned methamphetamine producer.';
 const release_year = 2008;
 const number_of_seasons = 5;
-const genre1 = new Genre({ name: 'Action' });
+const genre1 = Genre.Action;
 const genres = [genre1];
 const type = "Series";
 

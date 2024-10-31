@@ -1,30 +1,28 @@
-export class Genre {
-    private name: string;
-
-    constructor(genre: {
-        name: string;
-    }) {
-        this.validate(genre);
-
-        this.name = genre.name;
-    }
-
-    // Getters
-    public get getName(): string {
-        return this.name;
-    }
-
-    // Setters
-    public set setName(name: string) {
-        this.name = name;
-    }
-
-    // Validation
-    public validate(genre: {
-        name: string;
-    }) {
-        if (!genre.name?.trim()) {
-            throw new Error('Genre name is required');
-    }
-}
+export enum Genre {
+    Action = "Action",
+    Comedy = "Comedy",
+    Drama = "Drama",
+    Fantasy = "Fantasy",
+    Horror = "Horror",
+    Mystery = "Mystery",
+    Romance = "Romance",
+    Thriller = "Thriller",
+    SciFi = "SciFi",
+    Crime = "Crime",
+    Adventure = "Adventure",
+    Animation = "Animation",
+    Family = "Family",
+    History = "History",
+    War = "War",
+    Western = "Western",
+    Documentary = "Documentary",
+    Music = "Music",
+    Sport = "Sport",
+    Biography = "Biography",
+    Musical = "Musical",
+    News = "News",
+    RealityTV = "RealityTV",
+    TalkShow = "TalkShow",
+    GameShow = "GameShow",
+    Short = "Short"
 }

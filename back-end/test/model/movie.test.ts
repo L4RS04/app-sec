@@ -7,7 +7,7 @@ const title = 'Inception';
 const description = 'A mind-bending thriller';
 const duration = 148;
 const director = 'Christopher Nolan';
-const genre1 = new Genre({ name: 'Action' });
+const genre1 = Genre.Action;
 const genres = [genre1];
 
 test('given: valid values for movie, when: movie is created, then: movie is created with those values', () => {

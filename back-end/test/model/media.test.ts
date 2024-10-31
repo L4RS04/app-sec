@@ -6,8 +6,8 @@ import { Rating } from '../../model/rating';
 const title = 'Inception';
 const description = 'A mind-bending thriller';
 const release_year = 2010;
-const genre1 = new Genre({ name: 'Action' });
-const genre2 = new Genre({ name: 'Sci-Fi' });
+const genre1 = Genre.Action;
+const genre2 = Genre.Adventure
 const genres = [genre1];
 const rating1 = new Rating(5);
 const rating2 = new Rating(4);
