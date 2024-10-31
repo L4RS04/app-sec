@@ -35,3 +35,17 @@ const media_items: Media[] = [
         number_of_seasons: 5
     })
 ];
+
+const getAllMedia = (): Media[] => {
+    return media_items;
+};
+
+const getAllMovies = (): Movie[] => {
+    return media_items.filter(item => item instanceof Movie) as Movie[];
+};
+
+const getAllSeries = (): Series[] => {
+    return media_items.filter(item => item instanceof Series) as Series[];
+};
+
+export default { getAllMedia, getAllMovies, getAllSeries };
