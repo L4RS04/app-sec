@@ -7,6 +7,7 @@ export class Movie extends Media {
 
 
     constructor(movie: {
+        id: number,
         release_year: number,
         title: string,
         description: string,
@@ -15,6 +16,7 @@ export class Movie extends Media {
         director: string
     }) {
         super({
+            id: movie.id,
             title: movie.title,
             description: movie.description,
             release_year: movie.release_year,

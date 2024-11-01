@@ -5,6 +5,7 @@ export class Series extends Media {
     private number_of_seasons: number;
 
     constructor(series: {
+        id: number,
         title: string,
         description: string,
         release_year: number,
@@ -12,6 +13,7 @@ export class Series extends Media {
         number_of_seasons: number
     }) {
         super({
+            id: series.id,
             title: series.title,
             description: series.description,
             release_year: series.release_year,
