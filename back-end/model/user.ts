@@ -1,6 +1,7 @@
 import { Watchlist } from './watchlist';
 
 export class User {
+    private id?: number;
     private name: string;
     private password: string;
     private email: string;
@@ -8,12 +9,14 @@ export class User {
     private watchlists: Watchlist[];
 
     constructor(user: { 
+        id?: number;
         name: string, 
         password: string, 
         email: string 
     }) {
         this.validate(user);
 
+        this.id = user.id;
         this.name = user.name;
         this.password = user.password;
         this.email = user.email;
@@ -22,6 +25,10 @@ export class User {
     }
 
     // Getters
+    public getId(): number | undefined {
+        return this.id;
+    }
+
     public getName(): string {
         return this.name;
     }
@@ -65,7 +72,16 @@ export class User {
         this.watchlists.splice(index, 1);  
     }
 
-    public validate(user: {
+    // Method to return a JSON-safe representation of the User object
+    public toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            email: this.email
+        };
+    }
+
+    private validate(user: {
         name: string;
         password: string;
         email: string;

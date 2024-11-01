@@ -2,6 +2,7 @@ import { Media } from "./media";
 import { User } from "./user";
 
 export class Watchlist {
+    private id?: number;
     private name: string;
     private description: string;
     private creation_date: Date;
@@ -9,6 +10,7 @@ export class Watchlist {
     private creator: User;
 
     constructor(watchlist: {
+        id?: number,
         name: string,
         description: string,
         media_items: Media[],
@@ -16,6 +18,7 @@ export class Watchlist {
     }) {
         this.validate(watchlist);
 
+        this.id = watchlist.id;
         this.name = watchlist.name;
         this.description = watchlist.description;
         this.creation_date = new Date();
@@ -24,6 +27,10 @@ export class Watchlist {
     }
 
     // Getters
+    public getId(): number | undefined {
+        return this.id;
+    }
+
     public getName(): string {
         return this.name;
     }
@@ -64,6 +71,15 @@ export class Watchlist {
     // Add methods
     public addMedia(media: Media): void {
         this.media_items.push(media);
+    }
+
+    // Method to return a JSON-safe representation of the Watchlist object
+    public toJSON() {
+        return {
+            name: this.name,
+            description: this.description,
+            creator: this.creator.toJSON()
+        };
     }
 
     // Validation

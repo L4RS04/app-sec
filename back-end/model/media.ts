@@ -2,6 +2,7 @@ import { Genre } from './genre';
 import { Rating } from './rating';
 
 export class Media {
+    private id?: number;
     private title: string;
     private description: string;
     private release_year: number;
@@ -10,6 +11,7 @@ export class Media {
     private type: string;
 
     constructor(media: {
+        id?: number,
         title: string,
         description: string,
         release_year: number,
@@ -18,6 +20,7 @@ export class Media {
     }) {
         this.validate(media);
 
+        this.id = media.id;
         this.title = media.title;
         this.description = media.description;
         this.release_year = media.release_year;
@@ -27,6 +30,10 @@ export class Media {
     }
 
     // Getters
+    public getId(): number | undefined {
+        return this.id;
+    }
+
     public getTitle(): string {
         return this.title;
     }
