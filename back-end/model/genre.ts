@@ -20,9 +20,4 @@ export enum Genre {
     Sport = "Sport",
     Biography = "Biography",
     Musical = "Musical",
-    News = "News",
-    RealityTV = "RealityTV",
-    TalkShow = "TalkShow",
-    GameShow = "GameShow",
-    Short = "Short"
 }
