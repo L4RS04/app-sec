@@ -60,6 +60,24 @@ const addMediaToWatchlist = (watchlistId: number, mediaId: number): Watchlist =>
     return watchlist;
 }
 
+const deleteMediaFromWatchlist = (watchlistId: number, mediaId: number): Watchlist => {
+    const watchlist = watchlistDb.getWatchlistById(watchlistId);
+
+    if (!watchlist) {
+        throw new Error('Watchlist not found');
+    }
+
+    const media = mediaDb.getMediaById(mediaId);
+
+    if (!media) {
+        throw new Error('Media not found');
+    }
+
+    watchlist.removeMediaFromWatchlist(media);
+
+    return watchlist;
+}
+
 const getAllWatchlists = async (): Promise<Watchlist[]> => watchlistDb.getAllWatchlists();
 
-export default { createWatchlist, deleteWatchlist, addMediaToWatchlist, getAllWatchlists };
+export default { createWatchlist, deleteWatchlist, addMediaToWatchlist, deleteMediaFromWatchlist, getAllWatchlists };
