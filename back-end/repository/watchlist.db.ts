@@ -8,9 +8,20 @@ const createWatchlist = (watchlist: Watchlist): Watchlist => {
     return watchlist;
 };
 
+const deleteWatchlist = (watchlist: Watchlist): void => {
+    const index = watchlists.findIndex((w) => w === watchlist);
+    if (index !== -1) {
+        watchlists.splice(index, 1);
+    }
+}
+
 const getAllWatchlists = (): Watchlist[] => watchlists;
 
-export default { createWatchlist, getAllWatchlists };
+const getWatchlistById = (watchlistId: number): Watchlist | undefined => {
+    return watchlists.find((w) => w.getId() === watchlistId);
+}
+
+export default { createWatchlist, deleteWatchlist, getAllWatchlists, getWatchlistById };
 
 
 

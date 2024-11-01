@@ -24,4 +24,14 @@ watchlistRouter.post('/', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+watchlistRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const watchlistId = parseInt(req.params.id);
+        await watchlistService.deleteWatchlist(watchlistId);
+        res.status(200).json({ status: 'success', message: 'Watchlist deleted successfully' });
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default watchlistRouter;

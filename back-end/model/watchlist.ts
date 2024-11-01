@@ -68,14 +68,23 @@ export class Watchlist {
         this.creator = creator;
     }
 
-    // Add methods
-    public addMedia(media: Media): void {
+    // Add & remove methods
+    public addMediaToWatchlist(media: Media): void {
         this.media_items.push(media);
     }
+
+    public removeMediaFromWatchlist(media: Media): void {
+        const index = this.media_items.findIndex((m) => m.getId() === media.getId());
+        if (index !== -1) {
+            this.media_items.splice(index, 1);
+        }
+    }
+
 
     // Method to return a JSON-safe representation of the Watchlist object
     public toJSON() {
         return {
+            id: this.id,
             name: this.name,
             description: this.description,
             creator: this.creator.toJSON()

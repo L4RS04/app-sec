@@ -11,6 +11,7 @@ type UserInput = {
 };
 
 type WatchlistInput = {
+    id?: number;
     name: string;
     description: string;
     creatorId: number;
@@ -18,11 +19,11 @@ type WatchlistInput = {
 
 type MediaInput = {
     id?: number;
-    title: string;
-    description: string;
-    release_year: number;
-    genres: string[];
-    type: string;
+    title?: string;
+    description?: string;
+    release_year?: number;
+    genres?: string[];
+    type?: string;
 };
 
 
