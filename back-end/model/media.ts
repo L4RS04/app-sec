@@ -84,6 +84,18 @@ export class Media {
         this.ratings.push(rating);
     }
 
+    // Method to return a JSON-safe representation of the Watchlist object
+    public toJSON() {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            release_year: this.release_year,
+            genres: this.genres,
+            type: this.type
+    }
+}
+
     // Validation
     private validate(media: {
         title: string,

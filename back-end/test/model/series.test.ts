@@ -14,7 +14,7 @@ test('given: valid values for series, when: series is created, then: series is c
     // given
     
     // when
-    const series = new Series({ title, description, release_year, genres, number_of_seasons });
+    const series = new Series({ id: 1, title, description, release_year, genres, number_of_seasons });
 
     // then
     expect(series.getTitle()).toEqual(title);
@@ -26,7 +26,7 @@ test('given: valid values for series, when: series is created, then: series is c
 
 test('given: series with no number_of_seasons, when: series is created, then: error is thrown', () => {
     // given
-    const invalidSeriesData = { title, description, release_year, genres, number_of_seasons: undefined as unknown as number };
+    const invalidSeriesData = { id: 1, title, description, release_year, genres, number_of_seasons: undefined as unknown as number };
 
     // when & then
     expect(() => new Series(invalidSeriesData)).toThrowError("Series number of seasons is required");
@@ -34,7 +34,7 @@ test('given: series with no number_of_seasons, when: series is created, then: er
 
 test('given: series with negative number_of_seasons, when: series is created, then: error is thrown', () => {
     // given
-    const invalidSeriesData = { title, description, release_year, genres, number_of_seasons: -1 };
+    const invalidSeriesData = { id: 1, title, description, release_year, genres, number_of_seasons: -1 };
 
     // when & then
     expect(() => new Series(invalidSeriesData)).toThrowError("Series number of seasons is required");

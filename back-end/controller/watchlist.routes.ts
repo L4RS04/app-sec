@@ -34,4 +34,15 @@ watchlistRouter.delete('/:id', async (req: Request, res: Response, next: NextFun
     }
 });
 
+watchlistRouter.put('/:id/media/:mediaId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const watchlistId = parseInt(req.params.id);
+        const mediaId = parseInt(req.params.mediaId);
+        const watchlist = await watchlistService.addMediaToWatchlist(watchlistId, mediaId);
+        res.status(200).json(watchlist.toJSON());
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default watchlistRouter;

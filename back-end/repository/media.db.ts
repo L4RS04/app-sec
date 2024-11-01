@@ -52,4 +52,8 @@ const getAllSeries = (): Series[] => {
     return media_items.filter(item => item instanceof Series) as Series[];
 };
 
-export default { getAllMedia, getAllMovies, getAllSeries };
+const getMediaById = (id: number): Media | undefined => {
+    return media_items.find(item => item.getId() === id);
+};
+
+export default { getAllMedia, getAllMovies, getAllSeries, getMediaById };

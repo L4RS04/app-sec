@@ -87,7 +87,8 @@ export class Watchlist {
             id: this.id,
             name: this.name,
             description: this.description,
-            creator: this.creator.toJSON()
+            creator: this.creator.toJSON(),
+            media_items: this.media_items.map((m) => m.toJSON())
         };
     }
 

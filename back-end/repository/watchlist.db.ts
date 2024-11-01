@@ -1,4 +1,3 @@
-import { watch } from "fs";
 import { Watchlist } from "../model/watchlist";
 
 const watchlists: Watchlist[] = [];
@@ -15,13 +14,20 @@ const deleteWatchlist = (watchlist: Watchlist): void => {
     }
 }
 
+const addMediaToWatchlist = (watchlist: Watchlist): void => {
+    const index = watchlists.findIndex((w) => w.getId() === watchlist.getId());
+    if (index !== -1) {
+        watchlists[index] = watchlist;
+    }
+};
+
 const getAllWatchlists = (): Watchlist[] => watchlists;
 
 const getWatchlistById = (watchlistId: number): Watchlist | undefined => {
     return watchlists.find((w) => w.getId() === watchlistId);
 }
 
-export default { createWatchlist, deleteWatchlist, getAllWatchlists, getWatchlistById };
+export default { createWatchlist, deleteWatchlist, addMediaToWatchlist, getAllWatchlists, getWatchlistById };
 
 
 
