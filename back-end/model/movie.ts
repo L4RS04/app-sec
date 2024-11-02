@@ -48,6 +48,15 @@ export class Movie extends Media {
         this.director = director;
     }
 
+    // Override the toJSON method to include duration and director
+    public toJSON() {
+        return {
+            ...super.toJSON(),
+            duration: this.duration,
+            director: this.director
+        }
+    }
+
     // Validation
     private validate_movie(movie: {
         duration: number,

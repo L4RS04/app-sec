@@ -18,10 +18,10 @@ const Header: React.FC = () => {
                     <Link href="/" className={`${styles.navLink} px-4`}>
                         Home
                     </Link>
-                    <Link href="/watchlists" className={`${styles.navLink} px-4`}>
+                    <Link href="/watchlist" className={`${styles.navLink} px-4`}>
                         Watchlists
                     </Link>
-                    <Link href="/" className={`${styles.navLink} px-4`}>
+                    <Link href="/movies" className={`${styles.navLink} px-4`}>
                         Movies 
                     </Link>
                     <Link href="/" className={`${styles.navLink} px-4`}>
