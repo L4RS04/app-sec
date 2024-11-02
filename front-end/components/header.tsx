@@ -1,17 +1,39 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import styles from '../styles/header.module.css';
 
 const Header: React.FC = () => {
-    return ( 
-        <header className='p-3 mb-3 border-bottom bg-dark bg-gradient'>
-            <a className='fs-2 d-flex justify-content-center mb-2 mb-lg-0 text-white-50 text-decoration-none'>
-                { ' ' } 
-                BingeVault App
-            </a>
-                <nav className='nav justify-content-center'>
-                    <Link href="/" className='nav-link px-4 fs-5 text-white'>
-                    Home
+    return (
+        <header className="bg-white flex items-center justify-around p-4 border-bottom">
+            <div className={styles.headerContainer}>
+                <a href="/" className="fs-2 mb-2 mb-lg-0">
+                    <Image
+                        src="/images/BingeVault.png"
+                        alt="BingeVault logo"
+                        width={350}
+                        height={100}
+                    />
+                </a>
+                <nav className={styles.nav}>
+                    <Link href="/" className={`${styles.navLink} px-4`}>
+                        Home
+                    </Link>
+                    <Link href="/watchlists" className={`${styles.navLink} px-4`}>
+                        Watchlists
+                    </Link>
+                    <Link href="/" className={`${styles.navLink} px-4`}>
+                        Movies 
+                    </Link>
+                    <Link href="/" className={`${styles.navLink} px-4`}>
+                        Series
+                    </Link>
+                    <Link href="/" className={`${styles.navLink} px-4`}>
+                        Login 
                     </Link>
                 </nav>
+            </div>
         </header>
-    )
-}
+    );
+};
+
+export default Header;
