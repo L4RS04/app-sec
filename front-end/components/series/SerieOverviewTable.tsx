@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { Movie } from "@types";
-import { formatDuration } from "utils/utils";
+import { Serie } from "@types";
 import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 
-
 type Props = {
-    movies: Array<Movie>;
-    onAddMovie: (newMovie: Movie) => Promise<void>;
-    onDeleteMovie: (movieId: number) => Promise<void>;
+    series: Array<Serie>;
+    onAddSeries: (newSeries: Serie) => Promise<void>;
+    onDeleteSeries: (seriesId: number) => Promise<void>;
 }
 
-const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) => {
+const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) => {
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
 
     const handleDropdownClick = (index: number) => {
@@ -22,25 +20,23 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) =
 
     return (
         <>
-            {movies && (
+            {series && (
                 <div className="border rounded-lg w-full overflow-x-auto">
                     <table className="table-auto w-full">
                         <thead>
                             <tr className="bg-gray-200">
                                 <th className="px-4 py-2 text-center">Title</th>
-                                <th className="px-4 py-2 text-center">Duration</th>
-                                <th className="px-4 py-2 text-center">Director</th>
+                                <th className="px-4 py-2 text-center">Number of seasons</th>
                                 <th className="px-4 py-2 text-center">More</th>
                                 <th className="px-4 py-2 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {movies.map((movie, index) => (
+                            {series.map((serie, index) => (
                                 <React.Fragment key={index}>
                                     <tr className="hover:bg-gray-100">
-                                        <td className="border px-4 py-2 text-center">{movie.title}</td>
-                                        <td className="border px-4 py-2 text-center">{formatDuration(movie.duration)}</td>
-                                        <td className="border px-4 py-2 text-center">{movie.director}</td>
+                                        <td className="border px-4 py-2 text-center">{serie.title}</td>
+                                        <td className="border px-4 py-2 text-center">{serie.number_of_seasons}</td>
                                         <td className="border px-4 py-2 text-center">
                                             <button
                                                 className="text-blue-500 hover:text-blue-700 focus:outline-none"
@@ -52,7 +48,7 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) =
                                         <td className="border px-4 py-2 text-center">
                                             <button
                                                 className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                onClick={() => movie.id !== undefined && onDeleteMovie(movie.id)}
+                                                onClick={() => serie.id !== undefined && onDeleteSeries(serie.id)}
                                             >
                                                 <Trash2 size={20} />
                                             </button>
@@ -62,13 +58,13 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) =
                                         <tr>
                                             <td colSpan={5} className="border px-4 py-2">
                                                 <div>
-                                                    <strong>Released:</strong> {movie.release_year}
+                                                    <strong>Released:</strong> {serie.release_year}
                                                 </div>
                                                 <div>
-                                                    <strong>Genres:</strong> {movie.genres.join(", ")}
+                                                    <strong>Genres:</strong> {serie.genres.join(", ")}
                                                 </div>
                                                 <div>
-                                                    <strong>Description:</strong> {movie.description}
+                                                    <strong>Description:</strong> {serie.description}
                                                 </div>
                                             </td>
                                         </tr>
@@ -83,4 +79,6 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) =
     );
 };
 
-export default MovieOverviewTable;
+export default SerieOverviewTable;
+
+
