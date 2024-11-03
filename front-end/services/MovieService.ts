@@ -23,9 +23,22 @@ if (!response.ok) {
 return response.json();
 };
 
+const deleteMovie = async (id: number) => {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/media/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        }
+});
+if (!response.ok) {
+    throw new Error("An error occurred while deleting the movie");
+}
+};
+
 const MovieService = {
     getAllMovies,
     createMovie,
+    deleteMovie,
 }
 
 export default MovieService;

@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { Movie, Genre } from "@types";
+import { Movie } from "@types";
 import { formatDuration } from "utils/utils";
-import { ChevronDown, ChevronUp, CirclePlus } from "lucide-react"
+import { ChevronDown, ChevronUp, CirclePlus, Trash2 } from "lucide-react";
 import { useRouter } from "next/router";
-
-
 
 type Props = {
     movies: Array<Movie>;
     onAddMovie: (newMovie: Movie) => Promise<void>;
+    onDeleteMovie: (movieId: number) => Promise<void>;
 }
 
-const MovieOverviewTable: React.FC<Props> = ({ movies, onAddMovie }: Props) => {
+const MovieOverviewTable: React.FC<Props> = ({ movies, onAddMovie, onDeleteMovie }: Props) => {
     const router = useRouter();
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
 
@@ -22,24 +21,18 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onAddMovie }: Props) => {
         }));
     };
 
-    const navigateToAddMovie = () => {
-        router.push('/movies/add');
-    };
-
     return (
         <>
-        <div className="flex justify-end">
-            <button onClick={navigateToAddMovie} className="rounded hover:bg-slate-200 text-black font-bold px-4 rounded mb-4"> <CirclePlus size={35} /></button>
-        </div>
             {movies && (
                 <div className="border rounded-lg w-full overflow-x-auto">
-                    <table className="table-auto">
+                    <table className="table-auto w-full">
                         <thead>
                             <tr className="bg-gray-200">
                                 <th className="px-4 py-2 text-center">Title</th>
                                 <th className="px-4 py-2 text-center">Duration</th>
                                 <th className="px-4 py-2 text-center">Director</th>
                                 <th className="px-4 py-2 text-center">More</th>
+                                <th className="px-4 py-2 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,10 +50,18 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onAddMovie }: Props) => {
                                                 {expandedRows[index] ? <ChevronUp /> : <ChevronDown />}
                                             </button>
                                         </td>
+                                        <td className="border px-4 py-2 text-center">
+                                            <button
+                                                className="text-red-500 hover:text-red-700 focus:outline-none"
+                                                onClick={() => movie.id !== undefined && onDeleteMovie(movie.id)}
+                                            >
+                                                <Trash2 size={20} />
+                                            </button>
+                                        </td>
                                     </tr>
                                     {expandedRows[index] && (
                                         <tr>
-                                            <td colSpan={4} className="border px-4 py-2">
+                                            <td colSpan={5} className="border px-4 py-2">
                                                 <div>
                                                     <strong>Released:</strong> {movie.release_year}
                                                 </div>

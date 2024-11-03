@@ -62,6 +62,8 @@ const AddMovie: React.FC = () => {
         }
     };
 
+    
+
     return (
         <>
         <Head>

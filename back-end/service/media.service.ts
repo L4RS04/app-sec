@@ -56,8 +56,20 @@ const getAllMovies = async (): Promise<Movie[]> => mediaDB.getAllMovies();
 
 const getAllSeries = async (): Promise<Media[]> => mediaDB.getAllSeries();
 
+const deleteMedia = (mediaId: number): void => {
+    const media = mediaDB.getMediaById(mediaId);
+
+    if (!media) {
+        throw new Error('Media not found');
+    }
+
+    mediaDB.deleteMedia(media);
+}
+
+
 const MediaService = {
     createMedia,
+    deleteMedia,
     getGenres,
     getAllMedia,
     getAllMovies,
