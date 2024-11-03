@@ -40,6 +40,10 @@ const media_items: Media[] = [
     })
 ];
 
+const createMedia = (media: Media): void => {
+    media_items.push(media);
+}
+
 const getAllMedia = (): Media[] => {
     return media_items;
 };
@@ -56,4 +60,4 @@ const getMediaById = (id: number): Media | undefined => {
     return media_items.find(item => item.getId() === id);
 };
 
-export default { getAllMedia, getAllMovies, getAllSeries, getMediaById };
+export default { createMedia, getAllMedia, getAllMovies, getAllSeries, getMediaById };

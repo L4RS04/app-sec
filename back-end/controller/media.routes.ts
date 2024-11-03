@@ -1,5 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import mediaService from "../service/media.service";
+import { MediaInput } from '../types';
 
 const mediaRouter = express.Router();
 
@@ -23,13 +24,23 @@ mediaRouter.get('/movies', async (req: Request, res: Response) => {
     }
 });
 
-mediaRouter.get('/series', async (req: Request, res: Response) => {
+mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const series = await mediaService.getAllSeries();
         res.status(200).json(series);
     } catch (error) {
-        const errorMessage = (error as Error).message;
-        res.status(400).json({ status: 'error', message: errorMessage });
+        next(error); // Pass the error to the next middleware (error handler)
+    }
+});
+
+mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const media = <MediaInput>req.body;
+        const result = await mediaService.createMedia(media);
+        res.status(200).json(result.toJSON());
+        res.status(200).json(media);
+    } catch (error) {
+        next(error); // Pass the error to the next middleware (error handler)
     }
 });
 

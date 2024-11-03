@@ -20,7 +20,8 @@ watchlistRouter.post('/', async (req: Request, res: Response, next: NextFunction
         const result = await watchlistService.createWatchlist(watchlist);
         res.status(200).json(result.toJSON());
     } catch (error) {
-        next(error);
+        const errorMessage = (error as Error).message;
+        res.status(400).json({ status: 'error', message: errorMessage });
     }
 });
 

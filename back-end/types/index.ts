@@ -1,3 +1,4 @@
+import { Genre } from "../model/genre";
 import { Media } from "../model/media";
 import { User } from "../model/user";
 
@@ -24,8 +25,11 @@ type MediaInput = {
     title?: string;
     description?: string;
     release_year?: number;
-    genres?: string[];
-    type?: string;
+    genres?: Genre[];
+    type?: 'Movie' | 'Series';
+    director?: string;
+    duration?: number;
+    number_of_seasons?: number;
 };
 
 

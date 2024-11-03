@@ -8,9 +8,6 @@ import mediaDb from "../repository/media.db";
 let watchlistIdCounter = 0;
 
 const createWatchlist = ({ name, description, creatorId }: WatchlistInput): Watchlist => {
-    if (!name) {
-        throw new Error('Name is required');
-    }
     const creator = userDb.getUserById({ id: creatorId });
 
     if (!creator) {
