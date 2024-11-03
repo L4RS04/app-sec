@@ -85,6 +85,17 @@ const AddMovie: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
+                    <label htmlFor="director" className="block text-gray-700">Director:</label>
+                    <input
+                        type="text"
+                        name="director"
+                        value={newMovie.director}
+                        onChange={handleInputChange}
+                        required
+                        className="border p-2 w-full"
+                    />
+                </div>
+                <div className="mb-4">
                     <label htmlFor="description" className="block text-gray-700">Description:</label>
                     <textarea
                         name="description"
@@ -100,6 +111,18 @@ const AddMovie: React.FC = () => {
                         type="number"
                         name="release_year"
                         value={newMovie.release_year}
+                        onChange={handleInputChange}
+                        required
+                        className="border p-2 w-full"
+                    />
+                </div>
+                
+                <div className="mb-4">
+                    <label htmlFor="duration" className="block text-gray-700">Duration (minutes):</label>
+                    <input
+                        type="number"
+                        name="duration"
+                        value={newMovie.duration}
                         onChange={handleInputChange}
                         required
                         className="border p-2 w-full"
@@ -123,29 +146,7 @@ const AddMovie: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="duration" className="block text-gray-700">Duration (minutes):</label>
-                    <input
-                        type="number"
-                        name="duration"
-                        value={newMovie.duration}
-                        onChange={handleInputChange}
-                        required
-                        className="border p-2 w-full"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="director" className="block text-gray-700">Director:</label>
-                    <input
-                        type="text"
-                        name="director"
-                        value={newMovie.director}
-                        onChange={handleInputChange}
-                        required
-                        className="border p-2 w-full"
-                    />
-                </div>
-                <button type="submit" className="bg-blue-500 text-blue-900 p-2 w-full">Add movie</button>
+                <button type="submit" className="bg-blue-500 text-white p-2 w-full">Add movie</button>
             </form>
         </div>
     </>

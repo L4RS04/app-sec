@@ -105,6 +105,17 @@ const AddSeries: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
+                    <label htmlFor="number_of_seasons" className="block text-gray-700">Number of seasons:</label>
+                    <input
+                        type="number"
+                        name="number_of_seasons"
+                        value={newSeries.number_of_seasons}
+                        onChange={handleInputChange}
+                        required
+                        className="border p-2 w-full"
+                    />
+                </div>
+                <div className="mb-4">
                     <label className="block text-gray-700">Genres:</label>
                     <div className='grid grid-cols-2'>
                         {genres.map(genre => (
@@ -122,18 +133,7 @@ const AddSeries: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="duration" className="block text-gray-700">Number of seasons:</label>
-                    <input
-                        type="number"
-                        name="duration"
-                        value={newSeries.number_of_seasons}
-                        onChange={handleInputChange}
-                        required
-                        className="border p-2 w-full"
-                    />
-                </div>
-                <button type="submit" className="bg-blue-500 text-blue-900 p-2 w-full">Add movie</button>
+                <button type="submit" className="bg-blue-500 text-white p-2 w-full">Add series</button>
             </form>
         </div>
     </>
