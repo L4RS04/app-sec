@@ -7,13 +7,26 @@ import MovieService from "@services/MovieService";
 
 
 const Movies: React.FC = () => {
-    const [movies, setMovies] = useState<Array<Movie>>();
+    const [movies, setMovies] = useState<Array<Movie>>([]);
 
     const getMovies = async () => {
-        const response = await MovieService.getAllMovies();
+        try {
+            const response = await MovieService.getAllMovies();
         const data = await response.json();
         setMovies(data);
+    } catch (error) {
+        console.error("An error occurred while fetching the movies: ", error);
     }
+};
+
+    const createMovie = async (newMovie: Movie) => {
+        try {
+            const addedMovie = await MovieService.createMovie(newMovie);
+            setMovies(prevMovies => [...prevMovies, addedMovie]);
+        } catch (error) {
+            console.error("An error occurred while creating the movie: ", error);
+        }
+    };
 
     useEffect(() => {
         getMovies()
@@ -29,10 +42,12 @@ const Movies: React.FC = () => {
             </Head>
             <Header />
             <main className="d-flex flex-column justify-content-center align-items-center">
-                <h1>Movies</h1>
+                <h1 className="mt-8">Movies</h1>
                 <section>
-                    {movies && ( 
-                    <MovieOverviewTable movies={movies} />
+                    {movies.length > 0 ? ( 
+                    <MovieOverviewTable movies={movies} onAddMovie={createMovie} />
+                    ) : (
+                        <p>No movies found</p>
                     )}
                 </section>
             </main>

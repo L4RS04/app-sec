@@ -4,6 +4,7 @@ import { Movie } from '../model/movie';
 import { MediaInput } from '../types';
 import { Series } from '../model/series';
 import mediaDb from '../repository/media.db';
+import { Genre } from '../model/genre';
 
 let mediaIdCounter = 0;
 
@@ -45,6 +46,9 @@ const createMedia = ({ title, release_year, description, genres, type, director,
     return media;
 }
     
+const getGenres = async (): Promise<Genre[]> => {
+    return Object.values(Genre);
+}
 
 const getAllMedia = async (): Promise<Media[]> => mediaDB.getAllMedia();
 
@@ -54,6 +58,7 @@ const getAllSeries = async (): Promise<Media[]> => mediaDB.getAllSeries();
 
 const MediaService = {
     createMedia,
+    getGenres,
     getAllMedia,
     getAllMovies,
     getAllSeries

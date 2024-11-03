@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { Movie } from "@types";
+import { Movie, Genre } from "@types";
 import { formatDuration } from "utils/utils";
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { ChevronDown, ChevronUp, CirclePlus } from "lucide-react"
+import { useRouter } from "next/router";
 
 
 
 type Props = {
     movies: Array<Movie>;
+    onAddMovie: (newMovie: Movie) => Promise<void>;
 }
 
-const MovieOverviewTable: React.FC<Props> = ({ movies }: Props) => {
+const MovieOverviewTable: React.FC<Props> = ({ movies, onAddMovie }: Props) => {
+    const router = useRouter();
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
 
     const handleDropdownClick = (index: number) => {
@@ -19,11 +22,18 @@ const MovieOverviewTable: React.FC<Props> = ({ movies }: Props) => {
         }));
     };
 
+    const navigateToAddMovie = () => {
+        router.push('/movies/add');
+    };
+
     return (
         <>
+        <div className="flex justify-end">
+            <button onClick={navigateToAddMovie} className="rounded hover:bg-slate-200 text-black font-bold px-4 rounded mb-4"> <CirclePlus size={35} /></button>
+        </div>
             {movies && (
-                <div className="border rounded-lg">
-                    <table className="table-auto w-full">
+                <div className="border rounded-lg w-full overflow-x-auto">
+                    <table className="table-auto">
                         <thead>
                             <tr className="bg-gray-200">
                                 <th className="px-4 py-2 text-center">Title</th>

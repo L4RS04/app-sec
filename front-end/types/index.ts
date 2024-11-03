@@ -1,11 +1,12 @@
 export type Movie = {
-    id: number;
+    id?: number;
     title: string;
     description: string;
     release_year: number;
     genres: Genre[];
     duration: number;
     director: string;
+    type: 'Movie';
 }
 
 export enum Genre {
