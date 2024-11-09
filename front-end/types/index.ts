@@ -1,21 +1,21 @@
 export type Movie = {
     id?: number;
-    title: string;
-    description: string;
-    release_year: number;
+    title?: string;
+    description?: string;
+    release_year?: number;
     genres: Genre[];
-    duration: number;
-    director: string;
+    duration?: number;
+    director?: string;
     type: 'Movie';
 }
 
 export type Serie = {
     id?: number;
-    title: string;
-    description: string;
-    release_year: number;
+    title?: string;
+    description?: string;
+    release_year?: number;
     genres: Genre[];
-    number_of_seasons: number;
+    number_of_seasons?: number;
     type: 'Series';
 }
 

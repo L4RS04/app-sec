@@ -10,12 +10,7 @@ import MediaService from '@services/MediaService';
 const AddMovie: React.FC = () => {
     const router = useRouter();
     const [newMovie, setNewMovie] = useState<Movie>({
-        title: "",
-        description: "",
-        release_year: 0,
         genres: [],
-        duration: 0,
-        director: "",
         type: "Movie"
     });
     const [genres, setGenres] = useState<Genre[]>([]);
@@ -110,6 +105,7 @@ const AddMovie: React.FC = () => {
                     <input
                         type="number"
                         name="release_year"
+                        placeholder='YYYY'
                         value={newMovie.release_year}
                         onChange={handleInputChange}
                         required

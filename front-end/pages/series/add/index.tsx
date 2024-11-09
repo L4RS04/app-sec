@@ -10,11 +10,7 @@ import MediaService from '@services/MediaService';
 const AddSeries: React.FC = () => {
     const router = useRouter();
     const [newSeries, setNewSeries] = useState<Serie>({
-        title: "",
-        description: "",
-        release_year: 0,
         genres: [],
-        number_of_seasons: 0,
         type: "Series"
     });
     const [genres, setGenres] = useState<Genre[]>([]);
@@ -98,6 +94,7 @@ const AddSeries: React.FC = () => {
                     <input
                         type="number"
                         name="release_year"
+                        placeholder='YYYY'
                         value={newSeries.release_year}
                         onChange={handleInputChange}
                         required
