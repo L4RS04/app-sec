@@ -101,12 +101,12 @@ const AddMovie: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="release_year" className="block text-gray-700">Release Year:</label>
+                    <label htmlFor="releaseYear" className="block text-gray-700">Release Year:</label>
                     <input
                         type="number"
-                        name="release_year"
+                        name="releaseYear"
                         placeholder='YYYY'
-                        value={newMovie.release_year}
+                        value={newMovie.releaseYear}
                         onChange={handleInputChange}
                         required
                         className="border p-2 w-full"

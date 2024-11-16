@@ -7,11 +7,11 @@ const prisma = new PrismaClient();
 
 const main = async () => {
     try {
-    await prisma.user.deleteMany();
     await prisma.watchlist.deleteMany();
     await prisma.movie.deleteMany();
     await prisma.series.deleteMany();
     await prisma.media.deleteMany();
+    await prisma.user.deleteMany();
 
     const user1 = await prisma.user.create({
         data : {
@@ -33,7 +33,7 @@ const main = async () => {
         data: {
             title: "Star Wars: Episdode I - The Phantom Menace",
             description: "Jedi warriors Qui-Gon Jinn and Obi-Wan Kenobi are tasked with protecting a princess during a trade dispute between planets. During their mission, they meet a small boy who has the Force within him.",
-            release_year: 1999,
+            releaseYear: 1999,
             type: "movie",
             genres: [Genre.SCIFI, Genre.ACTION, Genre.ADVENTURE],  
             }
@@ -51,7 +51,7 @@ const main = async () => {
         data: {
             title: "Star Wars: Episode II - Attack of the Clones",
             description: "While pursuing an assassin, Obi Wan uncovers a sinister plot to destroy the Republic. With the fate of the galaxy hanging in the balance, the Jedi must defend the galaxy against the evil Sith..",
-            release_year: 2002,
+            releaseYear: 2002,
             type: "movie",
             genres: [Genre.SCIFI, Genre.ACTION, Genre.ADVENTURE],  
         },
@@ -69,7 +69,7 @@ const main = async () => {
         data: {
             title: "Star Wars: Episode III - Revenge of the Sith",
             description: "Anakin joins forces with Obi-Wan and sets Palpatine free from the evil clutches of Count Doku. However, he falls prey to Palpatine and the Jedis' mind games and gives into temptation.",
-            release_year: 2005,
+            releaseYear: 2005,
             type: "movie",
             genres: [Genre.SCIFI, Genre.ACTION, Genre.ADVENTURE],  
         },
@@ -87,7 +87,7 @@ const main = async () => {
         data: {
             title: "Prison Break",
             description: "The series revolves around two brothers: Lincoln Burrows (Dominic Purcell) and Michael Scofield (Wentworth Miller); Lincoln has been sentenced to death for a crime he did not commit, while Michael devises an elaborate plan to help his brother escape prison and clear his name.",
-            release_year: 2005,
+            releaseYear: 2005,
             type: "series",
             genres: [Genre.ACTION, Genre.CRIME, Genre.SUSPENSE],
         },
@@ -96,7 +96,7 @@ const main = async () => {
     await prisma.series.create({
         data: {
             mediaId: media4.id,
-            number_of_seasons: 5,
+            numberOfSeasons: 5,
         },
     });
 
@@ -104,7 +104,7 @@ const main = async () => {
         data: {
             title: "Suits",
             description: "A college dropout, Mike Ross, possesses immense competence. A set of circumstances leads to him effectively working as a law associate for Harvey Specter despite not having gone to law school.",
-            release_year: 2011,
+            releaseYear: 2011,
             type: "series",
             genres: [Genre.DRAMA, Genre.COMEDY],
         },
@@ -113,7 +113,7 @@ const main = async () => {
     await prisma.series.create({
         data: {
             mediaId: media5.id,
-            number_of_seasons: 9,
+            numberOfSeasons: 9,
         },
     });
 
@@ -122,7 +122,7 @@ const main = async () => {
             name: "Xander's Watchlist",
             description: "My favourite movies and series",
             creatorId: user1.id,
-            media_items: {
+            mediaItems: {
                 connect: [{ id: media1.id }, { id: media4.id }, { id: media5.id }],
             },
         },
@@ -133,7 +133,7 @@ const main = async () => {
             name: "Lars' Watchlist",
             description: "My favourite movies and series",
             creatorId: user2.id,
-            media_items: {
+            mediaItems: {
                 connect: [{ id: media2.id }, { id: media3.id }, { id: media4.id }],
             },
         },

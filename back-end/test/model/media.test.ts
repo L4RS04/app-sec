@@ -5,7 +5,7 @@ import { Genre } from '../../model/genre';
 // Test data
 const title = 'Inception';
 const description = 'A mind-bending thriller';
-const release_year = 2010;
+const releaseYear = 2010;
 const genre1 = Genre.ACTION;
 const genre2 = Genre.ADVENTURE;
 const genres = [genre1];
@@ -17,18 +17,18 @@ test('given: valid values for media, when: media is created, then: media is crea
     // given
     
     // when
-    const media = new Media({ title, description, release_year, genres, type });
+    const media = new Media({ title, description, releaseYear, genres, type });
 
     // then
     expect(media.getTitle()).toEqual(title);
     expect(media.getDescription()).toEqual(description);
-    expect(media.getReleaseYear()).toEqual(release_year);
+    expect(media.getReleaseYear()).toEqual(releaseYear);
     expect(media.getGenres()).toContain(genre1);
 });
 
 test('given: a genre, when: addGenre is called, then: the genre is added to the media', () => {
     // given
-    const media = new Media({ title, description, release_year, genres, type });
+    const media = new Media({ title, description, releaseYear, genres, type });
 
     // when
     media.addGenre(genre2);
@@ -39,7 +39,7 @@ test('given: a genre, when: addGenre is called, then: the genre is added to the 
 
 // test('given: a rating, when: addRating is called, then: the rating is added to the media', () => {
 //     // given
-//     const media = new Media({ title, description, release_year, genres, type });
+//     const media = new Media({ title, description, releaseYear, genres, type });
 
 //     // when
 //     media.addRating(rating1);
@@ -50,7 +50,7 @@ test('given: a genre, when: addGenre is called, then: the genre is added to the 
 
 // test('given: multiple ratings, when: getAverageRating is called, then: the average rating is returned', () => {
 //     // given
-//     const media = new Media({ title, description, release_year, genres, type });
+//     const media = new Media({ title, description, releaseYear, genres, type });
 //     media.addRating(rating1);
 //     media.addRating(rating2);
 
@@ -63,7 +63,7 @@ test('given: a genre, when: addGenre is called, then: the genre is added to the 
 
 // test('given: no ratings, when: getAverageRating is called, then: the average rating is 0', () => {
 //     // given
-//     const media = new Media({ title, description, release_year, genres, type });
+//     const media = new Media({ title, description, releaseYear, genres, type });
 
 //     // when
 //     const averageRating = media.getAverageRating();
@@ -77,7 +77,7 @@ test('given: no title, when: media is created, then: an error is thrown', () => 
     const invalidTitle = '';
 
     // when & then
-    expect(() => new Media({ title: invalidTitle, description, release_year, genres, type })).toThrow('Title is required');
+    expect(() => new Media({ title: invalidTitle, description, releaseYear, genres, type })).toThrow('Title is required');
 });
 
 test('given: no description, when: media is created, then: an error is thrown', () => {
@@ -85,7 +85,7 @@ test('given: no description, when: media is created, then: an error is thrown', 
     const invalidDescription = '';
 
     // when & then
-    expect(() => new Media({ title, description: invalidDescription, release_year, genres, type })).toThrow('Description is required');
+    expect(() => new Media({ title, description: invalidDescription, releaseYear, genres, type })).toThrow('Description is required');
 });
 
 test('given: no release year, when: media is created, then: an error is thrown', () => {
@@ -93,6 +93,6 @@ test('given: no release year, when: media is created, then: an error is thrown',
     const invalidReleaseYear = null as unknown as number;
 
     // when & then
-    expect(() => new Media({ title, description, release_year: invalidReleaseYear, genres, type })).toThrow('Year of release is required');
+    expect(() => new Media({ title, description, releaseYear: invalidReleaseYear, genres, type })).toThrow('Year of release is required');
 });
 

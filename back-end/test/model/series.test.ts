@@ -4,8 +4,8 @@ import { Genre } from '../../model/genre';
 // Test data
 const title = 'Breaking Bad';
 const description = 'A high school chemistry teacher turned methamphetamine producer.';
-const release_year = 2008;
-const number_of_seasons = 5;
+const releaseYear = 2008;
+const numberOfSeasons = 5;
 const genre1 = Genre.Action;
 const genres = [genre1];
 const type = "Series";
@@ -14,27 +14,27 @@ test('given: valid values for series, when: series is created, then: series is c
     // given
     
     // when
-    const series = new Series({ id: 1, title, description, release_year, genres, number_of_seasons });
+    const series = new Series({ id: 1, title, description, releaseYear, genres, numberOfSeasons });
 
     // then
     expect(series.getTitle()).toEqual(title);
     expect(series.getDescription()).toEqual(description);
-    expect(series.getReleaseYear()).toEqual(release_year);
-    expect(series.getNumberOfSeasons()).toEqual(number_of_seasons);
+    expect(series.getReleaseYear()).toEqual(releaseYear);
+    expect(series.getNumberOfSeasons()).toEqual(numberOfSeasons);
     expect(series.getGenres()).toContain(genre1);
 });
 
-test('given: series with no number_of_seasons, when: series is created, then: error is thrown', () => {
+test('given: series with no numberOfSeasons, when: series is created, then: error is thrown', () => {
     // given
-    const invalidSeriesData = { id: 1, title, description, release_year, genres, number_of_seasons: undefined as unknown as number };
+    const invalidSeriesData = { id: 1, title, description, releaseYear, genres, numberOfSeasons: undefined as unknown as number };
 
     // when & then
     expect(() => new Series(invalidSeriesData)).toThrowError("Series number of seasons is required");
 });
 
-test('given: series with negative number_of_seasons, when: series is created, then: error is thrown', () => {
+test('given: series with negative numberOfSeasons, when: series is created, then: error is thrown', () => {
     // given
-    const invalidSeriesData = { id: 1, title, description, release_year, genres, number_of_seasons: -1 };
+    const invalidSeriesData = { id: 1, title, description, releaseYear, genres, numberOfSeasons: -1 };
 
     // when & then
     expect(() => new Series(invalidSeriesData)).toThrowError("Series number of seasons is required");

@@ -2,52 +2,52 @@ import { Media } from './media';
 import { Genre } from './genre';
 
 export class Series extends Media {
-    private number_of_seasons: number;
+    private numberOfSeasons: number;
 
     constructor(series: {
         id: number,
         title: string,
         description: string,
-        release_year: number,
+        releaseYear: number,
         genres: Genre[],
-        number_of_seasons: number
+        numberOfSeasons: number
     }) {
         super({
             id: series.id,
             title: series.title,
             description: series.description,
-            release_year: series.release_year,
+            releaseYear: series.releaseYear,
             genres: series.genres,
             type: "Series"
         });
         this.validate_series(series);
 
-        this.number_of_seasons = series.number_of_seasons;
+        this.numberOfSeasons = series.numberOfSeasons;
     }
 
     // Getters
     public getNumberOfSeasons(): number {
-        return this.number_of_seasons;
+        return this.numberOfSeasons;
     }
 
     // Setters
-    public setNumberOfSeasons(number_of_seasons: number): void {
-        this.number_of_seasons = number_of_seasons;
+    public setNumberOfSeasons(numberOfSeasons: number): void {
+        this.numberOfSeasons = numberOfSeasons;
     }
 
     // Override the toJSON method to include number of seasons
     public toJSON() {
         return {
             ...super.toJSON(),
-            number_of_seasons: this.number_of_seasons
+            numberOfSeasons: this.numberOfSeasons
         }
     }
 
     // Validation
     private validate_series(series: {
-        number_of_seasons: number
+        numberOfSeasons: number
     }): void {
-        if (!series.number_of_seasons || series.number_of_seasons < 0) {
+        if (!series.numberOfSeasons || series.numberOfSeasons < 0) {
             throw new Error("Series number of seasons is required");
         }
     }

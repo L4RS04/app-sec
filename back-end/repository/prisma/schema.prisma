@@ -36,7 +36,7 @@ model Media {
     id           Int         @id @default(autoincrement())
     title        String
     description  String
-    release_year  Int
+    releaseYear  Int
     genres       Genre[]
     type         String
     movie        Movie?
@@ -52,9 +52,9 @@ model Movie {
 }
 
 model Series {
-    mediaId             Int         @id
-    number_of_seasons   Int
-    media               Media       @relation(fields: [mediaId], references: [id])
+    mediaId         Int         @id
+    numberOfSeasons Int
+    media           Media       @relation(fields: [mediaId], references: [id])
 }
 
 model User {
@@ -71,7 +71,7 @@ model Watchlist {
     name         String
     description  String
     creationDate DateTime    @default(now())
-    media_items   Media[]     @relation
+    mediaItems   Media[]     @relation
     creator      User        @relation(fields: [creatorId], references: [id])
     creatorId    Int
 }

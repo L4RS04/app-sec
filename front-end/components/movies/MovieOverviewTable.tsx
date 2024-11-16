@@ -62,7 +62,7 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) =
                                         <tr>
                                             <td colSpan={5} className="border px-4 py-2">
                                                 <div>
-                                                    <strong>Released:</strong> {movie.release_year}
+                                                    <strong>Released:</strong> {movie.releaseYear}
                                                 </div>
                                                 <div>
                                                     <strong>Genres:</strong> {movie.genres.join(", ")}

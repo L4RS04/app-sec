@@ -2,7 +2,7 @@ export type Movie = {
     id?: number;
     title?: string;
     description?: string;
-    release_year?: number;
+    releaseYear?: number;
     genres: Genre[];
     duration?: number;
     director?: string;
@@ -13,9 +13,9 @@ export type Serie = {
     id?: number;
     title?: string;
     description?: string;
-    release_year?: number;
+    releaseYear?: number;
     genres: Genre[];
-    number_of_seasons?: number;
+    numberOfSeasons?: number;
     type: 'Series';
 }
 

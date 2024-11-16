@@ -1,4 +1,5 @@
 import { Watchlist } from './watchlist';
+import { User as PrismaUser, Watchlist as PrismaWatchlist } from '@prisma/client';
 
 export class User {
     private id?: number;
@@ -81,23 +82,18 @@ export class User {
         };
     }
 
-    public from(
-        user: {
-            id?: number;
-            name: string;
-            password: string;
-            email: string;
-        }
-    ) {
-        this.validate(user);
-
-        this.id = user.id;
-        this.name = user.name;
-        this.password = user.password;
-        this.email = user.email;
+    static from({
+        id,
+        name,
+        password,
+        email,
+        watchlists,
+    }: PrismaUser & { watchlists: PrismaWatchlist[] }) {
+        const user = new User({ id, name, password, email });
+        user.watchlists = watchlists.map(Watchlist.from);
+        return user;
     }
-    
-
+ 
     private validate(user: {
         name: string;
         password: string;

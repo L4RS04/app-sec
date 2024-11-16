@@ -5,7 +5,7 @@ export class Media {
     private id?: number;
     private title: string;
     private description: string;
-    private release_year: number;
+    private releaseYear: number;
     private genres: Genre[];
     // private ratings: Rating[];
     private type: string;
@@ -14,7 +14,7 @@ export class Media {
         id?: number,
         title: string,
         description: string,
-        release_year: number,
+        releaseYear: number,
         genres: Genre[],
         type: string
     }) {
@@ -23,7 +23,7 @@ export class Media {
         this.id = media.id;
         this.title = media.title;
         this.description = media.description;
-        this.release_year = media.release_year;
+        this.releaseYear = media.releaseYear;
         this.genres = media.genres;
         // this.ratings = [];
         this.type = media.type;
@@ -43,7 +43,7 @@ export class Media {
     }
 
     public getReleaseYear(): number {
-        return this.release_year;
+        return this.releaseYear;
     }
 
     public getGenres(): Genre[] {
@@ -67,8 +67,8 @@ export class Media {
         this.description = description;
     }
 
-    public setReleaseYear(release_year: number): void {
-        this.release_year = release_year;
+    public setReleaseYear(releaseYear: number): void {
+        this.releaseYear = releaseYear;
     }
 
     public setType(type: string): void {
@@ -90,7 +90,7 @@ export class Media {
             id: this.id,
             title: this.title,
             description: this.description,
-            release_year: this.release_year,
+            releaseYear: this.releaseYear,
             genres: this.genres,
             type: this.type
     }
@@ -100,7 +100,7 @@ export class Media {
     private validate(media: {
         title: string,
         description: string,
-        release_year: number,
+        releaseYear: number,
         genres: Genre[],
         type: string
 
@@ -111,7 +111,7 @@ export class Media {
     if (!media.description?.trim()) {
         throw new Error('Description is required');
     }
-    if (!media.release_year?.toString().trim()) {
+    if (!media.releaseYear?.toString().trim()) {
         throw new Error('Year of release is required');
     }
 }

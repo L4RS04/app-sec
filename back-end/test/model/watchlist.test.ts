@@ -11,7 +11,7 @@ test('given: valid values for watchlist, when: watchlist is created, then: watch
     // given
 
     // when
-    const watchlist = new Watchlist({ name, description, media_items: [], creator });
+    const watchlist = new Watchlist({ name, description, mediaItems: [], creator });
 
     // then
     expect(watchlist.getName()).toEqual(name);
@@ -21,30 +21,30 @@ test('given: valid values for watchlist, when: watchlist is created, then: watch
 
 test('given: empty name, when: watchlist is created, then: error is thrown', () => {
     expect(() => {
-        new Watchlist({ name: '', description, media_items: [], creator });
+        new Watchlist({ name: '', description, mediaItems: [], creator });
     }).toThrowError("Name is required and cannot be empty.");
 });
 
 test('given: empty description, when: watchlist is created, then: error is thrown', () => {
     expect(() => {
-        new Watchlist({ name, description: '', media_items: [], creator });
+        new Watchlist({ name, description: '', mediaItems: [], creator });
     }).toThrowError("Description is required and cannot be empty.");
 });
 
-test('given: media_items is not an array, when: watchlist is created, then: error is thrown', () => {
+test('given: mediaItems is not an array, when: watchlist is created, then: error is thrown', () => {
     expect(() => {
-        new Watchlist({ name, description, media_items: null as any, creator });
+        new Watchlist({ name, description, mediaItems: null as any, creator });
     }).toThrowError("Media items must be an array.");
 });
 
 test('given: creator is not provided, when: watchlist is created, then: error is thrown', () => {
     expect(() => {
-        new Watchlist({ name, description, media_items: [], creator: null as any });
+        new Watchlist({ name, description, mediaItems: [], creator: null as any });
     }).toThrowError("Creator is required.");
 });
 
 test('given: creator is not a valid User instance, when: watchlist is created, then: error is thrown', () => {
     expect(() => {
-        new Watchlist({ name, description, media_items: [], creator: {} as any });
+        new Watchlist({ name, description, mediaItems: [], creator: {} as any });
     }).toThrowError("Creator must be a valid User instance.");
 });

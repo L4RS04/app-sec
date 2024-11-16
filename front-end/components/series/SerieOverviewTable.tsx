@@ -36,7 +36,7 @@ const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) 
                                 <React.Fragment key={index}>
                                     <tr className="hover:bg-gray-100">
                                         <td className="border px-4 py-2 text-center">{serie.title}</td>
-                                        <td className="border px-4 py-2 text-center">{serie.number_of_seasons}</td>
+                                        <td className="border px-4 py-2 text-center">{serie.numberOfSeasons}</td>
                                         <td className="border px-4 py-2 text-center">
                                             <button
                                                 className="text-blue-500 hover:text-blue-700 focus:outline-none"
@@ -58,7 +58,7 @@ const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) 
                                         <tr>
                                             <td colSpan={5} className="border px-4 py-2">
                                                 <div>
-                                                    <strong>Released:</strong> {serie.release_year}
+                                                    <strong>Released:</strong> {serie.releaseYear}
                                                 </div>
                                                 <div>
                                                     <strong>Genres:</strong> {serie.genres.join(", ")}

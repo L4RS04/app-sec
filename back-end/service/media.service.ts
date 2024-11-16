@@ -8,7 +8,7 @@ import { Genre } from '../model/genre';
 
 let mediaIdCounter = 0;
 
-const createMedia = ({ title, release_year, description, genres, type, director, duration, number_of_seasons }: MediaInput): Media => {
+const createMedia = ({ title, releaseYear, description, genres, type, director, duration, numberOfSeasons }: MediaInput): Media => {
     const existingMedia = mediaDB.getAllMedia().find(media => media.getTitle() === title);
 
     if (existingMedia) {
@@ -22,7 +22,7 @@ const createMedia = ({ title, release_year, description, genres, type, director,
         media = new Movie({
             id,
             title: title!,
-            release_year: release_year!,
+            releaseYear: releaseYear!,
             description: description!,
             genres: genres!,
             director: director!,
@@ -32,10 +32,10 @@ const createMedia = ({ title, release_year, description, genres, type, director,
         media = new Series({
             id,
             title: title!,
-            release_year: release_year!,
+            releaseYear: releaseYear!,
             description: description!,
             genres: genres!,
-            number_of_seasons: number_of_seasons!
+            numberOfSeasons: numberOfSeasons!
         });
     } else {
         throw new Error('Invalid media type');

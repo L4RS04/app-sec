@@ -16,7 +16,7 @@ type WatchlistInput = {
     name: string;
     description: string;
     creatorId: number;
-    media_items?: Media[];
+    mediaItems?: Media[];
     creation_date?: Date;
 };
 
@@ -24,12 +24,12 @@ type MediaInput = {
     id?: number;
     title?: string;
     description?: string;
-    release_year?: number;
+    releaseYear?: number;
     genres?: Genre[];
     type?: 'Movie' | 'Series';
     director?: string;
     duration?: number;
-    number_of_seasons?: number;
+    numberOfSeasons?: number;
 };
 
 

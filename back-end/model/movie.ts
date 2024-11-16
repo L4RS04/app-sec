@@ -8,7 +8,7 @@ export class Movie extends Media {
 
     constructor(movie: {
         id: number,
-        release_year: number,
+        releaseYear: number,
         title: string,
         description: string,
         genres: Genre[],
@@ -19,7 +19,7 @@ export class Movie extends Media {
             id: movie.id,
             title: movie.title,
             description: movie.description,
-            release_year: movie.release_year,
+            releaseYear: movie.releaseYear,
             genres: movie.genres,
             type: "Movie"
         });

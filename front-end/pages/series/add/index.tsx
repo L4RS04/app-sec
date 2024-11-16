@@ -90,23 +90,23 @@ const AddSeries: React.FC = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="release_year" className="block text-gray-700">Release Year:</label>
+                    <label htmlFor="releaseYear" className="block text-gray-700">Release Year:</label>
                     <input
                         type="number"
-                        name="release_year"
+                        name="releaseYear"
                         placeholder='YYYY'
-                        value={newSeries.release_year}
+                        value={newSeries.releaseYear}
                         onChange={handleInputChange}
                         required
                         className="border p-2 w-full"
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="number_of_seasons" className="block text-gray-700">Number of seasons:</label>
+                    <label htmlFor="numberOfSeasons" className="block text-gray-700">Number of seasons:</label>
                     <input
                         type="number"
-                        name="number_of_seasons"
-                        value={newSeries.number_of_seasons}
+                        name="numberOfSeasons"
+                        value={newSeries.numberOfSeasons}
                         onChange={handleInputChange}
                         required
                         className="border p-2 w-full"

@@ -1,29 +1,31 @@
 import { Media } from "./media";
 import { User } from "./user";
 
+import { Media as MediaPrisma, User as UserPrisma, Watchlist as WatchlistPrisma } from "@prisma/client";
+
 export class Watchlist {
     private id?: number;
     private name: string;
     private description: string;
-    private creation_date: Date;
-    private media_items: Media[];
+    private creationDate: Date;
+    private mediaItems: Media[];
     private creator: User;
 
     constructor(watchlist: {
         id?: number,
         name: string,
         description: string,
-        media_items: Media[],
+        mediaItems: Media[],
         creator: User,
-        creation_date?: Date
+        creationDate?: Date
     }) {
         this.validate(watchlist);
 
         this.id = watchlist.id;
         this.name = watchlist.name;
         this.description = watchlist.description;
-        this.creation_date = watchlist.creation_date || new Date();
-        this.media_items = watchlist.media_items;
+        this.creationDate = watchlist.creationDate || new Date();
+        this.mediaItems = watchlist.mediaItems;
         this.creator = watchlist.creator;
     }
 
@@ -41,11 +43,11 @@ export class Watchlist {
     }
 
     public getCreationDate(): Date {
-        return this.creation_date;
+        return this.creationDate;
     }
 
     public getMedia(): Media[] {
-        return this.media_items;
+        return this.mediaItems;
     }
 
     public getCreator(): User {
@@ -62,7 +64,7 @@ export class Watchlist {
     }
 
     public setCreationDate(creation_date: Date): void {
-        this.creation_date = creation_date;
+        this.creationDate = creation_date;
     }
 
     public setCreator(creator: User): void {
@@ -71,13 +73,13 @@ export class Watchlist {
 
     // Add & remove methods
     public addMediaToWatchlist(media: Media): void {
-        this.media_items.push(media);
+        this.mediaItems.push(media);
     }
 
     public removeMediaFromWatchlist(media: Media): void {
-        const index = this.media_items.findIndex((m) => m.getId() === media.getId());
+        const index = this.mediaItems.findIndex((m) => m.getId() === media.getId());
         if (index !== -1) {
-            this.media_items.splice(index, 1);
+            this.mediaItems.splice(index, 1);
         }
     }
 
@@ -88,16 +90,34 @@ export class Watchlist {
             name: this.name,
             description: this.description,
             creator: this.creator.toJSON(),
-            media_items: this.media_items.map((media) => media.toJSON()),
-            creation_date: this.creation_date,
+            mediaItems: this.mediaItems.map((media) => media.toJSON()),
+            creation_date: this.creationDate,
         };
+    }
+
+    static from({
+        id,
+        name,
+        description,
+        creationDate,
+        mediaItems,
+        creatorId,
+    }: WatchlistPrisma): Watchlist {
+        return new Watchlist({
+            id,
+            name,
+            description,
+            creationDate,
+            mediaItems: mediaItems.map((media: MediaPrisma) => Media.from(media)),
+            creator: User.from(creator)
+        });
     }
 
     // Validation
     private validate(watchlist: {
         name: string,
         description: string,
-        media_items: Media[],
+        mediaItems: Media[],
         creator: User
     }): void {
         if (!watchlist.name || !watchlist.name.trim()) {
@@ -108,7 +128,7 @@ export class Watchlist {
             throw new Error("Description is required and cannot be empty.");
         }
 
-        if (!Array.isArray(watchlist.media_items)) {
+        if (!Array.isArray(watchlist.mediaItems)) {
             throw new Error("Media items must be an array.");
         }
 

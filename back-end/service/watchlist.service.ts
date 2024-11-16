@@ -19,7 +19,7 @@
 //         id,
 //         name,
 //         description,
-//         media_items: [],
+//         mediaItems: [],
 //         creator: creator
 // });
 
