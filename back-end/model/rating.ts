@@ -1,16 +1,16 @@
-export class Rating {
-    private score: number;
+// export class Rating {
+//     private score: number;
 
-    constructor(score: number) {
-        this.score = score;
-    }
-    // Getters
-    public getScore(): number {
-        return this.score;
-    }
+//     constructor(score: number) {
+//         this.score = score;
+//     }
+//     // Getters
+//     public getScore(): number {
+//         return this.score;
+//     }
 
-    // Setters
-    public setScore(score: number): void {
-        this.score = score;
-    }
-}
+//     // Setters
+//     public setScore(score: number): void {
+//         this.score = score;
+//     }
+// }

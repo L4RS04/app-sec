@@ -1,5 +1,5 @@
 import { Genre } from './genre';
-import { Rating } from './rating';
+// import { Rating } from './rating';
 
 export class Media {
     private id?: number;
@@ -7,7 +7,7 @@ export class Media {
     private description: string;
     private release_year: number;
     private genres: Genre[];
-    private ratings: Rating[];
+    // private ratings: Rating[];
     private type: string;
 
     constructor(media: {
@@ -25,7 +25,7 @@ export class Media {
         this.description = media.description;
         this.release_year = media.release_year;
         this.genres = media.genres;
-        this.ratings = [];
+        // this.ratings = [];
         this.type = media.type;
     }
 
@@ -50,9 +50,9 @@ export class Media {
         return this.genres;
     }
 
-    public getRatings(): Rating[] {
-        return this.ratings;
-    }
+    // public getRatings(): Rating[] {
+    //     return this.ratings;
+    // }
 
     public getType(): string {
         return this.type;
@@ -80,9 +80,9 @@ export class Media {
         this.genres.push(genre);
     }
 
-    public addRating(rating: Rating): void {
-        this.ratings.push(rating);
-    }
+    // public addRating(rating: Rating): void {
+    //     this.ratings.push(rating);
+    // }
 
     // Method to return a JSON-safe representation of the Watchlist object
     public toJSON() {
@@ -116,10 +116,10 @@ export class Media {
     }
 }
 
-    // Other methods
-    public getAverageRating(): number {
-        if (this.ratings.length === 0) return 0;
-        const sum = this.ratings.reduce((acc, rating) => acc + rating.getScore(), 0);
-        return sum / this.ratings.length;
-    }
+    // // Other methods
+    // public getAverageRating(): number {
+    //     if (this.ratings.length === 0) return 0;
+    //     const sum = this.ratings.reduce((acc, rating) => acc + rating.getScore(), 0);
+    //     return sum / this.ratings.length;
+    // }
 }

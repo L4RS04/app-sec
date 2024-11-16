@@ -81,6 +81,23 @@ export class User {
         };
     }
 
+    public from(
+        user: {
+            id?: number;
+            name: string;
+            password: string;
+            email: string;
+        }
+    ) {
+        this.validate(user);
+
+        this.id = user.id;
+        this.name = user.name;
+        this.password = user.password;
+        this.email = user.email;
+    }
+    
+
     private validate(user: {
         name: string;
         password: string;

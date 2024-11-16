@@ -1,16 +1,16 @@
 import { Media } from '../../model/media';
 import { Genre } from '../../model/genre';
-import { Rating } from '../../model/rating';
+// import { Rating } from '../../model/rating';
 
 // Test data
 const title = 'Inception';
 const description = 'A mind-bending thriller';
 const release_year = 2010;
-const genre1 = Genre.Action;
-const genre2 = Genre.Adventure
+const genre1 = Genre.ACTION;
+const genre2 = Genre.ADVENTURE;
 const genres = [genre1];
-const rating1 = new Rating(5);
-const rating2 = new Rating(4);
+// const rating1 = new Rating(5);
+// const rating2 = new Rating(4);
 const type = 'movie';
 
 test('given: valid values for media, when: media is created, then: media is created with those values', () => {
@@ -37,40 +37,41 @@ test('given: a genre, when: addGenre is called, then: the genre is added to the 
     expect(media.getGenres()).toContain(genre2);
 });
 
-test('given: a rating, when: addRating is called, then: the rating is added to the media', () => {
-    // given
-    const media = new Media({ title, description, release_year, genres, type });
+// test('given: a rating, when: addRating is called, then: the rating is added to the media', () => {
+//     // given
+//     const media = new Media({ title, description, release_year, genres, type });
 
-    // when
-    media.addRating(rating1);
+//     // when
+//     media.addRating(rating1);
 
-    // then
-    expect(media.getRatings()).toContain(rating1);
-});
+//     // then
+//     expect(media.getRatings()).toContain(rating1);
+// });
 
-test('given: multiple ratings, when: getAverageRating is called, then: the average rating is returned', () => {
-    // given
-    const media = new Media({ title, description, release_year, genres, type });
-    media.addRating(rating1);
-    media.addRating(rating2);
+// test('given: multiple ratings, when: getAverageRating is called, then: the average rating is returned', () => {
+//     // given
+//     const media = new Media({ title, description, release_year, genres, type });
+//     media.addRating(rating1);
+//     media.addRating(rating2);
 
-    // when
-    const averageRating = media.getAverageRating();
+//     // when
+//     const averageRating = media.getAverageRating();
 
-    // then
-    expect(averageRating).toBe((rating1.getScore() + rating2.getScore()) / 2);
-});
+//     // then
+//     expect(averageRating).toBe((rating1.getScore() + rating2.getScore()) / 2);
+// });
 
-test('given: no ratings, when: getAverageRating is called, then: the average rating is 0', () => {
-    // given
-    const media = new Media({ title, description, release_year, genres, type });
+// test('given: no ratings, when: getAverageRating is called, then: the average rating is 0', () => {
+//     // given
+//     const media = new Media({ title, description, release_year, genres, type });
 
-    // when
-    const averageRating = media.getAverageRating();
+//     // when
+//     const averageRating = media.getAverageRating();
 
-    // then
-    expect(averageRating).toBe(0);
-});
+//     // then
+//     expect(averageRating).toBe(0);
+// });
+
 test('given: no title, when: media is created, then: an error is thrown', () => {
     // given
     const invalidTitle = '';

@@ -14,14 +14,15 @@ export class Watchlist {
         name: string,
         description: string,
         media_items: Media[],
-        creator: User
+        creator: User,
+        creation_date?: Date
     }) {
         this.validate(watchlist);
 
         this.id = watchlist.id;
         this.name = watchlist.name;
         this.description = watchlist.description;
-        this.creation_date = new Date();
+        this.creation_date = watchlist.creation_date || new Date();
         this.media_items = watchlist.media_items;
         this.creator = watchlist.creator;
     }
@@ -80,7 +81,6 @@ export class Watchlist {
         }
     }
 
-
     // Method to return a JSON-safe representation of the Watchlist object
     public toJSON() {
         return {
@@ -121,4 +121,3 @@ export class Watchlist {
         }
     }
 }
-
