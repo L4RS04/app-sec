@@ -5,7 +5,7 @@ export class Series extends Media {
     private numberOfSeasons: number;
 
     constructor(series: {
-        id: number,
+        id?: number,
         title: string,
         description: string,
         releaseYear: number,
@@ -18,7 +18,7 @@ export class Series extends Media {
             description: series.description,
             releaseYear: series.releaseYear,
             genres: series.genres,
-            type: "Series"
+            type: "SERIES"
         });
         this.validate_series(series);
 

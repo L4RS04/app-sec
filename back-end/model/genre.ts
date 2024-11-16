@@ -22,3 +22,4 @@ export enum Genre {
     WAR = "WAR",
     WESTERN = "WESTERN"
 }
+

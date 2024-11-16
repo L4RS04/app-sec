@@ -17,7 +17,7 @@ type WatchlistInput = {
     description: string;
     creatorId: number;
     mediaItems?: Media[];
-    creation_date?: Date;
+    creationDate?: Date;
 };
 
 type MediaInput = {

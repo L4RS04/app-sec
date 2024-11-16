@@ -1,7 +1,7 @@
 import { Media } from "./media";
 import { User } from "./user";
+import { Media as MediaPrisma, Watchlist as WatchlistPrisma } from "@prisma/client";
 
-import { Media as MediaPrisma, User as UserPrisma, Watchlist as WatchlistPrisma } from "@prisma/client";
 
 export class Watchlist {
     private id?: number;
@@ -95,23 +95,6 @@ export class Watchlist {
         };
     }
 
-    static from({
-        id,
-        name,
-        description,
-        creationDate,
-        mediaItems,
-        creatorId,
-    }: WatchlistPrisma): Watchlist {
-        return new Watchlist({
-            id,
-            name,
-            description,
-            creationDate,
-            mediaItems: mediaItems.map((media: MediaPrisma) => Media.from(media)),
-            creator: User.from(creator)
-        });
-    }
 
     // Validation
     private validate(watchlist: {

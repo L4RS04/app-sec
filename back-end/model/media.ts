@@ -1,5 +1,6 @@
 import { Genre } from './genre';
 // import { Rating } from './rating';
+import { Media as MediaPrisma } from '@prisma/client';
 
 export class Media {
     private id?: number;
@@ -115,6 +116,9 @@ export class Media {
         throw new Error('Year of release is required');
     }
 }
+
+
+
 
     // // Other methods
     // public getAverageRating(): number {

@@ -1,19 +1,19 @@
-import { Media } from './media';
-import { Genre } from './genre';
+import { Genre } from "./genre";
+import { Media } from "./media";
+// import { Movie as MoviePrisma, Media as MediaPrisma } from '@prisma/client';
 
 export class Movie extends Media {
     private duration: number;
     private director: string;
 
-
     constructor(movie: {
-        id: number,
-        releaseYear: number,
-        title: string,
-        description: string,
-        genres: Genre[],
-        duration: number,
-        director: string
+        id?: number;
+        title: string;
+        description: string;
+        releaseYear: number;
+        genres: Genre[];
+        duration: number;
+        director: string;
     }) {
         super({
             id: movie.id,
@@ -21,9 +21,8 @@ export class Movie extends Media {
             description: movie.description,
             releaseYear: movie.releaseYear,
             genres: movie.genres,
-            type: "Movie"
+            type: "MOVIE",
         });
-        
         this.validate_movie(movie);
 
         this.duration = movie.duration;
@@ -39,36 +38,26 @@ export class Movie extends Media {
         return this.director;
     }
 
-    // Setters
-    public setDuration(duration: number): void {
-        this.duration = duration;
-    }
 
-    public setDirector(director: string): void {
-        this.director = director;
-    }
-
-    // Override the toJSON method to include duration and director
+    // Override the `toJSON` method
     public toJSON() {
         return {
             ...super.toJSON(),
             duration: this.duration,
-            director: this.director
-        }
+            director: this.director,
+        };
     }
 
     // Validation
     private validate_movie(movie: {
-        duration: number,
-        director: string
+        duration: number;
+        director: string;
     }): void {
         if (!movie.duration || movie.duration < 0) {
             throw new Error("Movie duration is required and must be a non-negative number");
         }
-
-        if (!movie.director || movie.director.length < 1) {
+        if (!movie.director) {
             throw new Error("Movie director is required");
         }
     }
-
 }
