@@ -1,6 +1,6 @@
 import { Genre } from "./genre";
 import { Media } from "./media";
-// import { Movie as MoviePrisma, Media as MediaPrisma } from '@prisma/client';
+import { Media as MediaPrisma } from '@prisma/client';
 
 export class Movie extends Media {
     private duration: number;
@@ -59,5 +59,17 @@ export class Movie extends Media {
         if (!movie.director) {
             throw new Error("Movie director is required");
         }
+    }
+
+    static from(mediaPrisma: MediaPrisma): Movie {
+        return new Movie({
+            id: mediaPrisma.id,
+            title: mediaPrisma.title,
+            description: mediaPrisma.description,
+            releaseYear: mediaPrisma.releaseYear,
+            genres: mediaPrisma.genres.map((genre: string) => Genre[genre as keyof typeof Genre]),
+            duration: mediaPrisma.duration!,
+            director: mediaPrisma.director!,
+        });
     }
 }

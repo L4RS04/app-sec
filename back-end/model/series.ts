@@ -1,5 +1,6 @@
 import { Media } from './media';
 import { Genre } from './genre';
+import { Media as MediaPrisma } from '@prisma/client';
 
 export class Series extends Media {
     private numberOfSeasons: number;
@@ -50,5 +51,16 @@ export class Series extends Media {
         if (!series.numberOfSeasons || series.numberOfSeasons < 0) {
             throw new Error("Series number of seasons is required");
         }
+    }
+
+    static from(mediaPrisma: MediaPrisma): Series {
+        return new Series({
+            id: mediaPrisma.id,
+            title: mediaPrisma.title,
+            description: mediaPrisma.description,
+            releaseYear: mediaPrisma.releaseYear,
+            genres: mediaPrisma.genres.map((genre: string) => Genre[genre as keyof typeof Genre]),
+            numberOfSeasons: mediaPrisma.numberOfSeasons!
+        });
     }
 }

@@ -36,7 +36,7 @@ CREATE TABLE "Watchlist" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "creationDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "creatorId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Watchlist_pkey" PRIMARY KEY ("id")
 );
@@ -60,7 +60,7 @@ CREATE UNIQUE INDEX "_MediaToWatchlist_AB_unique" ON "_MediaToWatchlist"("A", "B
 CREATE INDEX "_MediaToWatchlist_B_index" ON "_MediaToWatchlist"("B");
 
 -- AddForeignKey
-ALTER TABLE "Watchlist" ADD CONSTRAINT "Watchlist_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Watchlist" ADD CONSTRAINT "Watchlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_MediaToWatchlist" ADD CONSTRAINT "_MediaToWatchlist_A_fkey" FOREIGN KEY ("A") REFERENCES "Media"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,5 +1,6 @@
+import { Genre } from './genre';
 import { Watchlist } from './watchlist';
-import { User as PrismaUser, Watchlist as PrismaWatchlist } from '@prisma/client';
+import { User as UserPrisma, Watchlist as WatchlistPrisma, Media as MediaPrisma } from '@prisma/client';
 
 export class User {
     private id?: number;
@@ -68,6 +69,10 @@ export class User {
         this.watchlists.push(watchlist);
     }
 
+    addWatchlists(watchlists: Watchlist[]): void {
+        this.watchlists.push(...watchlists);
+    }
+
     public deleteWatchlistFromUser(watchlist: Watchlist): void {
         const index = this.watchlists.indexOf(watchlist);
         this.watchlists.splice(index, 1);  
@@ -107,6 +112,21 @@ export class User {
         if (!emailRegex.test(user.email)) {
             throw new Error('Email is not valid');
         }
+    }
+
+    
+    static from({
+        id,
+        name,
+        password,
+        email
+    }: UserPrisma)   { 
+        return new User({
+            id,
+            name,
+            password,
+            email
+        });
     }
 }
 

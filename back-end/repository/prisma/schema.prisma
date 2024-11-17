@@ -65,6 +65,7 @@ model Watchlist {
     description  String
     creationDate DateTime    @default(now())
     mediaItems   Media[]
-    creator      User        @relation(fields: [creatorId], references: [id])
-    creatorId    Int
+
+    user      User        @relation(fields: [userId], references: [id])
+    userId    Int
 }

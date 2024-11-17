@@ -1,6 +1,6 @@
 import { Media } from "./media";
 import { User } from "./user";
-import { Media as MediaPrisma, Watchlist as WatchlistPrisma } from "@prisma/client";
+import { Media as MediaPrisma, Watchlist as WatchlistPrisma, User as UserPrisma } from "@prisma/client";
 
 
 export class Watchlist {
@@ -9,14 +9,14 @@ export class Watchlist {
     private description: string;
     private creationDate: Date;
     private mediaItems: Media[];
-    private creator: User;
+    private user: User;
 
     constructor(watchlist: {
         id?: number,
         name: string,
         description: string,
         mediaItems: Media[],
-        creator: User,
+        user: User,
         creationDate?: Date
     }) {
         this.validate(watchlist);
@@ -26,7 +26,7 @@ export class Watchlist {
         this.description = watchlist.description;
         this.creationDate = watchlist.creationDate || new Date();
         this.mediaItems = watchlist.mediaItems;
-        this.creator = watchlist.creator;
+        this.user = watchlist.user;
     }
 
     // Getters
@@ -50,8 +50,8 @@ export class Watchlist {
         return this.mediaItems;
     }
 
-    public getCreator(): User {
-        return this.creator;
+    public getUser(): User {
+        return this.user;
     }
     
     // Setters
@@ -67,8 +67,8 @@ export class Watchlist {
         this.creationDate = creation_date;
     }
 
-    public setCreator(creator: User): void {
-        this.creator = creator;
+    public setUser(user: User): void {
+        this.user = user;
     }
 
     // Add & remove methods
@@ -89,9 +89,9 @@ export class Watchlist {
             id: this.id,
             name: this.name,
             description: this.description,
-            creator: this.creator.toJSON(),
+            user: this.user.toJSON(),
             mediaItems: this.mediaItems.map((media) => media.toJSON()),
-            creation_date: this.creationDate,
+            creationDate: this.creationDate,
         };
     }
 
@@ -101,7 +101,7 @@ export class Watchlist {
         name: string,
         description: string,
         mediaItems: Media[],
-        creator: User
+        user: User
     }): void {
         if (!watchlist.name || !watchlist.name.trim()) {
             throw new Error("Name is required and cannot be empty.");
@@ -115,12 +115,33 @@ export class Watchlist {
             throw new Error("Media items must be an array.");
         }
 
-        if (!watchlist.creator) {
-            throw new Error("Creator is required.");
+        if (!watchlist.user) {
+            throw new Error("User is required.");
         }
 
-        if (!(watchlist.creator instanceof User)) {
-            throw new Error("Creator must be a valid User instance.");
+        if (!(watchlist.user instanceof User)) {
+            throw new Error("User must be a valid User instance.");
         }
+    }
+
+    static from({
+        id,
+        name,
+        description,
+        creationDate,
+        mediaItems,
+        user,
+    }: WatchlistPrisma & { 
+        mediaItems: MediaPrisma[];
+        user: UserPrisma }) 
+    {
+        return new Watchlist({
+            id,
+            name,
+            description,
+            creationDate,
+            mediaItems: mediaItems.map((media) => Media.from(media)),
+            user: User.from(user)
+        })
     }
 }

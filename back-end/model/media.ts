@@ -117,6 +117,24 @@ export class Media {
     }
 }
 
+static from({
+    id,
+    title,
+    description,
+    releaseYear,
+    genres,
+    type
+}: MediaPrisma): Media {
+    return new Media({
+        id,
+        title,
+        description,
+        releaseYear,
+        genres: genres.map((genre: string) => Genre[genre as keyof typeof Genre]),
+        type
+    });
+}
+
 
 
 

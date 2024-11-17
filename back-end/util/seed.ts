@@ -87,7 +87,7 @@ const main = async () => {
         data: {
             name: "Xander's Watchlist",
             description: "My favourite movies and series",
-            creatorId: user1.id,
+            userId: user1.id,
             mediaItems: {
                 connect: [{ id: media1.id }, { id: media4.id }, { id: media5.id }],
             },
@@ -98,7 +98,7 @@ const main = async () => {
         data: {
             name: "Lars' Watchlist",
             description: "My favourite movies and series",
-            creatorId: user2.id,
+            userId: user2.id,
             mediaItems: {
                 connect: [{ id: media2.id }, { id: media3.id }, { id: media4.id }],
             },
