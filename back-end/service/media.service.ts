@@ -1,79 +1,25 @@
 import mediaDB from '../repository/media.db';
 import { Media } from '../model/media';
 import { Movie } from '../model/movie';
-import { MediaInput } from '../types';
 import { Series } from '../model/series';
-import mediaDb from '../repository/media.db';
-import { Genre } from '../model/genre';
 
-let mediaIdCounter = 0;
+const getAllMedia = async (): Promise<Media[]> => {
+    return mediaDB.getAllMedia();
+};
 
-const createMedia = ({ title, releaseYear, description, genres, type, director, duration, numberOfSeasons }: MediaInput): Media => {
-    const existingMedia = mediaDB.getAllMedia().find(media => media.getTitle() === title);
-
-    if (existingMedia) {
-        throw new Error(`${type} already exists`);
-    }
-
-    const id = mediaIdCounter++;
-    let media: Media;
-
-    if (type === 'Movie') {
-        media = new Movie({
-            id,
-            title: title!,
-            releaseYear: releaseYear!,
-            description: description!,
-            genres: genres!,
-            director: director!,
-            duration: duration!
-        });
-    } else if (type === 'Series') {
-        media = new Series({
-            id,
-            title: title!,
-            releaseYear: releaseYear!,
-            description: description!,
-            genres: genres!,
-            numberOfSeasons: numberOfSeasons!
-        });
-    } else {
-        throw new Error('Invalid media type');
-    }
-
-    mediaDb.createMedia(media);
-
-    return media;
-}
-    
-const getGenres = async (): Promise<Genre[]> => {
-    return Object.values(Genre);
+const getAllMovies = async (): Promise<Movie[]> => {
+    return mediaDB.getAllMovies();
 }
 
-const getAllMedia = async (): Promise<Media[]> => mediaDB.getAllMedia();
-
-const getAllMovies = async (): Promise<Movie[]> => mediaDB.getAllMovies();
-
-const getAllSeries = async (): Promise<Media[]> => mediaDB.getAllSeries();
-
-const deleteMedia = (mediaId: number): void => {
-    const media = mediaDB.getMediaById(mediaId);
-
-    if (!media) {
-        throw new Error('Media not found');
-    }
-
-    mediaDB.deleteMedia(media);
+const getAllSeries = async (): Promise<Series[]> => {
+    return mediaDB.getAllSeries();
 }
-
 
 const MediaService = {
-    createMedia,
-    deleteMedia,
-    getGenres,
     getAllMedia,
     getAllMovies,
-    getAllSeries
-}
+    getAllSeries,
+};
 
 export default MediaService;
+

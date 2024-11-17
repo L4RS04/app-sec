@@ -34,35 +34,35 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const media = <MediaInput>req.body;
-        const result = await mediaService.createMedia(media);
-        res.status(200).json(result.toJSON());
-    } catch (error) {
-        next(error); 
-    }
-});
+// mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const media = <MediaInput>req.body;
+//         const result = await mediaService.createMedia(media);
+//         res.status(200).json(result.toJSON());
+//     } catch (error) {
+//         next(error); 
+//     }
+// });
 
-mediaRouter.get('/genres', async (req: Request, res: Response) => { 
-    try {
-        const genres = await mediaService.getGenres();
-        res.status(200).json(genres);
-    } catch (error) {
-        const errorMessage = (error as Error).message;
-        res.status(400).json({ status: 'error', message: errorMessage });
-    }
-});
+// mediaRouter.get('/genres', async (req: Request, res: Response) => { 
+//     try {
+//         const genres = await mediaService.getGenres();
+//         res.status(200).json(genres);
+//     } catch (error) {
+//         const errorMessage = (error as Error).message;
+//         res.status(400).json({ status: 'error', message: errorMessage });
+//     }
+// });
 
-mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const mediaId = parseInt(req.params.id);
-        await mediaService.deleteMedia(mediaId);
-        res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
-    } catch (error) {
-        next(error); 
-    }
-});
+// mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const mediaId = parseInt(req.params.id);
+//         await mediaService.deleteMedia(mediaId);
+//         res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
+//     } catch (error) {
+//         next(error); 
+//     }
+// });
 
 
 export default mediaRouter;

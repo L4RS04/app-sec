@@ -1,34 +1,22 @@
-// import { Watchlist } from "../model/watchlist";
+import { Watchlist } from "../model/watchlist";
+import prisma from "./database";
 
-// const watchlists: Watchlist[] = [];
-
-// const createWatchlist = (watchlist: Watchlist): Watchlist => {
-//     watchlists.push(watchlist);
-//     return watchlist;
-// };
-
-// const deleteWatchlist = (watchlist: Watchlist): void => {
-//     const index = watchlists.findIndex((w) => w === watchlist);
-//     if (index !== -1) {
-//         watchlists.splice(index, 1);
-//     }
-// }
-
-// const updateWatchlist = (watchlist: Watchlist): void => {
-//     const index = watchlists.findIndex((w) => w.getId() === watchlist.getId());
-//     if (index !== -1) {
-//         watchlists[index] = watchlist;
-//     }
-// };
+const getAllWatchlists  = async (): Promise<Watchlist[]> => {
+    try {
+        const watchlistsPrisma = await prisma.watchlist.findMany({
+            include: { mediaItems: true, user: true }, 
+        });
+        return watchlistsPrisma.map((watchlistPrisma) => Watchlist.from(watchlistPrisma));
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.')
+    }
+};
 
 
-// const getAllWatchlists = (): Watchlist[] => watchlists;
-
-// const getWatchlistById = (watchlistId: number): Watchlist | undefined => {
-//     return watchlists.find((w) => w.getId() === watchlistId);
-// }
-
-// export default { createWatchlist, deleteWatchlist, getAllWatchlists, getWatchlistById };
+export default { 
+    getAllWatchlists,
+ };
 
 
 
