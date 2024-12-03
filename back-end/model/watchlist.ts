@@ -83,19 +83,6 @@ export class Watchlist {
         }
     }
 
-    // Method to return a JSON-safe representation of the Watchlist object
-    public toJSON() {
-        return {
-            id: this.id,
-            name: this.name,
-            description: this.description,
-            user: this.user.toJSON(),
-            mediaItems: this.mediaItems.map((media) => media.toJSON()),
-            creationDate: this.creationDate,
-        };
-    }
-
-
     // Validation
     private validate(watchlist: {
         name: string,

@@ -26,7 +26,7 @@ type MediaInput = {
     description?: string;
     releaseYear?: number;
     genres?: Genre[];
-    type?: 'Movie' | 'Series';
+    type?: 'MOVIE' | 'SERIES';
     director?: string;
     duration?: number;
     numberOfSeasons?: number;

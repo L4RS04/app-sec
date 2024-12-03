@@ -43,10 +43,44 @@ const getAllSeries = async (): Promise<Series[]> => {
     }
 }
 
+const createMedia = async (media: Media): Promise<Media> => {
+    try {
+        const data: any = {
+            title: media.getTitle(),
+            description: media.getDescription(),
+            releaseYear: media.getReleaseYear(),
+            genres: media.getGenres().map(genre => genre.toString()),
+            type: media.getType(),
+        };
+
+        if (media instanceof Movie) {
+            data.duration = media.getDuration();
+            data.director = media.getDirector();
+        } else if (media instanceof Series) {
+            data.numberOfSeasons = media.getNumberOfSeasons();
+        }
+
+        const mediaPrisma = await prisma.media.create({
+            data
+        });
+
+        if (mediaPrisma.type === 'MOVIE') {
+            return Movie.from(mediaPrisma);
+        } else {
+            return Series.from(mediaPrisma);
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. Seer server log for details.');
+    }
+};
+
+
 export default {
     getAllMedia,
     getAllMovies,
     getAllSeries,
-}
+    createMedia,
+};
 
 

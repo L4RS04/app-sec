@@ -78,15 +78,6 @@ export class User {
         this.watchlists.splice(index, 1);  
     }
 
-    // Method to return a JSON-safe representation of the User object
-    public toJSON() {
-        return {
-            id: this.id,
-            name: this.name,
-            email: this.email
-        };
-    }
-
  
     private validate(user: {
         name: string;

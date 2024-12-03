@@ -34,15 +34,15 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-// mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const media = <MediaInput>req.body;
-//         const result = await mediaService.createMedia(media);
-//         res.status(200).json(result.toJSON());
-//     } catch (error) {
-//         next(error); 
-//     }
-// });
+mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const media = <MediaInput>req.body;
+        const result = await mediaService.createMedia(media);
+        res.status(200).json(result);
+    } catch (error) {
+        next(error); 
+    }
+});
 
 // mediaRouter.get('/genres', async (req: Request, res: Response) => { 
 //     try {

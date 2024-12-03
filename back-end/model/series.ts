@@ -36,13 +36,6 @@ export class Series extends Media {
         this.numberOfSeasons = numberOfSeasons;
     }
 
-    // Override the toJSON method to include number of seasons
-    public toJSON() {
-        return {
-            ...super.toJSON(),
-            numberOfSeasons: this.numberOfSeasons
-        }
-    }
 
     // Validation
     private validate_series(series: {

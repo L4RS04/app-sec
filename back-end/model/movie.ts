@@ -38,16 +38,6 @@ export class Movie extends Media {
         return this.director;
     }
 
-
-    // Override the `toJSON` method
-    public toJSON() {
-        return {
-            ...super.toJSON(),
-            duration: this.duration,
-            director: this.director,
-        };
-    }
-
     // Validation
     private validate_movie(movie: {
         duration: number;
