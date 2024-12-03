@@ -22,6 +22,10 @@ const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
         throw new Error('Missing required media properties');
     }
 
+    if (mediaInput.type !== 'MOVIE' && mediaInput.type !== 'SERIES') {
+        throw new Error('Invalid media type');
+    }
+
     let media: Media;
     const genres = mediaInput.genres.map(genre => Genre[genre as keyof typeof Genre]);
 
@@ -49,10 +53,21 @@ const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
     return await mediaDB.createMedia(media);
 };
 
+const getAllGenres = async (): Promise<Genre[]> => {
+    try {
+        const genres = Object.values(Genre);
+        return genres;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error retrieving genres. See console for details.');
+    }
+};
+
 const MediaService = {
     getAllMedia,
     getAllMovies,
     getAllSeries,
+    getAllGenres,
     createMedia,
 };
 

@@ -6,17 +6,17 @@ export type Movie = {
     genres: Genre[];
     duration?: number;
     director?: string;
-    type: 'Movie';
+    type: 'MOVIE';
 }
 
-export type Serie = {
+export type Series = {
     id?: number;
     title?: string;
     description?: string;
     releaseYear?: number;
     genres: Genre[];
     numberOfSeasons?: number;
-    type: 'Series';
+    type: 'SERIES';
 }
 
 export enum Genre {
@@ -42,3 +42,5 @@ export enum Genre {
     Biography = "Biography",
     Musical = "Musical",
 }
+
+export type MediaInput = Movie | Series;
