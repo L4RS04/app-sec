@@ -20,6 +20,7 @@ const seriesType = "SERIES";
 const seriesNumberOfSeasons = 1;
 
 
+let deleteMediaMock: jest.Mock;
 let createMediaMock: jest.Mock;
 let getAllMediaMock: jest.Mock;
 let getAllMoviesMock: jest.Mock;
@@ -27,6 +28,10 @@ let getAllSeriesMock: jest.Mock;
 
 beforeEach(() => {
     createMediaMock = jest.fn();
+    deleteMediaMock = jest.fn();
+    getAllMediaMock = jest.fn();
+    getAllMoviesMock = jest.fn();
+    getAllSeriesMock = jest.fn();
 });
 
 afterEach(() => {
@@ -75,5 +80,72 @@ test('given a valid media input (series), when creating a media, then media is c
     );
 }
 );
+
+test('deleting an existing media, when calling deleteMedia, then media is deleted', async () => {
+    // given
+    mediaDB.deleteMedia = deleteMediaMock;
+
+    // when
+    await MediaService.deleteMedia(1);
+
+    // then
+    expect(deleteMediaMock).toHaveBeenCalledTimes(1);
+    expect(deleteMediaMock).toHaveBeenCalledWith(1);
+}
+);
+
+test('retrieving all media, when calling getAllMedia, then all media is retrieved', async () => {
+    // given
+    mediaDB.getAllMedia = getAllMediaMock;
+
+    // when
+    await MediaService.getAllMedia();
+
+    // then
+    expect(getAllMediaMock).toHaveBeenCalledTimes(1);
+}
+);
+
+test('retrieving all movies, when calling getAllMovies, then all movies are retrieved', async () => {
+    // given
+    mediaDB.getAllMovies = getAllMoviesMock;
+
+    // when
+    await MediaService.getAllMovies();
+
+    // then
+    expect(getAllMoviesMock).toHaveBeenCalledTimes(1);
+}
+);
+
+test('retrieving all series, when calling getAllSeries, then all series are retrieved', async () => {
+    // given
+    mediaDB.getAllSeries = getAllSeriesMock;
+
+    // when
+    await MediaService.getAllSeries();
+
+    // then
+    expect(getAllSeriesMock).toHaveBeenCalledTimes(1);
+}
+);
+
+test('given invalid id, when deleting a media, then an error is thrown', async () => {
+    // given
+    mediaDB.getMediaById = jest.fn().mockResolvedValue(null);
+
+    // when
+    try {
+        await MediaService.deleteMedia(1);
+    } catch (error) {
+        // then
+        expect(error).toEqual(new Error('Media not found'));
+    }
+}
+);
+    
+
+
+
 
 
