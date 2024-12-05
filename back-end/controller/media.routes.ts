@@ -36,8 +36,10 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
 
 mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { name: string, role: Role }};
+        const { name, role } = request.auth;
         const media = <MediaInput>req.body;
-        const result = await mediaService.createMedia(media);
+        const result = await mediaService.createMedia(media, role);
         res.status(200).json(result);
     } catch (error) {
         next(error); 

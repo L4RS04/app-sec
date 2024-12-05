@@ -3,6 +3,8 @@ import mediaDB from '../../repository/media.db';
 import { Movie } from '../../model/movie';
 import { Series } from '../../model/series';
 import { Genre } from '../../model/genre';
+import { Role } from '../../model/role';
+import { User } from '../../model/user';
 
 const movieTitle = "The test movie";
 const movieDescription = "A movie just made for testing!";
@@ -43,7 +45,7 @@ test('given a valid media input (movie), when creating a media, then media is cr
     mediaDB.createMedia = createMediaMock;
 
     // when
-    await MediaService.createMedia({ title: movieTitle, description: movieDescription, releaseYear: movieReleaseYear, genres: movieGenres, type: movieType, director: movieDirector, duration: movieDuration });
+    await MediaService.createMedia({ title: movieTitle, description: movieDescription, releaseYear: movieReleaseYear, genres: movieGenres, type: movieType, director: movieDirector, duration: movieDuration }, Role.ADMIN);
 
     // then
     expect(createMediaMock).toHaveBeenCalledTimes(1);
@@ -65,7 +67,7 @@ test('given a valid media input (series), when creating a media, then media is c
     mediaDB.createMedia = createMediaMock;
 
     // when
-    await MediaService.createMedia({ title: seriesTitle, description: seriesDescription, releaseYear: seriesReleaseYear, genres: seriesGenres, type: seriesType, numberOfSeasons: seriesNumberOfSeasons });
+    await MediaService.createMedia({ title: seriesTitle, description: seriesDescription, releaseYear: seriesReleaseYear, genres: seriesGenres, type: seriesType, numberOfSeasons: seriesNumberOfSeasons }, Role.ADMIN);
 
     // then
     expect(createMediaMock).toHaveBeenCalledTimes(1);
@@ -87,7 +89,7 @@ test('deleting an existing media, when calling deleteMedia, then media is delete
     mediaDB.deleteMedia = deleteMediaMock;
 
     // when
-    await MediaService.deleteMedia(1);
+    await MediaService.deleteMedia(1, Role.ADMIN);
 
     // then
     expect(deleteMediaMock).toHaveBeenCalledTimes(1);
@@ -136,7 +138,7 @@ test('given invalid id, when deleting a media, then an error is thrown', async (
 
     // when
     try {
-        await MediaService.deleteMedia(1);
+        await MediaService.deleteMedia(1, Role.ADMIN);
     } catch (error) {
         // then
         expect(error).toEqual(new Error('Media not found'));

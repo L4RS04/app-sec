@@ -28,7 +28,10 @@ const getAllGenres = async (): Promise<Genre[]> => {
     }
 };
 
-const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
+const createMedia = async (mediaInput: MediaInput, role: Role): Promise<Media> => {
+    if (role !== Role.ADMIN) {
+        throw new Error('Forbidden, only admins can create media');
+    }
 
     if (!mediaInput.title || !mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
         throw new Error('Missing required media properties');
