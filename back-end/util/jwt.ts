@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { Role } from '../model/role';
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -11,7 +13,7 @@ if (!secretKey) {
     throw new Error('JWT_SECRET environment variable is not defined');
 }
 
-const generateJwtToken = (name: string): string => {
+const generateJwtToken = (name: string, role: Role): string => {
     const options = { expiresIn: `${expiresIn}h`, issuer: "BingeVault" };
 
     try {

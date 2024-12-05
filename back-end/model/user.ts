@@ -1,4 +1,4 @@
-import { Genre } from './genre';
+import { Role } from './role';
 import { Watchlist } from './watchlist';
 import { User as UserPrisma, Watchlist as WatchlistPrisma, Media as MediaPrisma } from '@prisma/client';
 
@@ -9,6 +9,7 @@ export class User {
     private email: string;
     private creationDate: Date;
     private watchlists: Watchlist[];
+    private role: Role;
 
     constructor(user: { 
         id?: number;
@@ -24,6 +25,7 @@ export class User {
         this.email = user.email;
         this.creationDate = new Date();
         this.watchlists = [];
+        this.role = Role.USER;
     }
 
     // Getters
@@ -51,6 +53,10 @@ export class User {
         return this.watchlists;
     }
 
+    public getRole(): Role {
+        return this.role;
+    }
+
     // Setters
     public setName(name: string): void {
         this.name = name;
@@ -62,6 +68,10 @@ export class User {
 
     public setEmail(email: string): void {
         this.email = email;
+    }
+
+    public setRole(role: Role): void {
+        this.role = role;
     }
 
     // Methods to manage watchlists
@@ -78,7 +88,6 @@ export class User {
         this.watchlists.splice(index, 1);  
     }
 
- 
     private validate(user: {
         name: string;
         password: string;
@@ -110,14 +119,17 @@ export class User {
         id,
         name,
         password,
-        email
-    }: UserPrisma)   { 
-        return new User({
+        email,
+        role,
+    }: UserPrisma): User { 
+        const user = new User({
             id,
             name,
             password,
-            email
+            email,
         });
+        user.setRole(role as Role);
+        return user;
     }
 }
 

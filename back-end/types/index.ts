@@ -1,12 +1,19 @@
 import { Genre } from "../model/genre";
 import { Media } from "../model/media";
+import { Role } from "../model/role";
 
 export type AuthenticationResponse = {
     token: string;
     name: string;
+    role: Role;
 };
 
-export type Role = 'admin' | 'user';
+export interface AuthenticatedRequest extends Request {
+    auth: {
+        name: string;
+        role: string;
+    };
+}
 
 export type Movie = {
     id?: number;

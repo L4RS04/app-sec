@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { Genre } from "../model/genre";
+import { Role } from "../model/role";
 import bcrypt from 'bcrypt';
+
 
 const prisma = new PrismaClient();
 
@@ -12,12 +14,14 @@ const main = async () => {
 
     const hashedPassword1 = await bcrypt.hash("XanderD123!", 12);
     const hashedPassword2 = await bcrypt.hash("LarsM123!", 12);
+    const hashedPassword3 = await bcrypt.hash("YodaM123!", 12);
 
     const user1 = await prisma.user.create({
         data : {
             name: "Xander",
             password: hashedPassword1,
             email: "xander@bingevault.com",
+            role: Role.ADMIN,
         },
     });
 
@@ -26,6 +30,16 @@ const main = async () => {
             name: "Lars",
             password: hashedPassword2,
             email: "lars@bingevault.com",
+            role: Role.PREMIUM,
+        },
+    });
+
+    const user3 = await prisma.user.create({
+        data : {
+            name: "Yoda",
+            password: hashedPassword3,
+            email: "yoda@bingevault.com",
+            role: Role.USER,
         },
     });
 

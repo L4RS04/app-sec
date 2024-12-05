@@ -2,6 +2,9 @@
 CREATE TYPE "Genre" AS ENUM ('ACTION', 'ADVENTURE', 'ANIMATION', 'BIOGRAPHY', 'COMEDY', 'CRIME', 'DOCUMENTARY', 'DRAMA', 'FAMILY', 'FANTASY', 'HISTORY', 'HORROR', 'MUSIC', 'MUSICAL', 'MYSTERY', 'ROMANCE', 'SCIFI', 'SPORT', 'SUSPENSE', 'THRILLER', 'WAR', 'WESTERN');
 
 -- CreateEnum
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER', 'PREMIUM');
+
+-- CreateEnum
 CREATE TYPE "MediaType" AS ENUM ('MOVIE', 'SERIES');
 
 -- CreateTable
@@ -26,6 +29,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "creationDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "role" "Role" NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

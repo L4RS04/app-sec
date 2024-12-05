@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import mediaService from "../service/media.service";
 import { MediaInput } from '../types';
+import { Role } from '../model/role';
 
 const mediaRouter = express.Router();
 
@@ -55,8 +56,10 @@ mediaRouter.get('/genres', async (req: Request, res: Response) => {
 
 mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { name: string, role: Role }};
+        const { name, role } = request.auth;
         const mediaId = parseInt(req.params.id);
-        await mediaService.deleteMedia(mediaId);
+        await mediaService.deleteMedia(mediaId, role);
         res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
     } catch (error) {
         next(error); 

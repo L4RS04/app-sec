@@ -52,6 +52,7 @@ const createUser = async (user: User): Promise<User> => {
                 name: user.getName(),
                 password: user.getPassword(),
                 email: user.getEmail(),
+                role: user.getRole(),
             }
         });
         return User.from(userPrisma);
