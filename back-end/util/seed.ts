@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { set} from 'date-fns';
 import { Genre } from "../model/genre";
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -10,10 +10,13 @@ const main = async () => {
     await prisma.media.deleteMany();
     await prisma.user.deleteMany();
 
+    const hashedPassword1 = await bcrypt.hash("XanderD123!", 12);
+    const hashedPassword2 = await bcrypt.hash("LarsM123!", 12);
+
     const user1 = await prisma.user.create({
         data : {
             name: "Xander",
-            password: "XanderD123!",
+            password: hashedPassword1,
             email: "xander@bingevault.com",
         },
     });
@@ -21,7 +24,7 @@ const main = async () => {
     const user2 = await prisma.user.create({
         data : {
             name: "Lars",
-            password: "LarsL123!",
+            password: hashedPassword2,
             email: "lars@bingevault.com",
         },
     });

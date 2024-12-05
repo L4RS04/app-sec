@@ -83,6 +83,7 @@ test('given a valid media input (series), when creating a media, then media is c
 
 test('deleting an existing media, when calling deleteMedia, then media is deleted', async () => {
     // given
+    mediaDB.getMediaById = jest.fn().mockResolvedValue({ id: 1 });
     mediaDB.deleteMedia = deleteMediaMock;
 
     // when
@@ -91,8 +92,7 @@ test('deleting an existing media, when calling deleteMedia, then media is delete
     // then
     expect(deleteMediaMock).toHaveBeenCalledTimes(1);
     expect(deleteMediaMock).toHaveBeenCalledWith(1);
-}
-);
+});
 
 test('retrieving all media, when calling getAllMedia, then all media is retrieved', async () => {
     // given

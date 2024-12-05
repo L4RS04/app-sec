@@ -16,6 +16,20 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     }
 };
 
+const getUserByName = async (name: string): Promise<User> => {
+    try {
+        const userPrisma = await prisma.user.findUnique({
+            where: { name }
+        });
+        if (!userPrisma) {
+            throw new Error(`User with name ${name} not found.`);
+        }
+        return User.from(userPrisma);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
 
 const getAllUsers = async (): Promise<User[]> => {
     try {
@@ -49,6 +63,7 @@ const createUser = async (user: User): Promise<User> => {
 
 export default {
     getUserByEmail,
+    getUserByName,
     getAllUsers,
     createUser,
 };

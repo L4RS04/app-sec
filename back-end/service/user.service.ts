@@ -1,7 +1,9 @@
 import userDB from '../repository/user.db';
 import { User } from '../model/user';
-import { UserInput } from '../types';
+import { UserInput, UserLoginInput } from '../types';
 import bcrypt from 'bcrypt';
+import generateJwtToken from '../util/jwt';
+import { AuthenticationResponse } from '../types';
 
 const getAllUsers = async (): Promise<Partial<User>[]> => {
     return await userDB.getAllUsers();
@@ -24,7 +26,22 @@ const createUser = async (userInput: UserInput): Promise<User> => {
     return userDB.createUser(user);
 }
 
+const authenticate = async ({ name, password }: UserLoginInput): Promise<AuthenticationResponse> => {
+    const user = await userDB.getUserByName(name);
+
+    const isValidPassword = await bcrypt.compare(password, user.getPassword());
+    if (!isValidPassword) {
+        throw new Error('Invalid password');
+    }
+
+    return {
+        token: generateJwtToken(user.getName()),
+        name: user.getName()
+    };
+};
+
 const UserService = {
+    authenticate,
     getAllUsers,
     createUser
 };
