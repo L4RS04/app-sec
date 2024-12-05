@@ -4,6 +4,7 @@ import { Movie } from '../model/movie';
 import { Series } from '../model/series';
 import { Genre } from '../model/genre';
 import { MediaInput } from '../types';
+import { Role } from '../model/role';
 
 const getAllMedia = async (): Promise<Media[]> => {
     return mediaDB.getAllMedia();
@@ -27,7 +28,10 @@ const getAllGenres = async (): Promise<Genre[]> => {
     }
 };
 
-const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
+const createMedia = async (mediaInput: MediaInput, role: Role): Promise<Media> => {
+    if (role !== Role.ADMIN) {
+        throw new Error('Forbidden, only admins can create media');
+    }
 
     if (!mediaInput.title || !mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
         throw new Error('Missing required media properties');
@@ -64,7 +68,11 @@ const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
     return await mediaDB.createMedia(media);
 };
 
-const deleteMedia = async (id: number): Promise<void> => {
+const deleteMedia = async (id: number, role: Role): Promise<void> => {
+    if (role !== Role.ADMIN) {
+        throw new Error('Forbidden, only admins can delete media');
+    }
+
     const media = await mediaDB.getMediaById(id);
     if (!media) {
         throw new Error('Media not found');

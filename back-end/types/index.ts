@@ -1,8 +1,19 @@
 import { Genre } from "../model/genre";
 import { Media } from "../model/media";
-import { User } from "../model/user";
+import { Role } from "../model/role";
 
-export type Role = 'admin' | 'user';
+export type AuthenticationResponse = {
+    token: string;
+    name: string;
+    role: Role;
+};
+
+export interface AuthenticatedRequest extends Request {
+    auth: {
+        name: string;
+        role: string;
+    };
+}
 
 export type Movie = {
     id?: number;
@@ -13,7 +24,7 @@ export type Movie = {
     duration: number;
     director: string;
     type: 'MOVIE';
-}
+};
 
 export type Series = {
     id?: number;
@@ -23,7 +34,7 @@ export type Series = {
     genres: Genre[];
     numberOfSeasons: number;
     type: 'SERIES';
-}
+};
 
 
 export type UserInput = {
@@ -31,6 +42,11 @@ export type UserInput = {
     name: string;
     password: string;
     email: string;
+};
+
+export type UserLoginInput = {
+    name: string;
+    password: string;
 };
 
 export type WatchlistInput = {

@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import mediaService from "../service/media.service";
 import { MediaInput } from '../types';
-import { Genre } from '../model/genre';
+import { Role } from '../model/role';
 
 const mediaRouter = express.Router();
 
@@ -36,8 +36,10 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
 
 mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { name: string, role: Role }};
+        const { name, role } = request.auth;
         const media = <MediaInput>req.body;
-        const result = await mediaService.createMedia(media);
+        const result = await mediaService.createMedia(media, role);
         res.status(200).json(result);
     } catch (error) {
         next(error); 
@@ -56,8 +58,10 @@ mediaRouter.get('/genres', async (req: Request, res: Response) => {
 
 mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { name: string, role: Role }};
+        const { name, role } = request.auth;
         const mediaId = parseInt(req.params.id);
-        await mediaService.deleteMedia(mediaId);
+        await mediaService.deleteMedia(mediaId, role);
         res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
     } catch (error) {
         next(error); 
