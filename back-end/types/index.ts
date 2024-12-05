@@ -2,16 +2,38 @@ import { Genre } from "../model/genre";
 import { Media } from "../model/media";
 import { User } from "../model/user";
 
-type Role = 'admin' | 'user';
+export type Role = 'admin' | 'user';
 
-type UserInput = {
+export type Movie = {
+    id?: number;
+    title: string;
+    description: string;
+    releaseYear: number;
+    genres: Genre[];
+    duration: number;
+    director: string;
+    type: 'MOVIE';
+}
+
+export type Series = {
+    id?: number;
+    title: string;
+    description: string;
+    releaseYear: number;
+    genres: Genre[];
+    numberOfSeasons: number;
+    type: 'SERIES';
+}
+
+
+export type UserInput = {
     id?: number;
     name: string;
     password: string;
     email: string;
 };
 
-type WatchlistInput = {
+export type WatchlistInput = {
     id?: number;
     name: string;
     description: string;
@@ -20,18 +42,5 @@ type WatchlistInput = {
     creationDate?: Date;
 };
 
-type MediaInput = {
-    id?: number;
-    title?: string;
-    description?: string;
-    releaseYear?: number;
-    genres?: Genre[];
-    type?: 'MOVIE' | 'SERIES';
-    director?: string;
-    duration?: number;
-    numberOfSeasons?: number;
-};
 
-
-
-export { UserInput, WatchlistInput, MediaInput, Role };
+export type MediaInput = Movie | Series;

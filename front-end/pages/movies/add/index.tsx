@@ -11,7 +11,7 @@ const AddMovie: React.FC = () => {
     const router = useRouter();
     const [newMovie, setNewMovie] = useState<Movie>({
         genres: [],
-        type: "Movie"
+        type: "MOVIE"
     });
     const [genres, setGenres] = useState<Genre[]>([]);
 

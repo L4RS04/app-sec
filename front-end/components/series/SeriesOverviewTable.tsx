@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Serie } from "@types";
+import { Series } from "@types";
 import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 
 type Props = {
-    series: Array<Serie>;
-    onAddSeries: (newSeries: Serie) => Promise<void>;
+    series: Array<Series>;
+    onAddSeries: (newSeries: Series) => Promise<void>;
     onDeleteSeries: (seriesId: number) => Promise<void>;
 }
 
-const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) => {
+const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) => {
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
 
     const handleDropdownClick = (index: number) => {
@@ -32,11 +32,11 @@ const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) 
                             </tr>
                         </thead>
                         <tbody>
-                            {series.map((serie, index) => (
+                            {series.map((series, index) => (
                                 <React.Fragment key={index}>
                                     <tr className="hover:bg-gray-100">
-                                        <td className="border px-4 py-2 text-center">{serie.title}</td>
-                                        <td className="border px-4 py-2 text-center">{serie.numberOfSeasons}</td>
+                                        <td className="border px-4 py-2 text-center">{series.title}</td>
+                                        <td className="border px-4 py-2 text-center">{series.numberOfSeasons}</td>
                                         <td className="border px-4 py-2 text-center">
                                             <button
                                                 className="text-blue-500 hover:text-blue-700 focus:outline-none"
@@ -48,7 +48,7 @@ const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) 
                                         <td className="border px-4 py-2 text-center">
                                             <button
                                                 className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                onClick={() => serie.id !== undefined && onDeleteSeries(serie.id)}
+                                                onClick={() => series.id !== undefined && onDeleteSeries(series.id)}
                                             >
                                                 <Trash2 size={20} />
                                             </button>
@@ -58,13 +58,13 @@ const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) 
                                         <tr>
                                             <td colSpan={5} className="border px-4 py-2">
                                                 <div>
-                                                    <strong>Released:</strong> {serie.releaseYear}
+                                                    <strong>Released:</strong> {series.releaseYear}
                                                 </div>
                                                 <div>
-                                                    <strong>Genres:</strong> {serie.genres.join(", ")}
+                                                    <strong>Genres:</strong> {series.genres.join(", ")}
                                                 </div>
                                                 <div>
-                                                    <strong>Description:</strong> {serie.description}
+                                                    <strong>Description:</strong> {series.description}
                                                 </div>
                                             </td>
                                         </tr>
@@ -79,6 +79,6 @@ const SerieOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) 
     );
 };
 
-export default SerieOverviewTable;
+export default SeriesOverviewTable;
 
 

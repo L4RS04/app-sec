@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Header from '@components/header';
-import Image from 'next/image';
 import styles from '../styles/home.module.css';
 
 const Home: React.FC = () => {

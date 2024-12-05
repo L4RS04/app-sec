@@ -45,11 +45,13 @@ const getAllSeries = async (): Promise<Series[]> => {
 
 const createMedia = async (media: Media): Promise<Media> => {
     try {
+        const genres = media.getGenres();
+
         const data: any = {
             title: media.getTitle(),
             description: media.getDescription(),
             releaseYear: media.getReleaseYear(),
-            genres: media.getGenres().map(genre => genre.toString()),
+            genres: genres.map(genre => genre.toString()),
             type: media.getType(),
         };
 
@@ -58,6 +60,14 @@ const createMedia = async (media: Media): Promise<Media> => {
             data.director = media.getDirector();
         } else if (media instanceof Series) {
             data.numberOfSeasons = media.getNumberOfSeasons();
+        }
+
+        data.releaseYear = parseInt(data.releaseYear, 10);
+        if (data.duration) {
+            data.duration = parseInt(data.duration, 10);
+        }
+        if (data.numberOfSeasons) {
+            data.numberOfSeasons = parseInt(data.numberOfSeasons, 10);
         }
 
         const mediaPrisma = await prisma.media.create({
@@ -70,8 +80,8 @@ const createMedia = async (media: Media): Promise<Media> => {
             return Series.from(mediaPrisma);
         }
     } catch (error) {
-        console.error(error);
-        throw new Error('Database error. Seer server log for details.');
+        console.error('Database error:', error);
+        throw new Error('Database error. See server log for details.');
     }
 };
 

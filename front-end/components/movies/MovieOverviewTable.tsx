@@ -39,7 +39,7 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie }: Props) =
                                 <React.Fragment key={index}>
                                     <tr className="hover:bg-gray-100">
                                         <td className="border px-4 py-2 text-center">{movie.title}</td>
-                                        <td className="border px-4 py-2 text-center">{formatDuration(movie.duration)}</td>
+                                        <td className="border px-4 py-2 text-center">{formatDuration(movie.duration ?? 0)}</td>
                                         <td className="border px-4 py-2 text-center">{movie.director}</td>
                                         <td className="border px-4 py-2 text-center">
                                             <button

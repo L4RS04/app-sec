@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Serie, Genre } from '@types';
+import { Series, Genre } from '@types';
 import SeriesService from '@services/SeriesService';
 import Head from 'next/head';
 import Header from '@components/header';
@@ -9,9 +9,9 @@ import MediaService from '@services/MediaService';
 
 const AddSeries: React.FC = () => {
     const router = useRouter();
-    const [newSeries, setNewSeries] = useState<Serie>({
+    const [newSeries, setNewSeries] = useState<Series>({
         genres: [],
-        type: "Series"
+        type: "SERIES"
     });
     const [genres, setGenres] = useState<Genre[]>([]);
 
@@ -50,7 +50,7 @@ const AddSeries: React.FC = () => {
     const handleAddMovie = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await SeriesService.createSeries(newSeries as Serie);
+            await SeriesService.createSeries(newSeries as Series);
             router.push('/series'); 
         } catch (error) {
             console.error('Error adding series:', error);

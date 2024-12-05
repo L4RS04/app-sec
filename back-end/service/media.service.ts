@@ -17,18 +17,32 @@ const getAllSeries = async (): Promise<Series[]> => {
     return mediaDB.getAllSeries();
 }
 
+
+
+const getAllGenres = async (): Promise<Genre[]> => {
+    try {
+        const genres = Object.values(Genre);
+        return genres;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error retrieving genres. See console for details.');
+    }
+};
+
 const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
+
     if (!mediaInput.title || !mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
         throw new Error('Missing required media properties');
     }
 
+    // Validate media type
     if (mediaInput.type !== 'MOVIE' && mediaInput.type !== 'SERIES') {
         throw new Error('Invalid media type');
     }
 
-    let media: Media;
     const genres = mediaInput.genres.map(genre => Genre[genre as keyof typeof Genre]);
 
+    let media: Media;
     if (mediaInput.type === 'MOVIE') {
         media = new Movie({
             title: mediaInput.title,
@@ -48,19 +62,9 @@ const createMedia = async (mediaInput: MediaInput): Promise<Media> => {
         });
     } else {
         throw new Error('Invalid media type');
-}
+    }
 
     return await mediaDB.createMedia(media);
-};
-
-const getAllGenres = async (): Promise<Genre[]> => {
-    try {
-        const genres = Object.values(Genre);
-        return genres;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Error retrieving genres. See console for details.');
-    }
 };
 
 const MediaService = {

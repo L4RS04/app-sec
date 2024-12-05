@@ -1,15 +1,15 @@
 import Head from "next/head";
 import Header from "@components/header";
 import { useEffect, useState } from "react";
-import { Serie } from "@types";
-import SerieOverviewTable from "@components/series/SerieOverviewTable";
+import type { Series } from "@types";
+import SeriesOverviewTable from "@components/series/SeriesOverviewTable";
 import SeriesService from "@services/SeriesService";
 import { CirclePlus } from "lucide-react";
 import router from "next/router";
 
 
 const Series: React.FC = () => {
-    const [series, setSeries] = useState<Array<Serie>>([]);
+    const [series, setSeries] = useState<Array<Series>>([]);
 
     const getSeries = async () => {
         try {
@@ -21,7 +21,7 @@ const Series: React.FC = () => {
     }
 };
 
-    const createSeries = async (newSeries: Serie) => {
+    const createSeries = async (newSeries: Series) => {
         try {
             const addedSeries = await SeriesService.createSeries(newSeries);
             setSeries(prevSeries => [...prevSeries, addedSeries]);
@@ -63,7 +63,7 @@ const Series: React.FC = () => {
             </div>
                 <section>
                     {series.length > 0 ? ( 
-                    <SerieOverviewTable series={series} onAddSeries={createSeries} onDeleteSeries={deleteSeries}/>
+                    <SeriesOverviewTable series={series} onAddSeries={createSeries} onDeleteSeries={deleteSeries}/>
                     ) : (
                         <p>No series found</p>
                     )}
