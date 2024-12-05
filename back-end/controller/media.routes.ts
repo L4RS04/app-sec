@@ -54,15 +54,15 @@ mediaRouter.get('/genres', async (req: Request, res: Response) => {
     }
 });
 
-// mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const mediaId = parseInt(req.params.id);
-//         await mediaService.deleteMedia(mediaId);
-//         res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
-//     } catch (error) {
-//         next(error); 
-//     }
-// });
+mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const mediaId = parseInt(req.params.id);
+        await mediaService.deleteMedia(mediaId);
+        res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
+    } catch (error) {
+        next(error); 
+    }
+});
 
 
 export default mediaRouter;

@@ -1,10 +1,8 @@
 import MediaService from '../../service/media.service';
 import mediaDB from '../../repository/media.db';
-import { Media } from '../../model/media';
 import { Movie } from '../../model/movie';
 import { Series } from '../../model/series';
 import { Genre } from '../../model/genre';
-import { MediaInput } from '../../types';
 
 const movieTitle = "The test movie";
 const movieDescription = "A movie just made for testing!";

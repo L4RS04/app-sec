@@ -1,7 +1,29 @@
+import { get } from 'http';
 import { Media } from '../model/media';
 import { Movie } from '../model/movie';
 import { Series } from '../model/series';
 import prisma from './database';
+
+const getMediaById = async (id: number): Promise<Media | null> => {
+    try {
+        const mediaPrisma = await prisma.media.findUnique({
+            where: { id }
+        });
+
+        if (!mediaPrisma) {
+            return null;
+        }
+
+        if (mediaPrisma.type === 'MOVIE') {
+            return Movie.from(mediaPrisma);
+        } else {
+            return Series.from(mediaPrisma);
+        }
+    } catch (error) {
+        console.error('Database error:', error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
 
 const getAllMedia = async (): Promise<Media[]> => {
     try {
@@ -85,13 +107,25 @@ const createMedia = async (media: Media): Promise<Media> => {
     }
 };
 
+const deleteMedia = async (id: number): Promise<void> => {
+    try {
+        await prisma.media.delete({
+            where: { id }
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
 
 
 export default {
+    getMediaById,
     getAllMedia,
     getAllMovies,
     getAllSeries,
     createMedia,
+    deleteMedia
 };
 
 
