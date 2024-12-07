@@ -1,4 +1,4 @@
-import { Serie } from "@types";
+import { Series } from "@types";
 
 const getAllSeries = () => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + "/media/series", {
@@ -9,7 +9,7 @@ const getAllSeries = () => {
 })
 };
 
-const createSeries = async (newSeries : Serie) => {
+const createSeries = async (newSeries : Series) => {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/media", {
         method: "POST",
         headers: {

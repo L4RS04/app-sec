@@ -19,6 +19,14 @@ export type Series = {
     type: 'SERIES';
 }
 
+export type User = {
+    id?: number;
+    username?: string;
+    email?: string;
+    password?: string;
+    role?: string;
+}
+
 export enum Genre {
     Action = "Action",
     Comedy = "Comedy",
@@ -41,6 +49,11 @@ export enum Genre {
     Sport = "Sport",
     Biography = "Biography",
     Musical = "Musical",
+}
+
+export type StatusMessage = {
+    type: 'success' | 'error';
+    message: string;
 }
 
 export type MediaInput = Movie | Series;

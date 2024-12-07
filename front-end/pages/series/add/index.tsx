@@ -6,7 +6,6 @@ import Head from 'next/head';
 import Header from '@components/header';
 import MediaService from '@services/MediaService';
 
-
 const AddSeries: React.FC = () => {
     const router = useRouter();
     const [newSeries, setNewSeries] = useState<Series>({
@@ -28,7 +27,6 @@ const AddSeries: React.FC = () => {
         getGenres();
     }, []);
 
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setNewSeries(prevState => ({
@@ -47,7 +45,7 @@ const AddSeries: React.FC = () => {
         });
     };
 
-    const handleAddMovie = async (e: React.FormEvent) => {
+    const handleAddSeries = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             await SeriesService.createSeries(newSeries as Series);
@@ -57,83 +55,99 @@ const AddSeries: React.FC = () => {
         }
     };
 
-    
-
     return (
         <>
-        <Head>
-            <title>Add Series</title>
-        </Head>
-        <Header />
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl mb-4">Add a new series</h1>
-            <form onSubmit={handleAddMovie} className="mb-4">
-                <div className="mb-4">
-                    <label htmlFor="title" className="block text-gray-700">Title:</label>
-                    <input 
-                        type="text"
-                        name="title"
-                        value={newSeries.title}
-                        onChange={handleInputChange}
-                        required
-                        className='border p-2 w-full'
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="description" className="block text-gray-700">Description:</label>
-                    <textarea
-                        name="description"
-                        value={newSeries.description}
-                        onChange={handleInputChange}
-                        required
-                        className="border p-2 w-full"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="releaseYear" className="block text-gray-700">Release Year:</label>
-                    <input
-                        type="number"
-                        name="releaseYear"
-                        placeholder='YYYY'
-                        value={newSeries.releaseYear}
-                        onChange={handleInputChange}
-                        required
-                        className="border p-2 w-full"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="numberOfSeasons" className="block text-gray-700">Number of seasons:</label>
-                    <input
-                        type="number"
-                        name="numberOfSeasons"
-                        value={newSeries.numberOfSeasons}
-                        onChange={handleInputChange}
-                        required
-                        className="border p-2 w-full"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Genres:</label>
-                    <div className='grid grid-cols-2'>
-                        {genres.map(genre => (
-                            <div key={genre} className="flex items-center mb-2">
-                                <input
-                                    type="checkbox"
-                                    id={genre}
-                                    value={genre}
-                                    checked={newSeries.genres.includes(genre)}
-                                    onChange={handleGenreChange}
-                                    className="mr-2"
-                                />
-                                <label htmlFor={genre} className="text-gray-700">{genre}</label>
-                            </div>
-                        ))}
+            <Head>
+                <title>Add Series</title>
+            </Head>
+            <Header />
+            <div className="container mx-auto px-4 py-8">
+                <div className="max-w-2xl mx-auto">
+                    <div className="px-6 py-4 text-center">
+                        <h1 className="mt-6 text-center text-2xl font-extrabold text-[#1429b1]">
+                            Add a new series to the application
+                        </h1>
                     </div>
+                    <form onSubmit={handleAddSeries} className="px-6 py-4 space-y-6">
+                        <div>
+                            <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+                            <input 
+                                type="text"
+                                id="title"
+                                name="title"
+                                value={newSeries.title}
+                                onChange={handleInputChange}
+                                required
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm sm:text-sm p-3 text-lg"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={newSeries.description}
+                                onChange={handleInputChange}
+                                required
+                                rows={4}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm sm:text-sm p-3 text-lg"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="releaseYear" className="block text-sm font-medium text-gray-700">Release Year</label>
+                            <input
+                                type="number"
+                                id="releaseYear"
+                                name="releaseYear"
+                                placeholder="YYYY"
+                                value={newSeries.releaseYear}
+                                onChange={handleInputChange}
+                                required
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm sm:text-sm p-3 text-lg"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="numberOfSeasons" className="block text-sm font-medium text-gray-700">Number of seasons</label>
+                            <input
+                                type="number"
+                                id="numberOfSeasons"
+                                name="numberOfSeasons"
+                                value={newSeries.numberOfSeasons}
+                                onChange={handleInputChange}
+                                required
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm sm:text-sm p-3 text-lg"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Genres</label>
+                            <div className="grid grid-cols-2 gap-4">
+                                {genres.map(genre => (
+                                    <div key={genre} className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id={genre}
+                                            value={genre}
+                                            checked={newSeries.genres.includes(genre)}
+                                            onChange={handleGenreChange}
+                                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        />
+                                        <label htmlFor={genre} className="ml-2 block text-sm text-gray-700">{genre}</label>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div>
+                            <button 
+                                type="submit" 
+                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#1429b1] hover:bg-[#007bff]"
+                            >
+                                Add series
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <button type="submit" className="bg-blue-500 text-white p-2 w-full">Add series</button>
-            </form>
-        </div>
-    </>
+            </div>
+        </>
     );
 };
 
