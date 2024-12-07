@@ -1,9 +1,7 @@
 import UserService from "../../service/user.service";
-import userDB from "../../repository/user.db";
-import { UserInput, UserLoginInput } from "../../types";
 import { Role } from "../../model/role";
 import { User } from "../../model/user";
-import bcrypt from 'bcrypt';
+
 
 const validName = "Test";
 const validEmail = "test@bingevault.com";
@@ -11,18 +9,13 @@ const validPassword = "TestT123!";
 
 let validUser: User;
 let createUserMock: jest.Mock;
-let authenticateMock: jest.Mock;
-let getUserByNameMock: jest.Mock;
-let bcryptCompareMock: jest.Mock;
+
 
 beforeEach(() => {
     validUser = new User({ name: validName, email: validEmail, password: validPassword });
     validUser.setRole(Role.USER);
 
     createUserMock = jest.fn();
-    authenticateMock = jest.fn();
-    getUserByNameMock = jest.fn();
-    bcryptCompareMock = jest.fn();
 
 });
 
