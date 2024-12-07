@@ -4,7 +4,6 @@ import { Movie } from '../../model/movie';
 import { Series } from '../../model/series';
 import { Genre } from '../../model/genre';
 import { Role } from '../../model/role';
-import { User } from '../../model/user';
 
 const movieTitle = "The test movie";
 const movieDescription = "A movie just made for testing!";

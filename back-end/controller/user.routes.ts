@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import userService from "../service/user.service";
 import { UserInput, UserLoginInput } from '../types';
+import { Role } from '../model/role';
 
 const userRouter = express.Router();
 
@@ -39,7 +40,9 @@ const userRouter = express.Router();
  */
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const users = await userService.getAllUsers();
+        const request = req as Request & { auth: { name: string, role: Role }};
+        const { name, role } = request.auth;
+        const users = await userService.getAllUsers(role);
         res.status(200).json(users);
     } catch (error) {
         next(error);

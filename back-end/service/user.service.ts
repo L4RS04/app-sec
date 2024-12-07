@@ -4,8 +4,12 @@ import { UserInput, UserLoginInput } from '../types';
 import bcrypt from 'bcrypt';
 import generateJwtToken from '../util/jwt';
 import { AuthenticationResponse } from '../types';
+import { Role } from '../model/role';
 
-const getAllUsers = async (): Promise<Partial<User>[]> => {
+const getAllUsers = async (role: Role): Promise<Partial<User>[]> => {
+    if (role !== Role.ADMIN) {
+        throw new Error('Forbidden, only admins can view all users');
+    }
     return await userDB.getAllUsers();
 }
 
