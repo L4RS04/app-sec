@@ -53,7 +53,7 @@ export type WatchlistInput = {
     id?: number;
     name: string;
     description: string;
-    creatId: number;
+    creatorId: number;
     mediaItems?: Media[];
     creationDate?: Date;
 };
