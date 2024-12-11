@@ -69,7 +69,7 @@ const UserLoginForm: React.FC = () => {
 
                 setTimeout(() => {
                     router.push("/");
-                }, 200);
+                }, 1000);
             } else {
                 setStatusMessages([
                     {

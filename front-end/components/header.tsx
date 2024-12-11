@@ -37,9 +37,11 @@ const Header: React.FC = () => {
                         />
                     </Link>
                     <nav className="flex flex-wrap justify-center sm:justify-end space-x-2 sm:space-x-4">
+                        {!loggedInUser && (
                         <Link href="/" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
                             Home
                         </Link>
+                        )}
                         {loggedInUser && (
                         <Link href="/watchlist" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
                             Watchlists
