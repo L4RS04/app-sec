@@ -23,22 +23,25 @@ const UserRegisterForm: React.FC = () => {
 
 
     const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    clearErrors();
-    setIsLoading(true);
-
-    try {
-        const newUser = {
-            name,
-            email,
-            password,
-        };
-
-        const response = await UserService.registerUser(newUser);
-
-        if (response.ok) {
-            router.push("/login");
-        } else if (response.status === 400) {
+        event.preventDefault();
+        clearErrors();
+        setIsLoading(true);
+    
+        try {
+            const newUser = {
+                name,
+                email,
+                password,
+            };
+    
+            const response = await UserService.registerUser(newUser);
+    
+            if (response.ok) {
+                setStatusMessages([{ type: "success", message: "Registration successful! Redirecting to login..." }]);
+                setTimeout(() => {
+                    router.push("/login");
+                }, 2000); // 2 seconds delay
+            } else if (response.status === 400) {
                 const errorData = await response.json();
                 setStatusMessages([{ type: "error", message: errorData.message }]);
             }
@@ -47,7 +50,7 @@ const UserRegisterForm: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     return (
         <div className="flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
