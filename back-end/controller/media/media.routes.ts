@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
-import mediaService from '../service/media.service';
-import { MediaInput} from '../types';
-import { Role } from '../model/role';
+import mediaService from '../../service/media/media.service';
+import { MediaInput} from '../../types';
+import { Role } from '../../model/user/role';
 
 
 const mediaRouter = express.Router();

@@ -1,5 +1,4 @@
-import { Genre } from './genre';
-// import { Rating } from './rating';
+import { Genre } from '../genre/genre';
 import { Media as MediaPrisma } from '@prisma/client';
 
 export class Media {
@@ -8,7 +7,6 @@ export class Media {
     private description: string;
     private releaseYear: number;
     private genres: Genre[];
-    // private ratings: Rating[];
     private type: string;
 
     constructor(media: {
@@ -26,7 +24,6 @@ export class Media {
         this.description = media.description;
         this.releaseYear = media.releaseYear;
         this.genres = media.genres;
-        // this.ratings = [];
         this.type = media.type;
     }
 
@@ -50,10 +47,6 @@ export class Media {
     public getGenres(): Genre[] {
         return this.genres;
     }
-
-    // public getRatings(): Rating[] {
-    //     return this.ratings;
-    // }
 
     public getType(): string {
         return this.type;
@@ -81,10 +74,6 @@ export class Media {
         this.genres.push(genre);
     }
 
-    // public addRating(rating: Rating): void {
-    //     this.ratings.push(rating);
-    // }
-
     // Validation
     private validate(media: {
         title: string,
@@ -101,7 +90,7 @@ export class Media {
         throw new Error('Description is required');
     }
     if (!media.releaseYear?.toString().trim()) {
-        throw new Error('Year of release is required');
+        throw new Error('Release year is required');
     }
 }
 
@@ -122,14 +111,4 @@ static from({
         type
     });
 }
-
-
-
-
-    // // Other methods
-    // public getAverageRating(): number {
-    //     if (this.ratings.length === 0) return 0;
-    //     const sum = this.ratings.reduce((acc, rating) => acc + rating.getScore(), 0);
-    //     return sum / this.ratings.length;
-    // }
 }

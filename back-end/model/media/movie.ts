@@ -1,4 +1,4 @@
-import { Genre } from "./genre";
+import { Genre } from "../genre/genre";
 import { Media } from "./media";
 import { Media as MediaPrisma } from '@prisma/client';
 
@@ -44,7 +44,7 @@ export class Movie extends Media {
         director: string;
     }): void {
         if (!movie.duration || movie.duration < 0) {
-            throw new Error("Movie duration is required and must be a non-negative number");
+            throw new Error("Movie duration is required and must be greater than 0");
         }
         if (!movie.director) {
             throw new Error("Movie director is required");

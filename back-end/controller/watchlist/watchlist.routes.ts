@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
-import watchlistService from "../service/watchlist.service";
-import { WatchlistInput } from '../types';
+import watchlistService from "../../service/watchlist/watchlist.service";
+import { WatchlistInput } from '../../types';
 
 const watchlistRouter = express.Router();
 

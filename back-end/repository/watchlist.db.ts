@@ -1,4 +1,4 @@
-import { Watchlist } from "../model/watchlist";
+import { Watchlist } from "../model/watchlist/watchlist";
 import prisma from "./database";
 
 const getAllWatchlists  = async (): Promise<Watchlist[]> => {

@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { Role } from '../model/role';
+import { Role } from '../model/user/role';
 
-
-// Load environment variables from .env file
 dotenv.config();
 
 const secretKey = process.env.JWT_SECRET;
@@ -17,7 +15,7 @@ const generateJwtToken = (name: string, role: Role): string => {
     const options = { expiresIn: `${expiresIn}h`, issuer: "BingeVault" };
 
     try {
-        const token = jwt.sign({ name }, secretKey, options);
+        const token = jwt.sign({ name, role }, secretKey, options);
         return token;
     } catch (error) {
         throw new Error('Error generating JWT token, see server log for details.');

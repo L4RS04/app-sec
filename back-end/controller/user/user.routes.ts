@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
-import userService from "../service/user.service";
-import { UserInput, UserLoginInput } from '../types';
-import { Role } from '../model/role';
+import userService from "../../service/user/user.service";
+import { UserInput, UserLoginInput } from '../../types';
+import { Role } from '../../model/user/role';
 
 const userRouter = express.Router();
 
@@ -9,43 +9,27 @@ const userRouter = express.Router();
  * @swagger
  * /users:
  *   get:
- *     summary: Get all users
- *     description: Retrieve a list of all users
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get a list of all users
  *     responses:
  *       200:
- *         description: A list of users
+ *         description: A list of users.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   name:
- *                     type: string
- *                   email:
- *                     type: string
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: An error occurred whilst retrieving users
+ *                  $ref: '#/components/schemas/User'
  */
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const request = req as Request & { auth: { name: string, role: Role }};
-        const { name, role } = request.auth;
+        const request = req as Request & { auth: { role: Role }};
+        const { role } = request.auth;
         const users = await userService.getAllUsers(role);
         res.status(200).json(users);
     } catch (error) {
-        next(error);
+        res.status(400).json({ status: "error", message: (error as Error).message });
     }
 });
 
@@ -100,11 +84,11 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  */
 userRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = <UserInput>req.body;
-        const result = await userService.createUser(user);
-        res.status(200).json(result);
+        const userInput = <UserInput>req.body;
+        const user = await userService.createUser(userInput);
+        res.status(200).json(user);
     } catch (error) {
-        next(error);
+        res.status(400).json({ status: "error", message: (error as Error).message });
     }
 });
 
@@ -158,7 +142,7 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         const response = await userService.authenticate(userInput);
         res.status(200).json({message: "Authentication succesful", ...response });
     } catch (error) {
-        next(error);
+        res.status(401).json({ status: "error", message: (error as Error).message });
     }
 });
 

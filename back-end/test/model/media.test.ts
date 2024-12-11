@@ -1,5 +1,5 @@
-import { Media } from '../../model/media';
-import { Genre } from '../../model/genre';
+import { Media } from '../../model/media/media';
+import { Genre } from '../../model/genre/genre';
 // import { Rating } from '../../model/rating';
 
 // Test data
@@ -37,41 +37,6 @@ test('given: a genre, when: addGenre is called, then: the genre is added to the 
     expect(media.getGenres()).toContain(genre2);
 });
 
-// test('given: a rating, when: addRating is called, then: the rating is added to the media', () => {
-//     // given
-//     const media = new Media({ title, description, releaseYear, genres, type });
-
-//     // when
-//     media.addRating(rating1);
-
-//     // then
-//     expect(media.getRatings()).toContain(rating1);
-// });
-
-// test('given: multiple ratings, when: getAverageRating is called, then: the average rating is returned', () => {
-//     // given
-//     const media = new Media({ title, description, releaseYear, genres, type });
-//     media.addRating(rating1);
-//     media.addRating(rating2);
-
-//     // when
-//     const averageRating = media.getAverageRating();
-
-//     // then
-//     expect(averageRating).toBe((rating1.getScore() + rating2.getScore()) / 2);
-// });
-
-// test('given: no ratings, when: getAverageRating is called, then: the average rating is 0', () => {
-//     // given
-//     const media = new Media({ title, description, releaseYear, genres, type });
-
-//     // when
-//     const averageRating = media.getAverageRating();
-
-//     // then
-//     expect(averageRating).toBe(0);
-// });
-
 test('given: no title, when: media is created, then: an error is thrown', () => {
     // given
     const invalidTitle = '';
@@ -93,6 +58,6 @@ test('given: no release year, when: media is created, then: an error is thrown',
     const invalidReleaseYear = null as unknown as number;
 
     // when & then
-    expect(() => new Media({ title, description, releaseYear: invalidReleaseYear, genres, type })).toThrow('Year of release is required');
+    expect(() => new Media({ title, description, releaseYear: invalidReleaseYear, genres, type })).toThrow("Release year is required");
 });
 

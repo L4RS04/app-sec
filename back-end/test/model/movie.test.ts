@@ -1,5 +1,5 @@
-import { Genre } from '../../model/genre';
-import { Movie } from '../../model/movie';
+import { Genre } from '../../model/genre/genre';
+import { Movie } from '../../model/media/movie';
 
 // Test data
 const releaseYear = 2021;
@@ -58,7 +58,7 @@ test('given: null duration, when: movie is created, then: error is thrown', () =
 
     // when / then
     expect(() => new Movie({ releaseYear, title, description, genres, duration: invalidDuration as unknown as number, director }))
-        .toThrowError("Movie duration is required and must be a non-negative number");
+        .toThrowError("Movie duration is required and must be greater than 0");
 });
 
 test('given: null director, when: movie is created, then: error is thrown', () => {

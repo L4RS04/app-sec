@@ -1,7 +1,6 @@
-import { get } from 'http';
-import { Media } from '../model/media';
-import { Movie } from '../model/movie';
-import { Series } from '../model/series';
+import { Media } from '../model/media/media';
+import { Movie } from '../model/media/movie';
+import { Series } from '../model/media/series';
 import prisma from './database';
 
 const getMediaById = async (id: number): Promise<Media | null> => {

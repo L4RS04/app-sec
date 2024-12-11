@@ -1,10 +1,10 @@
-import mediaDB from '../repository/media.db';
-import { Media } from '../model/media';
-import { Movie } from '../model/movie';
-import { Series } from '../model/series';
-import { Genre } from '../model/genre';
-import { MediaInput } from '../types';
-import { Role } from '../model/role';
+import mediaDB from '../../repository/media.db';
+import { Media } from '../../model/media/media';
+import { Movie } from '../../model/media/movie';
+import { Series } from '../../model/media/series';
+import { Genre } from '../../model/genre/genre';
+import { MediaInput } from '../../types';
+import { Role } from '../../model/user/role';
 
 const getAllMedia = async (): Promise<Media[]> => {
     return mediaDB.getAllMedia();

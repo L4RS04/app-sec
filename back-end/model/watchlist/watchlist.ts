@@ -1,5 +1,5 @@
-import { Media } from "./media";
-import { User } from "./user";
+import { Media } from "../media/media";
+import { User } from "../user/user";
 import { Media as MediaPrisma, Watchlist as WatchlistPrisma, User as UserPrisma } from "@prisma/client";
 
 

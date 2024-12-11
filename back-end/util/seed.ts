@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { Genre } from "../model/genre";
-import { Role } from "../model/role";
+import { Genre } from "../model/genre/genre";
+import { Role } from "../model/user/role";
 import bcrypt from 'bcrypt';
 
 

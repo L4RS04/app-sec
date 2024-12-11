@@ -1,5 +1,5 @@
 import { Media } from './media';
-import { Genre } from './genre';
+import { Genre } from '../genre/genre';
 import { Media as MediaPrisma } from '@prisma/client';
 
 export class Series extends Media {
@@ -42,7 +42,7 @@ export class Series extends Media {
         numberOfSeasons: number
     }): void {
         if (!series.numberOfSeasons || series.numberOfSeasons < 0) {
-            throw new Error("Series number of seasons is required");
+            throw new Error("Series number of seasons is required and must be greater than 0");
         }
     }
 

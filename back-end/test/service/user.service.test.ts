@@ -1,6 +1,6 @@
-import UserService from "../../service/user.service";
-import { Role } from "../../model/role";
-import { User } from "../../model/user";
+import UserService from "../../service/user/user.service";
+import { Role } from "../../model/user/role";
+import { User } from "../../model/user/user";
 
 
 const validName = "Test";
