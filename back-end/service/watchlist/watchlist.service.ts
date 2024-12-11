@@ -1,5 +1,5 @@
-import watchlistDb from "../repository/watchlist.db";
-import { Watchlist } from "../model/watchlist";
+import watchlistDb from "../../repository/watchlist.db";
+import { Watchlist } from "../../model/watchlist/watchlist";
 
 const getAllWatchlists = async (): Promise<Watchlist[]> => {
     return watchlistDb.getAllWatchlists();

@@ -1,9 +1,9 @@
-import MediaService from '../../service/media.service';
+import MediaService from '../../service/media/media.service';
 import mediaDB from '../../repository/media.db';
-import { Movie } from '../../model/movie';
-import { Series } from '../../model/series';
-import { Genre } from '../../model/genre';
-import { Role } from '../../model/role';
+import { Movie } from '../../model/media/movie';
+import { Series } from '../../model/media/series';
+import { Genre } from '../../model/genre/genre';
+import { Role } from '../../model/user/role';
 
 const movieTitle = "The test movie";
 const movieDescription = "A movie just made for testing!";

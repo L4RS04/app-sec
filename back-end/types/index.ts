@@ -1,6 +1,6 @@
-import { Genre } from "../model/genre";
-import { Media } from "../model/media";
-import { Role } from "../model/role";
+import { Genre } from "../model/genre/genre";
+import { Media } from "../model/media/media";
+import { Role } from "../model/user/role";
 
 export type AuthenticationResponse = {
     token: string;

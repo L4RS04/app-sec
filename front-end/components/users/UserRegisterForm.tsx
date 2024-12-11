@@ -3,10 +3,12 @@ import UserService from "../../services/UserService";
 import React, { useState } from "react";
 import { StatusMessage } from "../../types";
 
-const UserLoginForm: React.FC = () => {
+const UserRegisterForm: React.FC = () => {
     const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [nameError, setNameError] = useState<string | null>(null);
+    const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
     const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,88 +16,45 @@ const UserLoginForm: React.FC = () => {
 
     const clearErrors = () => {
         setNameError(null);
+        setEmailError(null);
         setPasswordError(null);
         setStatusMessages([]);
     };
 
-    const validate = (): boolean => {
-        let result = true;
-
-        if (!name || name.trim() === "") {
-            setNameError("Name is required");
-            result = false;
-        }
-
-        if (!password || password.trim() === "") {
-            setPasswordError("Password is required");
-            result = false;
-        }
-
-        return result;
-    };
 
     const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-        clearErrors();
+    event.preventDefault();
+    clearErrors();
+    setIsLoading(true);
 
-        if (!validate()) {
-            return;
-        }
+    try {
+        const newUser = {
+            name,
+            email,
+            password,
+        };
 
-        setIsLoading(true);
+        const response = await UserService.registerUser(newUser);
 
-        const user = { name, password };
-        try {
-            const response = await UserService.loginUser(user);
-            
-            if (response.status === 200) {
-                setStatusMessages([
-                    {
-                        type: "success", 
-                        message: "Login successful, redirecting..."
-                    },
-                ]);
-
-                const user = await response.json();
-
-                sessionStorage.setItem(
-                    "loggedInUser", 
-                    JSON.stringify({
-                        token: user.token,
-                        role: user.role,
-                        name: user.name,
-                    })
-                );
-
-                setTimeout(() => {
-                    router.push("/");
-                }, 2000);
-            } else {
-                setStatusMessages([
-                    {
-                        type: "error",
-                        message: "Name or password is invalid"
-                    },
-                ]);
+        if (response.ok) {
+            router.push("/login");
+        } else if (response.status === 400) {
+                const errorData = await response.json();
+                setStatusMessages([{ type: "error", message: errorData.message }]);
             }
         } catch (error) {
-            setStatusMessages([
-                {
-                    type: "error",
-                    message: "Unknown error occurred"
-                },
-            ]);
+            setStatusMessages([{ type: "error", message: "An error occurred whilst registering the user" }]);
         } finally {
             setIsLoading(false);
         }
-    };
+    }
 
     return (
         <div className="flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-6">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-[#1429b1]">
-                        Sign in to your account
+                        Create your account
                     </h2>
                 </div>
                 {statusMessages.length > 0 && (
@@ -133,6 +92,20 @@ const UserLoginForm: React.FC = () => {
                             />
                         </div>
                         <div>
+                            <label htmlFor="emailInput" className="block text-sm font-medium text-gray-700">Email</label>
+                            <input
+                                id="emailInput"
+                                name="email"
+                                type="email"
+                                required
+                                className={`mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border ${
+                                    emailError ? 'border-red-300' : 'border-gray-300'
+                                } placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                value={email}
+                                onChange={(event) => setEmail(event.target.value)}
+                            />
+                        </div>
+                        <div>
                             <label htmlFor="passwordInput" className="block text-sm font-medium text-gray-700">Password</label>
                             <input
                                 id="passwordInput"
@@ -148,9 +121,10 @@ const UserLoginForm: React.FC = () => {
                         </div>
                     </div>
 
-                    {(nameError || passwordError) && (
+                    {(nameError || emailError || passwordError) && (
                         <div className="text-red-500 text-sm mt-2">
                             {nameError && <p>{nameError}</p>}
+                            {emailError && <p>{emailError}</p>}
                             {passwordError && <p>{passwordError}</p>}
                         </div>
                     )}
@@ -163,7 +137,7 @@ const UserLoginForm: React.FC = () => {
                                 isLoading ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                         >
-                            {isLoading ? 'Signing in...' : 'Sign in'}
+                            {isLoading ? 'Registering...' : 'Register'}
                         </button>
                     </div>
                 </form>
@@ -172,4 +146,4 @@ const UserLoginForm: React.FC = () => {
     );
 };
 
-export default UserLoginForm;
+export default UserRegisterForm;

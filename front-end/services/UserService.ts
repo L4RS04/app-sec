@@ -9,10 +9,21 @@ const loginUser = async (user: User) => {
         body: JSON.stringify(user)
     });
 };
+
+const registerUser = async (user: User) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    });
+};
     
 
 const UserService = {
-    loginUser
+    loginUser,
+    registerUser,
 };
 
 export default UserService;

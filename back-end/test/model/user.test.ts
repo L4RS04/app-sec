@@ -1,5 +1,5 @@
-import { User } from '../../model/user';
-import { Watchlist } from '../../model/watchlist';
+import { User } from '../../model/user/user';
+import { Watchlist } from '../../model/watchlist/watchlist';
 
 // Test data
 const name = 'John Doe';

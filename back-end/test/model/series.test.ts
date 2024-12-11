@@ -1,5 +1,5 @@
-import { Series } from '../../model/series';
-import { Genre } from '../../model/genre';
+import { Series } from '../../model/media/series';
+import { Genre } from '../../model/genre/genre';
 
 // Test data
 const title = 'Breaking Bad';

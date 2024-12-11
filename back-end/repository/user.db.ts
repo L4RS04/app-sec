@@ -1,4 +1,4 @@
-import { User } from '../model/user';
+import { User } from '../model/user/user';
 import prisma from './database';
 
 const getUserByEmail = async (email: string): Promise<User | null> => {
@@ -6,25 +6,20 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
         const userPrisma = await prisma.user.findUnique({
             where: { email }
         });
-        if (!userPrisma) {
-            return null;
-        }
-        return User.from(userPrisma);
+        return userPrisma ? User.from(userPrisma) : null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See console for details.');
     }
 };
 
-const getUserByName = async (name: string): Promise<User> => {
+const getUserByName = async (name: string): Promise<User | null> => {
     try {
         const userPrisma = await prisma.user.findUnique({
             where: { name }
         });
-        if (!userPrisma) {
-            throw new Error(`User with name ${name} not found.`);
-        }
-        return User.from(userPrisma);
+
+        return userPrisma ? User.from(userPrisma) : null;
     } catch (error) {
         console.error(error);
         throw new Error('Database error. See console for details.');

@@ -1,5 +1,5 @@
 import { Role } from './role';
-import { Watchlist } from './watchlist';
+import { Watchlist } from '../watchlist/watchlist';
 import { User as UserPrisma, Watchlist as WatchlistPrisma, Media as MediaPrisma } from '@prisma/client';
 
 export class User {
@@ -79,7 +79,7 @@ export class User {
         this.watchlists.push(watchlist);
     }
 
-    addWatchlists(watchlists: Watchlist[]): void {
+    public addWatchlists(watchlists: Watchlist[]): void {
         this.watchlists.push(...watchlists);
     }
 
@@ -102,8 +102,9 @@ export class User {
         if (!user.password?.trim()) {
             throw new Error('Password is required');
         }
-        if (user.password.length < 8) {
-            throw new Error('Password must be at least 8 characters long');
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+        if (!passwordRegex.test(user.password)) {
+            throw new Error('Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character');
         }
         if (!user.email?.trim()) {
             throw new Error('Email is required');
@@ -114,7 +115,6 @@ export class User {
         }
     }
 
-    
     static from({
         id,
         name,

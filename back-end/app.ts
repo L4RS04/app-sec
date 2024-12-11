@@ -4,9 +4,9 @@ import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import userRouter from './controller/user.routes';
-import mediaRouter from './controller/media.routes';
-import watchlistRouter from './controller/watchlist.routes';
+import userRouter from './controller/user/user.routes';
+import mediaRouter from './controller/media/media.routes';
+import watchlistRouter from './controller/watchlist/watchlist.routes';
 import { Request, Response, NextFunction } from 'express';
 import { expressjwt } from 'express-jwt';
 
@@ -29,13 +29,11 @@ app.use(
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === 'UnauthorizedError') {
-        console.error('UnauthorizedError:', err);
-        res.status(401).json({ message: 'Invalid token' });
+        res.status(401).json({ status: 'unauthorized', message: err.message });
     } else {
-        next(err);
+        res.status(400).json({ status: 'application error', message: err.message }); 
     }
 });
-
 
 app.use('/users', userRouter);
 app.use('/media', mediaRouter);
