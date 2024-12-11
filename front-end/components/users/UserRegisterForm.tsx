@@ -40,7 +40,7 @@ const UserRegisterForm: React.FC = () => {
                 setStatusMessages([{ type: "success", message: "Registration successful! Redirecting to login..." }]);
                 setTimeout(() => {
                     router.push("/login");
-                }, 2000); // 2 seconds delay
+                }, 1000);
             } else if (response.status === 400) {
                 const errorData = await response.json();
                 setStatusMessages([{ type: "error", message: errorData.message }]);
