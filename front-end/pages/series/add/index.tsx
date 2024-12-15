@@ -4,6 +4,7 @@ import { Series, Genre } from '../../../types';
 import SeriesService from '../../../services/SeriesService';
 import MediaService from '../../../services/MediaService';
 import Header from '../../../components/header';
+import Head from 'next/head';
 
 export default function AddSeries() {
     const router = useRouter();
@@ -28,9 +29,10 @@ export default function AddSeries() {
             };
             getGenres();
         } else {
-            setIsAuthorized(false);
+            setIsAuthorized(false)
+            router.push('/not-authorized');
         }
-    }, []);
+    }, [router]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -63,18 +65,11 @@ export default function AddSeries() {
         return <div>Loading...</div>;
     }
 
-    if (!isAuthorized) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-blue-50">
-                <div className="bg-white p-8 rounded-lg shadow-lg text-center flex flex-col justify-center">
-                    <h1 className="text-2xl font-bold text-red-600">You are not authorized to access this page!</h1>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <>
+        <>  
+            <Head>
+                <title>Add series</title>
+            </Head>
             <Header />
             <div className="min-h-screen bg-blue-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
@@ -92,7 +87,7 @@ export default function AddSeries() {
                                     value={newSeries.title}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -104,7 +99,7 @@ export default function AddSeries() {
                                     onChange={handleInputChange}
                                     required
                                     rows={4}
-                                    className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -118,7 +113,7 @@ export default function AddSeries() {
                                         value={newSeries.releaseYear}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                     />
                                 </div>
                                 <div>
@@ -130,7 +125,7 @@ export default function AddSeries() {
                                         value={newSeries.numberOfSeasons}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                     />
                                 </div>
                             </div>
@@ -142,7 +137,7 @@ export default function AddSeries() {
                                             key={genre}
                                             type="button"
                                             onClick={() => handleGenreToggle(genre)}
-                                            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
+                                            className={`px-1 py-2 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
                                                 newSeries.genres.includes(genre)
                                                     ? 'bg-blue-600 text-white'
                                                     : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
@@ -156,7 +151,7 @@ export default function AddSeries() {
                             <div>
                                 <button 
                                     type="submit" 
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-[#1429b1] hover:bg-[#007bff]"
+                                    className="w-full flex justify-center py-1 border border-transparent rounded-md text-lg font-extrabold text-white bg-[#1429b1] hover:bg-[#007bff]"
                                 >
                                     Add series
                                 </button>
