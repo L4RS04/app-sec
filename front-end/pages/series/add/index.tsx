@@ -12,18 +12,24 @@ export default function AddSeries() {
         type: "SERIES"
     });
     const [genres, setGenres] = useState<Genre[]>([]);
+    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
     useEffect(() => {
-        const getGenres = async () => {
-            try {
-                const genres = await MediaService.getGenres();
-                setGenres(genres);
-            } catch (error) {
-                console.error('Error fetching genres:', error);
-            }
-        };
-
-        getGenres();
+        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser') as string);
+        if (loggedInUser && loggedInUser.role === 'ADMIN') {
+            setIsAuthorized(true);
+            const getGenres = async () => {
+                try {
+                    const genres = await MediaService.getGenres();
+                    setGenres(genres);
+                } catch (error) {
+                    console.error('Error fetching genres:', error);
+                }
+            };
+            getGenres();
+        } else {
+            setIsAuthorized(false);
+        }
     }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -53,14 +59,28 @@ export default function AddSeries() {
         }
     };
 
+    if (isAuthorized === null) {
+        return <div>Loading...</div>;
+    }
+
+    if (!isAuthorized) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-blue-50">
+                <div className="bg-white p-8 rounded-lg shadow-lg text-center flex flex-col justify-center">
+                    <h1 className="text-2xl font-bold text-red-600">You are not authorized to access this page!</h1>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <Header />
-            <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+            <div className="min-h-screen bg-blue-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="px-6 py-8">
                         <h1 className="text-3xl font-extrabold text-center text-blue-900 mb-8">
-                            Add a new series to the application
+                            Add a series to the application
                         </h1>
                         <form onSubmit={handleAddSeries} className="space-y-6">
                             <div>
@@ -72,7 +92,7 @@ export default function AddSeries() {
                                     value={newSeries.title}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -84,7 +104,7 @@ export default function AddSeries() {
                                     onChange={handleInputChange}
                                     required
                                     rows={4}
-                                    className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -98,7 +118,7 @@ export default function AddSeries() {
                                         value={newSeries.releaseYear}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                     />
                                 </div>
                                 <div>
@@ -110,7 +130,7 @@ export default function AddSeries() {
                                         value={newSeries.numberOfSeasons}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        className="block w-full px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                     />
                                 </div>
                             </div>
