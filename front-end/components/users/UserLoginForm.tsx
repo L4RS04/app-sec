@@ -127,7 +127,7 @@ const UserLoginForm: React.FC = () => {
                                 required
                                 className={`mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border ${
                                     nameError ? 'border-red-300' : 'border-gray-300'
-                                } placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                } placeholder-gray-400 text-gray-900 sm:text-sm`}
                                 value={name}
                                 onChange={(event) => setName(event.target.value)}
                             />
@@ -141,7 +141,7 @@ const UserLoginForm: React.FC = () => {
                                 required
                                 className={`mt-1 appearance-none rounded-md relative block w-full px-3 py-2 border ${
                                     passwordError ? 'border-red-300' : 'border-gray-300'
-                                } placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                } placeholder-gray-400 text-gray-900 sm:text-sm`}
                                 value={password}
                                 onChange={(event) => setPassword(event.target.value)}
                             />
@@ -159,7 +159,7 @@ const UserLoginForm: React.FC = () => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#1429b1] hover:bg-[#007bff] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                            className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#1429b1] hover:bg-[#007bff] ${
                                 isLoading ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                         >
