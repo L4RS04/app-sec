@@ -1,84 +1,87 @@
 import React, { useState } from "react";
 import { Series } from "@types";
-import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import GenreTag from "@components/GenreTag";
 
 type Props = {
-    series: Array<Series>;
-    onAddSeries: (newSeries: Series) => Promise<void>;
-    onDeleteSeries: (seriesId: number) => Promise<void>;
+  series: Array<Series>;
+  onAddSeries: (newSeries: Series) => Promise<void>;
+  onDeleteSeries: (seriesId: number) => Promise<void>;
+  isAdmin: boolean;
 }
 
-const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries }: Props) => {
-    const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
+const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin }: Props) => {
+  const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
 
-    const handleDropdownClick = (index: number) => {
-        setExpandedRows(prevState => ({
-            ...prevState,
-            [index]: !prevState[index]
-        }));
-    };
+  const handleDropdownClick = (index: number) => {
+    setExpandedRows(prevState => ({
+      ...prevState,
+      [index]: !prevState[index]
+    }));
+  };
 
-    return (
-        <>
-            {series && (
-                <div className="border rounded-lg w-full overflow-x-auto">
-                    <table className="table-auto w-full">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className="px-4 py-2 text-center">Title</th>
-                                <th className="px-4 py-2 text-center">Number of seasons</th>
-                                <th className="px-4 py-2 text-center">More</th>
-                                <th className="px-4 py-2 text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {series.map((series, index) => (
-                                <React.Fragment key={index}>
-                                    <tr className="hover:bg-gray-100">
-                                        <td className="border px-4 py-2 text-center">{series.title}</td>
-                                        <td className="border px-4 py-2 text-center">{series.numberOfSeasons}</td>
-                                        <td className="border px-4 py-2 text-center">
-                                            <button
-                                                className="text-blue-500 hover:text-blue-700 focus:outline-none"
-                                                onClick={() => handleDropdownClick(index)}
-                                            >
-                                                {expandedRows[index] ? <ChevronUp /> : <ChevronDown />}
-                                            </button>
-                                        </td>
-                                        <td className="border px-4 py-2 text-center">
-                                            <button
-                                                className="text-red-500 hover:text-red-700 focus:outline-none"
-                                                onClick={() => series.id !== undefined && onDeleteSeries(series.id)}
-                                            >
-                                                <Trash2 size={20} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {expandedRows[index] && (
-                                        <tr>
-                                            <td colSpan={5} className="border px-4 py-2">
-                                                <div>
-                                                    <strong>Released:</strong> {series.releaseYear}
-                                                </div>
-                                                <div>
-                                                    <strong>Genres:</strong> {series.genres.join(", ")}
-                                                </div>
-                                                <div>
-                                                    <strong>Description:</strong> {series.description}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </React.Fragment>
+  return (
+    <div className="w-full min-w-[800px] overflow-x-auto mb-5">
+      <div className="w-full overflow-hidden border border-gray-200 rounded-lg shadow-sm">
+        <table className="w-full border-collapse bg-white">
+          <thead>
+            <tr className="bg-[#1429b1] text-white">
+              <th className="w-2/5 px-6 py-3 text-center text-xs font-medium uppercase">Title</th>
+              <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Seasons</th>
+              <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">More</th>
+              {isAdmin && <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Actions</th>}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {series.map((series, index) => (
+              <React.Fragment key={index}>
+                <tr>
+                  <td className="w-2/5 px-6 py-1 text-center">{series.title}</td>
+                  <td className="w-1/5 px-6 py-4 text-center">{series.numberOfSeasons}</td>
+                  <td className="w-1/5 px-6 py-4 text-center">
+                    <button
+                      className="text-[#007bff] hover:text-[#1429b1]"
+                      onClick={() => handleDropdownClick(index)}
+                    >
+                      {expandedRows[index] ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </button>
+                  </td>
+                  {isAdmin && (
+                    <td className="w-1/5 px-6 py-4 text-center">
+                      <button
+                        className="text-red-500 hover:text-red-700"
+                        onClick={() => series.id !== undefined && onDeleteSeries(series.id)}
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </td>
+                  )}
+                </tr>
+                {expandedRows[index] && (
+                  <tr className="bg-blue-50">
+                    <td colSpan={isAdmin ? 4 : 3} className="px-3 py-2">
+                      <div className="text-sm text-gray-900 max-w-2xl">
+                        <p className="mb-1"><span className="font-medium">Description:</span> {series.description}</p>
+                        <div className="mb-1">
+                          <span className="font-medium">Genres: </span>
+                          <div className="mt-1">
+                            {series.genres.map((genre, i) => (
+                              <GenreTag key={i} genre={genre} />
                             ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
-        </>
-    );
+                          </div>
+                        </div>
+                        <p className="mb-1"><span className="font-medium">Released:</span> {series.releaseYear}</p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default SeriesOverviewTable;
-
-

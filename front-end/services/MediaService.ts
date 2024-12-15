@@ -6,7 +6,7 @@ const getGenres = async (): Promise<Genre[]> => {
     if (!token) {
         throw new Error("No token found");
     }
-
+    
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/media/genres", {
         method: "GET",
         headers: {
