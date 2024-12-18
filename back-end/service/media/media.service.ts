@@ -18,6 +18,18 @@ const getAllSeries = async (): Promise<Series[]> => {
     return mediaDB.getAllSeries();
 }
 
+const getMediaById = async (id: number): Promise<Media | null> => {
+    return mediaDB.getMediaById(id);
+}
+
+const getMovieById = async (id: number): Promise<Movie | null> => {
+    return mediaDB.getMovieById(id);
+}
+
+const getSeriesById = async (id: number): Promise<Series | null> => {
+    return mediaDB.getSeriesById(id);
+}
+
 const getAllGenres = async (): Promise<Genre[]> => {
     try {
         const genres = Object.values(Genre);
@@ -128,10 +140,13 @@ const MediaService = {
     getAllMedia,
     getAllMovies,
     getAllSeries,
+    getMediaById,
     getAllGenres,
     createMedia,
     deleteMedia,
-    updateMedia
+    updateMedia,
+    getMovieById,
+    getSeriesById
 };
 
 export default MediaService;
