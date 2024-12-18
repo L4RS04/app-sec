@@ -20,12 +20,23 @@ const seriesGenres = [Genre.ACTION];
 const seriesType = "SERIES";
 const seriesNumberOfSeasons = 1;
 
+const existingMovie = new Movie({
+    id: 55,
+    title: "Existing movie",
+    description: "An existing movie",
+    releaseYear: 2021,
+    genres: [Genre.ACTION],
+    director: "Director Test",
+    duration: 120
+});
+
 
 let deleteMediaMock: jest.Mock;
 let createMediaMock: jest.Mock;
 let getAllMediaMock: jest.Mock;
 let getAllMoviesMock: jest.Mock;
 let getAllSeriesMock: jest.Mock;
+let updateMediaMock: jest.Mock;
 
 beforeEach(() => {
     createMediaMock = jest.fn();
@@ -33,6 +44,7 @@ beforeEach(() => {
     getAllMediaMock = jest.fn();
     getAllMoviesMock = jest.fn();
     getAllSeriesMock = jest.fn();
+    updateMediaMock = jest.fn();
 });
 
 afterEach(() => {
@@ -144,6 +156,50 @@ test('given invalid id, when deleting a media, then an error is thrown', async (
     }
 }
 );
+
+test('given valid new data, when updating media, then media is updated', async () => {
+    // given
+    mediaDB.getMediaById = jest.fn().mockResolvedValue(existingMovie);
+    mediaDB.updateMedia = updateMediaMock;
+
+    // when
+    await MediaService.updateMedia(55, { title: movieTitle, description: movieDescription, releaseYear: movieReleaseYear, genres: movieGenres, type: movieType, director: movieDirector, duration: movieDuration }, Role.ADMIN);
+
+    // then
+    expect(updateMediaMock).toHaveBeenCalledTimes(1);
+    expect(existingMovie.getTitle()).toBe(movieTitle);
+    expect(existingMovie.getDescription()).toBe(movieDescription);
+    expect(existingMovie.getReleaseYear()).toBe(movieReleaseYear);
+    expect(existingMovie.getGenres()).toEqual(movieGenres);
+    expect(existingMovie.getDirector()).toBe(movieDirector);
+    expect(existingMovie.getDuration()).toBe(movieDuration);
+});
+
+test('given invalid id, when updating media, then an error is thrown', async () => {
+    // given
+    mediaDB.getMediaById = jest.fn().mockResolvedValue(null);
+
+    // when
+    try {
+        await MediaService.updateMedia(1, { title: movieTitle, description: movieDescription, releaseYear: movieReleaseYear, genres: movieGenres, type: movieType, director: movieDirector, duration: movieDuration }, Role.ADMIN);
+    } catch (error) {
+        // then
+        expect(error).toEqual(new Error('Media not found'));
+    }
+}
+);
+
+test('given invalid role, when creating media, then an error is thrown', async () => {
+    // when
+    try {
+        await MediaService.createMedia({ title: movieTitle, description: movieDescription, releaseYear: movieReleaseYear, genres: movieGenres, type: movieType, director: movieDirector, duration: movieDuration }, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toEqual(new Error('Forbidden, only admins can create media'));
+    }
+}
+);
+
     
 
 
