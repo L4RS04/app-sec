@@ -84,7 +84,7 @@ const getSeriesById = async (id: number): Promise<Series> => {
         throw new Error("No token found");
     }
 
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/media/${id}`, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/media/series/${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

@@ -6,7 +6,7 @@ import prisma from './database';
 const getMediaById = async (id: number): Promise<Media | null> => {
     try {
         const mediaPrisma = await prisma.media.findUnique({
-            where: { id }
+            where: { id: id }
         });
 
         if (!mediaPrisma) {
@@ -27,7 +27,7 @@ const getMediaById = async (id: number): Promise<Media | null> => {
 const getMovieById = async (id: number): Promise<Movie | null> => {
     try {
         const moviePrisma = await prisma.media.findUnique({
-            where: { id }
+            where: { id: id }
         });
 
         if (!moviePrisma || moviePrisma.type !== 'MOVIE') {
@@ -44,7 +44,7 @@ const getMovieById = async (id: number): Promise<Movie | null> => {
 const getSeriesById = async (id: number): Promise<Series | null> => {
     try {
         const seriesPrisma = await prisma.media.findUnique({
-            where: { id }
+            where: { id: id }
         });
 
         if (!seriesPrisma || seriesPrisma.type !== 'SERIES') {
@@ -60,13 +60,13 @@ const getSeriesById = async (id: number): Promise<Series | null> => {
 
 const getAllMedia = async (): Promise<Media[]> => {
     try {
-        const mediaPrisma = await prisma.media.findMany()
+        const mediaPrisma = await prisma.media.findMany();
         return mediaPrisma.map((mediaPrisma) => {
             if (mediaPrisma.type === 'MOVIE') {
                 return Movie.from(mediaPrisma);
             } else {
                 return Series.from(mediaPrisma);
-            } 
+            }
         });
     } catch (error) {
         console.error(error);
@@ -84,7 +84,7 @@ const getAllMovies = async (): Promise<Movie[]> => {
         console.error(error);
         throw new Error('Database error. See console for details.');
     }
-}
+};
 
 const getAllSeries = async (): Promise<Series[]> => {
     try {
@@ -96,7 +96,7 @@ const getAllSeries = async (): Promise<Series[]> => {
         console.error(error);
         throw new Error('Database error. See console for details.');
     }
-}
+};
 
 const createMedia = async (media: Media): Promise<Media> => {
     try {
@@ -194,7 +194,6 @@ const updateMedia = async (id: number, media: Media): Promise<Media> => {
     }
 };
 
-
 export default {
     getMediaById,
     getAllMedia,
@@ -206,5 +205,3 @@ export default {
     getMovieById,
     getSeriesById
 };
-
-

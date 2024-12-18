@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Movie } from "@types";
 import { formatDuration } from "utils/utils";
-import { ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
 import GenreTag from "@components/GenreTag";
+import { useRouter } from "next/router";
 
 type Props = {
     movies: Array<Movie>;
@@ -13,12 +14,17 @@ type Props = {
 
 const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }: Props) => {
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
+    const router = useRouter();
 
     const handleDropdownClick = (index: number) => {
         setExpandedRows(prevState => ({
             ...prevState,
             [index]: !prevState[index]
         }));
+    };
+
+    const handleEditClick = (movieId: number) => {
+        router.push(`/movies/edit/${movieId}`);
     };
 
     return (
@@ -30,7 +36,7 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }:
                             <th className="w-2/5 px-6 py-3 text-center text-xs font-medium uppercase">Title</th>
                             <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Duration</th>
                             <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">More</th>
-                            {isAdmin && <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Actions</th>}
+                            {isAdmin && <th className="w-1/4 px-6 py-3 text-center text-xs font-medium uppercase">Actions</th>}
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -48,13 +54,21 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }:
                                         </button>
                                     </td>
                                     {isAdmin && (
-                                        <td className="w-1/5 px-6 py-4 text-center">
-                                            <button
-                                                className="text-red-500 hover:text-red-700"
-                                                onClick={() => movie.id !== undefined && onDeleteMovie(movie.id)}
-                                            >
-                                                <Trash2 className="w-5 h-5" />
-                                            </button>
+                                        <td className="w-1/4 px-6 py-4 text-center">
+                                            <div className="flex justify-center space-x-4">
+                                                <button
+                                                    className="text-red-500 hover:text-red-700"
+                                                    onClick={() => movie.id !== undefined && onDeleteMovie(movie.id)}
+                                                >
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
+                                                <button
+                                                    className="text-blue-500 hover:text-blue-700"
+                                                    onClick={() => movie.id !== undefined && handleEditClick(movie.id)}
+                                                >
+                                                    <Pencil className="w-5 h-5" />
+                                                </button>
+                                            </div>
                                         </td>
                                     )}
                                 </tr>
