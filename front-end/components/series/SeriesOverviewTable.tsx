@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Series } from "@types";
-import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Trash2, Pencil } from 'lucide-react';
 import GenreTag from "@components/GenreTag";
+import { useRouter } from 'next/router';
 
 type Props = {
   series: Array<Series>;
@@ -12,12 +13,17 @@ type Props = {
 
 const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin }: Props) => {
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
+  const router = useRouter();
 
   const handleDropdownClick = (index: number) => {
     setExpandedRows(prevState => ({
       ...prevState,
       [index]: !prevState[index]
     }));
+  };
+
+  const handleEditClick = (seriesId: number) => {
+    router.push(`/series/edit/${seriesId}`);
   };
 
   return (
@@ -29,7 +35,7 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
               <th className="w-2/5 px-6 py-3 text-center text-xs font-medium uppercase">Title</th>
               <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Seasons</th>
               <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">More</th>
-              {isAdmin && <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Actions</th>}
+              {isAdmin && <th className="w-1/4 px-6 py-3 text-center text-xs font-medium uppercase">Actions</th>}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -47,13 +53,21 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
                     </button>
                   </td>
                   {isAdmin && (
-                    <td className="w-1/5 px-6 py-4 text-center">
-                      <button
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => series.id !== undefined && onDeleteSeries(series.id)}
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+                    <td className="w-1/4 px-6 py-4 text-center">
+                      <div className="flex justify-center space-x-4">
+                        <button
+                          className="text-red-500 hover:text-red-700"
+                          onClick={() => series.id !== undefined && onDeleteSeries(series.id)}
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                        <button
+                          className="text-blue-500 hover:text-blue-700"
+                          onClick={() => series.id !== undefined && handleEditClick(series.id)}
+                        >
+                          <Pencil className="w-5 h-5" />
+                        </button>
+                      </div>
                     </td>
                   )}
                 </tr>
@@ -85,3 +99,4 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
 };
 
 export default SeriesOverviewTable;
+

@@ -50,9 +50,9 @@ model Media {
     releaseYear  Int
     genres       Genre[]
     type         MediaType
-    duration     Int?        // Only for movies
-    director     String?     // Only for movies
-    numberOfSeasons Int?     // Only for series
+    duration     Int?        
+    director     String?     
+    numberOfSeasons Int?     
     watchlists   Watchlist[] @relation
 }
 
