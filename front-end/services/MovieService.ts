@@ -58,10 +58,32 @@ if (!response.ok) {
 }
 };
 
+const updateMovie = async (id: number, updatedMovie: Movie) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/media/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedMovie)
+});
+if (!response.ok) {
+    throw new Error("An error occurred while updating the movie");
+}
+return response.json();
+};
+
 const MovieService = {
     getAllMovies,
     createMovie,
     deleteMovie,
+    updateMovie,
 }
 
 export default MovieService;

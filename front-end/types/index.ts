@@ -19,6 +19,7 @@ export type Series = {
     type: 'SERIES';
 }
 
+
 export type User = {
     id?: number;
     token? : string;

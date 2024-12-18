@@ -83,6 +83,36 @@ mediaRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
+mediaRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const mediaId = parseInt(req.params.id);
+        const media = await mediaService.getMediaById(mediaId);
+        res.status(200).json(media);
+    } catch (error) {
+        next(error);
+    }
+});
+
+mediaRouter.get('/series/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const seriesId = parseInt(req.params.id);
+        const series = await mediaService.getSeriesById(seriesId);
+        res.status(200).json(series);
+    } catch (error) {
+        next(error);
+    }
+});
+
+mediaRouter.get('/movies/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const mediaId = parseInt(req.params.id);
+        const movie = await mediaService.getMovieById(mediaId);
+        res.status(200).json(movie);
+    } catch (error) {
+        next(error);
+    }
+});
+
 /**
  * @swagger
  * /media/movies:

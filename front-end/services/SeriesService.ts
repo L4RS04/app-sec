@@ -56,10 +56,53 @@ if (!response.ok) {
 }
 };
 
+const updateSeries = async (id: number, updatedSeries: Series) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/media/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedSeries)
+});
+if (!response.ok) {
+    throw new Error("An error occurred while updating the series");
+}
+return response.json();
+};
+
+const getSeriesById = async (id: number): Promise<Series> => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + `/media/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+    if (!response.ok) {
+        throw new Error("An error occurred while fetching the series");
+    }
+    return response.json();
+};
+
 const SeriesService = {
     getAllSeries,
     createSeries,
     deleteSeries,
+    updateSeries,
+    getSeriesById
 }
 
 export default SeriesService;
