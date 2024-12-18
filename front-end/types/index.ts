@@ -19,14 +19,30 @@ export type Series = {
     type: 'SERIES';
 }
 
+export type Media = Movie | Series;
 
 export type User = {
     id?: number;
     token? : string;
-    username?: string;
+    name?: string;
     email?: string;
     password?: string;
     role?: string;
+}
+
+export type MediaItem = {
+    id: number;
+    title: string;
+    type: 'MOVIE' | 'SERIES';
+  };
+
+export type Watchlist = {
+    id?: number;
+    name: string;
+    description: string;
+    creationDate: Date;
+    mediaItems: MediaItem[];
+    user: User;
 }
 
 export enum Genre {

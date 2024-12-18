@@ -42,6 +42,9 @@ export type UserInput = {
     name: string;
     password: string;
     email: string;
+    role?: Role;
+    watchlists?: WatchlistInput[];
+    creationDate?: Date;
 };
 
 export type UserLoginInput = {
