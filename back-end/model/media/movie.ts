@@ -38,6 +38,15 @@ export class Movie extends Media {
         return this.director;
     }
 
+    // Setters
+    public setDuration(duration: number): void {
+        this.duration = duration;
+    }
+
+    public setDirector(director: string): void {
+        this.director = director;
+    }
+
     // Validation
     private validate_movie(movie: {
         duration: number;

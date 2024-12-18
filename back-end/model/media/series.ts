@@ -36,7 +36,6 @@ export class Series extends Media {
         this.numberOfSeasons = numberOfSeasons;
     }
 
-
     // Validation
     private validate_series(series: {
         numberOfSeasons: number

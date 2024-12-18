@@ -69,6 +69,10 @@ export class Media {
         this.type = type;
     }
 
+    public setGenres(genres: Genre[]): void {
+        this.genres = genres;
+    }
+
     // Add methods
     public addGenre(genre: Genre): void {
         this.genres.push(genre);

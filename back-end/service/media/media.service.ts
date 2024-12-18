@@ -81,13 +81,57 @@ const deleteMedia = async (id: number, role: Role): Promise<void> => {
     await mediaDB.deleteMedia(id);
 };
 
+const updateMedia = async (id: number, mediaInput: MediaInput, role: Role): Promise<Media> => {
+    if (role !== Role.ADMIN) {
+        throw new Error('Forbidden, only admins can update media');
+    }
+
+    if (!mediaInput.title || !mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
+        throw new Error('Missing required media properties');
+    }
+
+    if (mediaInput.type !== 'MOVIE' && mediaInput.type !== 'SERIES') {
+        throw new Error('Invalid media type');
+    }
+
+    const genres = mediaInput.genres.map(genre => Genre[genre as keyof typeof Genre]);
+
+    const existingMedia = await mediaDB.getMediaById(id);
+    if (!existingMedia) {
+        throw new Error('Media not found');
+    }
+
+    existingMedia.setTitle(mediaInput.title);
+    existingMedia.setDescription(mediaInput.description);
+    existingMedia.setReleaseYear(mediaInput.releaseYear);
+    existingMedia.setGenres(genres);
+
+    if (mediaInput.type === 'MOVIE') {
+        if (!(existingMedia instanceof Movie)) {
+            throw new Error('Media type mismatch');
+        }
+        existingMedia.setDirector(mediaInput.director!);
+        existingMedia.setDuration(mediaInput.duration!);
+    } else if (mediaInput.type === 'SERIES') {
+        if (!(existingMedia instanceof Series)) {
+            throw new Error('Media type mismatch');
+        }
+        existingMedia.setNumberOfSeasons(mediaInput.numberOfSeasons!);
+    } else {
+        throw new Error('Invalid media type');
+    }
+
+    return await mediaDB.updateMedia(id, existingMedia);
+};
+
 const MediaService = {
     getAllMedia,
     getAllMovies,
     getAllSeries,
     getAllGenres,
     createMedia,
-    deleteMedia
+    deleteMedia,
+    updateMedia
 };
 
 export default MediaService;
