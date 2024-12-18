@@ -117,6 +117,49 @@ const deleteMedia = async (id: number): Promise<void> => {
     }
 };
 
+const updateMedia = async (id: number, media: Media): Promise<Media> => {
+    try {
+        const genres = media.getGenres();
+
+        const data: any = {
+            title: media.getTitle(),
+            description: media.getDescription(),
+            releaseYear: media.getReleaseYear(),
+            genres: genres.map(genre => genre.toString()),
+            type: media.getType(),
+        };
+
+        if (media instanceof Movie) {
+            data.duration = media.getDuration();
+            data.director = media.getDirector();
+        } else if (media instanceof Series) {
+            data.numberOfSeasons = media.getNumberOfSeasons();
+        }
+
+        data.releaseYear = parseInt(data.releaseYear, 10);
+        if (data.duration) {
+            data.duration = parseInt(data.duration, 10);
+        }
+        if (data.numberOfSeasons) {
+            data.numberOfSeasons = parseInt(data.numberOfSeasons, 10);
+        }
+
+        const mediaPrisma = await prisma.media.update({
+            where: { id },
+            data
+        });
+
+        if (mediaPrisma.type === 'MOVIE') {
+            return Movie.from(mediaPrisma);
+        } else {
+            return Series.from(mediaPrisma);
+        }
+    } catch (error) {
+        console.error('Database error:', error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 
 export default {
     getMediaById,
@@ -124,7 +167,8 @@ export default {
     getAllMovies,
     getAllSeries,
     createMedia,
-    deleteMedia
+    deleteMedia,
+    updateMedia
 };
 
 

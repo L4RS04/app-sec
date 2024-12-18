@@ -1,10 +1,47 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mediaService from '../../service/media/media.service';
-import { MediaInput} from '../../types';
+import { MediaInput } from '../../types';
 import { Role } from '../../model/user/role';
 
-
 const mediaRouter = express.Router();
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     MediaItem:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         releaseYear:
+ *           type: integer
+ *         genres:
+ *           type: array
+ *           items:
+ *             type: string
+ *         type:
+ *           type: string
+ *           enum: ["MOVIE", "SERIES"]
+ *         duration:
+ *           type: integer
+ *           nullable: true
+ *         director:
+ *           type: string
+ *           nullable: true
+ *         numberOfSeasons:
+ *           type: integer
+ *           nullable: true
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
 
 /**
  * @swagger
@@ -12,39 +49,19 @@ const mediaRouter = express.Router();
  *   get:
  *     summary: Get all media
  *     description: Retrieve a list of all media items
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: A list of media items
+ *         description: A list of media items successfully retrieved
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   title:
- *                     type: string
- *                   description:
- *                     type: string
- *                   releaseYear:
- *                     type: integer
- *                   genres:
- *                     type: array
- *                     items:
- *                       type: string
- *                   type:
- *                     type: string
- *                   duration:
- *                     type: integer
- *                     nullable: true
- *                   director:
- *                     type: string
- *                     nullable: true
- *                   numberOfSeasons:
- *                     type: integer
- *                     nullable: true
+ *                 $ref: '#/components/schemas/MediaItem'
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
  *       400:
  *         description: Bad request
  *         content:
@@ -57,13 +74,12 @@ const mediaRouter = express.Router();
  *                 message:
  *                   type: string
  */
-mediaRouter.get('/', async (req: Request, res: Response) => {
+mediaRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const media = await mediaService.getAllMedia();
         res.status(200).json(media);
     } catch (error) {
-        const errorMessage = (error as Error).message;
-        res.status(400).json({ status: 'error', message: errorMessage });
+        next(error);
     }
 });
 
@@ -73,34 +89,19 @@ mediaRouter.get('/', async (req: Request, res: Response) => {
  *   get:
  *     summary: Get all movies
  *     description: Retrieve a list of all movies
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: A list of movies
+ *         description: A list of movies successfully retrieved
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   title:
- *                     type: string
- *                   description:
- *                     type: string
- *                   releaseYear:
- *                     type: integer
- *                   genres:
- *                     type: array
- *                     items:
- *                       type: string
- *                   type:
- *                     type: string
- *                   duration:
- *                     type: integer
- *                   director:
- *                     type: string
+ *                 $ref: '#/components/schemas/MediaItem'
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
  *       400:
  *         description: Bad request
  *         content:
@@ -113,13 +114,12 @@ mediaRouter.get('/', async (req: Request, res: Response) => {
  *                 message:
  *                   type: string
  */
-mediaRouter.get('/movies', async (req: Request, res: Response) => {
+mediaRouter.get('/movies', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const movies = await mediaService.getAllMovies();
         res.status(200).json(movies);
     } catch (error) {
-        const errorMessage = (error as Error).message;
-        res.status(400).json({ status: 'error', message: errorMessage });
+        next(error);
     }
 });
 
@@ -129,32 +129,19 @@ mediaRouter.get('/movies', async (req: Request, res: Response) => {
  *   get:
  *     summary: Get all series
  *     description: Retrieve a list of all series
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: A list of series
+ *         description: A list of series successfully retrieved
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                   title:
- *                     type: string
- *                   description:
- *                     type: string
- *                   releaseYear:
- *                     type: integer
- *                   genres:
- *                     type: array
- *                     items:
- *                       type: string
- *                   type:
- *                     type: string
- *                   numberOfSeasons:
- *                     type: integer
+ *                 $ref: '#/components/schemas/MediaItem'
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
  *       400:
  *         description: Bad request
  *         content:
@@ -172,7 +159,7 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
         const series = await mediaService.getAllSeries();
         res.status(200).json(series);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 });
 
@@ -182,76 +169,21 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
  *   post:
  *     summary: Create a new media item
  *     description: Create a new movie or series
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *                 example: "The test movie"
- *               description:
- *                 type: string
- *                 example: "A movie just made for testing!"
- *               releaseYear:
- *                 type: integer
- *                 example: 2021
- *               genres:
- *                 type: array
- *                 items:
- *                   type: string
- *                 example: ["ACTION"]
- *               type:
- *                 type: string
- *                 example: "MOVIE"
- *               director:
- *                 type: string
- *                 example: "Director Test"
- *               duration:
- *                 type: integer
- *                 example: 120
- *               numberOfSeasons:
- *                 type: integer
- *                 example: 1
+ *             $ref: '#/components/schemas/MediaItem'
  *     responses:
  *       200:
  *         description: Media item created successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   example: 1
- *                 title:
- *                   type: string
- *                   example: "The test movie"
- *                 description:
- *                   type: string
- *                   example: "A movie just made for testing!"
- *                 releaseYear:
- *                   type: integer
- *                   example: 2021
- *                 genres:
- *                   type: array
- *                   items:
- *                     type: string
- *                   example: ["ACTION"]
- *                 type:
- *                   type: string
- *                   example: "MOVIE"
- *                 director:
- *                   type: string
- *                   example: "Director Test"
- *                 duration:
- *                   type: integer
- *                   example: 120
- *                 numberOfSeasons:
- *                   type: integer
- *                   example: 1
+ *               $ref: '#/components/schemas/MediaItem'
  *       400:
  *         description: Bad request
  *         content:
@@ -263,6 +195,10 @@ mediaRouter.get('/series', async (req: Request, res: Response, next: NextFunctio
  *                   type: string
  *                 message:
  *                   type: string
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
+ *       403:
+ *         description: Forbidden - Insufficient permissions
  */
 mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -272,7 +208,7 @@ mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
         const result = await mediaService.createMedia(media, role);
         res.status(200).json(result);
     } catch (error) {
-        next(error); 
+        next(error);
     }
 });
 
@@ -282,6 +218,8 @@ mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
  *   delete:
  *     summary: Delete a media item
  *     description: Delete a media item by ID (Admin only)
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -314,18 +252,10 @@ mediaRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
  *                   type: string
  *                 message:
  *                   type: string
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
  *       403:
- *         description: Forbidden
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 message:
- *                   type: string
- *                   example: "Forbidden: Admins only"
+ *         description: Forbidden - Admin access required
  */
 mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -335,7 +265,7 @@ mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunctio
         await mediaService.deleteMedia(mediaId, role);
         res.status(200).json({ status: 'success', message: 'Media deleted successfully' });
     } catch (error) {
-        next(error); 
+        next(error);
     }
 });
 
@@ -345,15 +275,19 @@ mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunctio
  *   get:
  *     summary: Get all genres
  *     description: Retrieve a list of all genres
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: A list of genres
+ *         description: A list of genres successfully retrieved
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 type: string
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
  *       400:
  *         description: Bad request
  *         content:
@@ -366,13 +300,70 @@ mediaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunctio
  *                 message:
  *                   type: string
  */
-mediaRouter.get('/genres', async (req: Request, res: Response) => { 
+mediaRouter.get('/genres', async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const genres = await mediaService.getAllGenres();
         res.status(200).json(genres);
     } catch (error) {
-        const errorMessage = (error as Error).message;
-        res.status(400).json({ status: 'error', message: errorMessage });
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /media/{id}:
+ *   put:
+ *     summary: Update an existing media item
+ *     description: Update an existing movie or series
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the media item to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MediaItem'
+ *     responses:
+ *       200:
+ *         description: Media item updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/MediaItem'
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
+ *       403:
+ *         description: Forbidden - Insufficient permissions
+ */
+mediaRouter.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = req as Request & { auth: { name: string, role: Role }};
+        const { name, role } = request.auth;
+        const mediaId = parseInt(req.params.id);
+        const media = req.body as MediaInput;
+        const result = await mediaService.updateMedia(mediaId, media, role);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        next(error);
     }
 });
 

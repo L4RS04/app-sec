@@ -7,20 +7,87 @@ const userRouter = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         email:
+ *           type: string
+ *         role:
+ *           type: string
+ *           enum: ['USER', 'ADMIN']
+ *     UserRegistrationInput:
+ *       type: object
+ *       required:
+ *         - name
+ *         - password
+ *         - email
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: Anakin
+ *         password:
+ *           type: string
+ *           example: AnakinS123!
+ *         email:
+ *           type: string
+ *           example: anakin@bingevault.com
+ *     UserLoginInput:
+ *       type: object
+ *       required:
+ *         - name
+ *         - password
+ *       properties:
+ *         name:
+ *           type: string
+ *           example: Xander
+ *         password:
+ *           type: string
+ *           example: XanderD123!
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+/**
+ * @swagger
  * /users:
  *   get:
+ *     summary: Get a list of all users
+ *     description: Retrieve all users (Admin only)
  *     security:
  *       - bearerAuth: []
- *     summary: Get a list of all users
  *     responses:
  *       200:
- *         description: A list of users.
+ *         description: A list of users retrieved successfully
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                  $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized - Authentication token is missing or invalid
+ *       403:
+ *         description: Forbidden - Admin access required
  */
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,7 +96,7 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
         const users = await userService.getAllUsers(role);
         res.status(200).json(users);
     } catch (error) {
-        res.status(400).json({ status: "error", message: (error as Error).message });
+        next(error);
     }
 });
 
@@ -44,33 +111,14 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: Anakin
- *               password:
- *                 type: string
- *                 example: AnakinS123!
- *               email:
- *                 type: string
- *                 example: anakin@bingevault.com
+ *             $ref: '#/components/schemas/UserRegistrationInput'
  *     responses:
  *       200:
  *         description: User registered successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                 name:
- *                   type: string
- *                   example: Anakin
- *                 email:
- *                   type: string
- *                   example: anakin@bingevault.com
+ *               $ref: '#/components/schemas/User'
  *       400:
  *         description: Bad request
  *         content:
@@ -78,17 +126,21 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
  *                 message:
  *                   type: string
- *                   example: An error occurred whilst registering the user
+ *                   example: Registration failed
  */
 userRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userInput = <UserInput>req.body;
+        const userInput = req.body as UserInput;
         const user = await userService.createUser(userInput);
         res.status(200).json(user);
     } catch (error) {
-        res.status(400).json({ status: "error", message: (error as Error).message });
+        const errorMessage = (error as Error).message;
+        res.status(400).json({ status: 'error', message: errorMessage });
+
     }
 });
 
@@ -103,14 +155,7 @@ userRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: Xander
- *               password:
- *                 type: string
- *                 example: XanderD123!
+ *             $ref: '#/components/schemas/UserLoginInput'
  *     responses:
  *       200:
  *         description: Authentication successful
@@ -132,19 +177,23 @@ userRouter.post('/register', async (req: Request, res: Response, next: NextFunct
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
  *                 message:
  *                   type: string
  *                   example: Invalid credentials
  */
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userInput = <UserLoginInput>req.body;
+        const userInput = req.body as UserLoginInput;
         const response = await userService.authenticate(userInput);
-        res.status(200).json({message: "Authentication succesful", ...response });
+        res.status(200).json({ 
+            message: "Authentication successful", 
+            ...response 
+        });
     } catch (error) {
-        res.status(401).json({ status: "error", message: (error as Error).message });
+        next(error);
     }
 });
-
 
 export default userRouter;
