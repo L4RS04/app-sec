@@ -78,6 +78,26 @@ const createWatchlist = async (watchlist: Watchlist): Promise<Watchlist> => {
     }
 };
 
+const addMediaToWatchlist = async (watchlistId: number, mediaId: number) => {
+    try {
+        await prisma.watchlist.update({
+            where: {
+                id: watchlistId,
+            },
+            data: {
+                mediaItems: {
+                    connect: {
+                        id: mediaId,
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.')
+    }
+};
+
 
 export default { 
     getWatchlistById,
@@ -85,6 +105,7 @@ export default {
     deleteWatchlist,
     createWatchlist,
     getWatchlistsByUserId,
+    addMediaToWatchlist,
  };
 
 
