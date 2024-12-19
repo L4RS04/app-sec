@@ -171,7 +171,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                     value={newName}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-4 py-2 text-lg border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-2 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -183,13 +183,13 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                     onChange={handleInputChange}
                                     required
                                     rows={4}
-                                    className="block w-full px-4 py-2 text-lg border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-2 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
                                 <button 
                                     type="submit" 
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-900 transition duration-150 ease-in-out"
                                 >
                                     Update Watchlist
                                 </button>
@@ -204,14 +204,14 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                         placeholder="Search movies and series..."
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-md shadow-sm"
                                     />
                                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                                 </div>
                                 <select
                                     value={mediaTypeFilter}
                                     onChange={(e) => setMediaTypeFilter(e.target.value as 'all' | 'movies' | 'series')}
-                                    className="px-4 py-2 border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="px-4 py-2 border border-blue-300 rounded-md shadow-sm"
                                 >
                                     <option value="all">All</option>
                                     <option value="movies">Movies</option>
@@ -227,14 +227,14 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                         {isMediaInWatchlist(mediaItem.id) ? (
                                             <button
                                                 onClick={() => handleDeleteMedia(mediaItem.id)}
-                                                className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+                                                className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition duration-150 ease-in-out"
                                             >
                                                 Remove
                                             </button>
                                         ) : (
                                             <button
                                                 onClick={() => handleAddMedia(mediaItem.id)}
-                                                className="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
+                                                className="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition duration-150 ease-in-out"
                                             >
                                                 Add
                                             </button>
