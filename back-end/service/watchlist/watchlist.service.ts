@@ -88,6 +88,20 @@ const getWatchlistById = async (watchlistId: number): Promise<Watchlist | null> 
     return watchlistDb.getWatchlistById(watchlistId);
 }
 
+const deleteMediaFromWatchlist = async (watchlistId: number, mediaId: number, userId: number, role: string) => {
+    const watchlist = await watchlistDb.getWatchlistById(watchlistId);
+
+    if (!watchlist) {
+        throw new Error('Watchlist not found');
+    }
+
+    if (watchlist.getUser().getId() !== userId) {
+        throw new Error('Unauthorized to delete media from this watchlist');
+    }
+
+    return watchlistDb.deleteMediaFromWatchlist(watchlistId, mediaId);
+};
+
 const WatchlistService = {
     getAllWatchlists,
     deleteWatchlist,
@@ -95,6 +109,7 @@ const WatchlistService = {
     addMediaToWatchlist,
     updateWatchlist,
     getWatchlistById,
+    deleteMediaFromWatchlist,
 };
 
 export default WatchlistService;

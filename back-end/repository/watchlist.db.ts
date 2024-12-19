@@ -112,6 +112,26 @@ const updateWatchlist = async (watchlistId: number, updates: { name?: string, de
     }
 };
 
+const deleteMediaFromWatchlist = async (watchlistId: number, mediaId: number) => {
+    try {
+        await prisma.watchlist.update({
+            where: {
+                id: watchlistId,
+            },
+            data: {
+                mediaItems: {
+                    disconnect: {
+                        id: mediaId,
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
+
 
 export default { 
     getWatchlistById,
@@ -120,7 +140,8 @@ export default {
     createWatchlist,
     getWatchlistsByUserId,
     addMediaToWatchlist,
-    updateWatchlist
+    updateWatchlist,
+    deleteMediaFromWatchlist,
  };
 
 
