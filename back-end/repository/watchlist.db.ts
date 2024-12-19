@@ -98,6 +98,40 @@ const addMediaToWatchlist = async (watchlistId: number, mediaId: number) => {
     }
 };
 
+const updateWatchlist = async (watchlistId: number, updates: { name?: string, description?: string }) => {
+    try {
+        await prisma.watchlist.update({
+            where: {
+                id: watchlistId,
+            },
+            data: updates,
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
+
+const deleteMediaFromWatchlist = async (watchlistId: number, mediaId: number) => {
+    try {
+        await prisma.watchlist.update({
+            where: {
+                id: watchlistId,
+            },
+            data: {
+                mediaItems: {
+                    disconnect: {
+                        id: mediaId,
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
+
 
 export default { 
     getWatchlistById,
@@ -106,6 +140,8 @@ export default {
     createWatchlist,
     getWatchlistsByUserId,
     addMediaToWatchlist,
+    updateWatchlist,
+    deleteMediaFromWatchlist,
  };
 
 

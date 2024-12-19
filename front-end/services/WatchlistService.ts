@@ -16,6 +16,22 @@ const getAllWatchlists = async ()  => {
     })
 };
 
+const getWatchlistById = async (watchlistId: number) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/watchlists/${watchlistId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+}
+
 const deleteWatchlist = async (watchlistId: number) => {
     const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
 
@@ -49,11 +65,63 @@ const createWatchlist = async (newWatchlist: Watchlist) => {
     });
 };
 
+const addMediaToWatchlist = async (watchlistId: number, mediaId: number) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/watchlists/${watchlistId}/media/${mediaId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+};
+
+const updateWatchlist = async (watchlistId: number, updates: { name?: string, description?: string }) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/watchlists/${watchlistId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+    });
+};
+
+const deleteMediaFromWatchlist = async (watchlistId: number, mediaId: number) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/watchlists/${watchlistId}/media/${mediaId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+};
 
 const WatchlistService = {
     getAllWatchlists,
     deleteWatchlist,
     createWatchlist,
+    addMediaToWatchlist,
+    getWatchlistById,
+    updateWatchlist,
+    deleteMediaFromWatchlist,
 };
 
 export default WatchlistService;
