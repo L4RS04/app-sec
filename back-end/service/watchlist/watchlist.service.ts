@@ -32,13 +32,13 @@ const createWatchlist = async (watchlistInput: WatchlistInput, id: number, role:
         throw new Error('User not found');
     }
 
-    const userWatchlists = await watchlistDb.getWatchlistsByUserId(id); 
+    const userWatchlists = await watchlistDb.getWatchlistsByUserId(id) || []; // Initialize as empty array if undefined
 
     if (role === 'USER') {
         if (userWatchlists.length >= 1) {
             throw new Error('Normal users can only have one watchlist.');
         }
-        if (watchlistInput.mediaItems.length > 10) {
+        if (watchlistInput.mediaItems && watchlistInput.mediaItems.length > 10) {
             throw new Error('Normal users can only have a maximum of 10 media items in their watchlist.');
         }
     }
@@ -46,17 +46,35 @@ const createWatchlist = async (watchlistInput: WatchlistInput, id: number, role:
     const watchlist = new Watchlist({
         name: watchlistInput.name,
         description: watchlistInput.description,
-        mediaItems: watchlistInput.mediaItems,
         user: user,
     });
 
     return watchlistDb.createWatchlist(watchlist);
 }
 
+const addMediaToWatchlist = async (watchlistId: number, mediaId: number, id: number, role: string) => {
+    const watchlist = await watchlistDb.getWatchlistById(watchlistId);
+
+    if (!watchlist) {
+        throw new Error('Watchlist not found');
+    }
+
+    if (watchlist.getUser().getId() !== id) {
+        throw new Error('Unauthorized to add media to this watchlist');
+    }
+
+    if (role === 'USER' && watchlist.getMedia().length > 10) {
+        throw new Error('Normal users can only have a maximum of 10 media items in their watchlist.');
+    }
+
+    return watchlistDb.addMediaToWatchlist(watchlistId, mediaId);
+};
+
 const WatchlistService = {
     getAllWatchlists,
     deleteWatchlist,
-    createWatchlist
+    createWatchlist,
+    addMediaToWatchlist,
 };
 
 export default WatchlistService;
