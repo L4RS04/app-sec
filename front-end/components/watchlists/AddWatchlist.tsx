@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import { Watchlist } from "../../types";
 import WatchlistService from "@services/WatchlistService";
@@ -10,17 +10,50 @@ const AddWatchlist: React.FC = () => {
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [userRole, setUserRole] = useState<string>('');
+    const [userId, setUserId] = useState<number | null>(null);
+    const [hasWatchlist, setHasWatchlist] = useState<boolean>(false);
     const router = useRouter();
+
+    useEffect(() => {
+        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser') as string);
+        if (loggedInUser) {
+            setUserRole(loggedInUser.role);
+            setUserId(loggedInUser.id);
+            if (loggedInUser.role === 'USER' && loggedInUser.id !== null) {
+                checkExistingWatchlists(loggedInUser.id);
+            }
+        } else {
+            router.push('/not-authorized');
+        }
+    }, [router]);
+
+    const checkExistingWatchlists = async (userId: number) => {
+        try {
+            const response = await WatchlistService.getWatchlistsByUserId(userId);
+            const userWatchlists = await response.json();
+            if (userWatchlists.length >= 1) {
+                setHasWatchlist(true);
+            }
+        } catch (error) {
+            console.error("An error occurred while checking existing watchlists: ", error);
+        }
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setError(null);
 
+        if (hasWatchlist) {
+            setError("You can only have one watchlist.");
+            return;
+        }
+
         const newWatchlist: Watchlist = {
             name,
             description,
             creationDate: new Date(),
-            user: { id: 0, name: '', role: '' }, 
+            user: { id: userId ?? 0, name: '', role: userRole }, 
             mediaItems: []
         };
 
@@ -100,4 +133,3 @@ const AddWatchlist: React.FC = () => {
 };
 
 export default AddWatchlist;
-

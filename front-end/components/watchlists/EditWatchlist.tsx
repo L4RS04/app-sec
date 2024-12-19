@@ -23,11 +23,13 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [mediaTypeFilter, setMediaTypeFilter] = useState<'all' | 'movies' | 'series'>('all');
+    const [userRole, setUserRole] = useState<string>('');
 
     useEffect(() => {
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser') as string);
         if (loggedInUser) {
             setIsAuthorized(true);
+            setUserRole(loggedInUser.role);
             const fetchWatchlistAndMediaItems = async () => {
                 try {
                     const [fetchedWatchlist, fetchedMovies, fetchedSeries] = await Promise.all([
@@ -94,6 +96,10 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
 
     const handleAddMedia = async (mediaId: number) => {
         if (watchlist) {
+            if (userRole === 'USER' && watchlist.mediaItems.length >= 10) {
+                alert("You can only add up to 10 media items to your watchlist.");
+                return;
+            }
             try {
                 if (watchlist.id !== undefined) {
                     await WatchlistService.addMediaToWatchlist(watchlist.id, mediaId);
