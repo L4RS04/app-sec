@@ -3,10 +3,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { User } from '@types';
+import Language from './language/Language';
+import { useTranslation } from "next-i18next";
 
 const Header: React.FC = () => {
     const router = useRouter();
     const [loggedInUser, setLoggedInUser] = useState<User>();
+    const { t } = useTranslation();
 
     const logOut = () => {
         sessionStorage.removeItem("loggedInUser");
@@ -39,22 +42,22 @@ const Header: React.FC = () => {
                     <nav className="flex flex-wrap justify-center sm:justify-end space-x-2 sm:space-x-4">
                         {!loggedInUser && (
                         <Link href="/" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Home
+                            {t('home')}
                         </Link>
                         )}
                         {loggedInUser && (
                         <Link href="/watchlists" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Watchlists
+                            {t('watchlists')}
                         </Link>
                         )}
                         {loggedInUser && (
                         <Link href="/movies" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Movies
+                            {t('movies')}
                         </Link>
                         )}
                         {loggedInUser && (
                         <Link href="/series" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Series
+                            {t('series')}
                         </Link>
                         )}
                         {loggedInUser && (
@@ -62,23 +65,24 @@ const Header: React.FC = () => {
                         href="/" 
                         onClick={logOut}
                         className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Logout
+                            {t('logout')}
                         </Link>
                         )}
                         {!loggedInUser && (
                         <Link 
                         href="/login" 
                         className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Login
+                            {t('login')}
                         </Link>
                         )}
                         {!loggedInUser && (
                         <Link 
                         href="/register" 
                         className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
-                            Register
+                            {t('register')}
                         </Link>
                         )}
+                        <Language />
                     </nav>
                 </div>
             </div>
