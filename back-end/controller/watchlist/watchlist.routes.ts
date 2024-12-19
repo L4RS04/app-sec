@@ -100,7 +100,6 @@ watchlistRouter.get('/user/:id', async (req: Request, res: Response) => {
         if (isNaN(userId)) {
             throw new Error('Invalid user ID');
         }
-        console.log('Parsed userId:', userId);
         const watchlists = await watchlistService.getWatchlistsByUserId(userId);
         res.status(200).json(watchlists);
     } catch (error) {
