@@ -20,8 +20,25 @@ const getGenres = async (): Promise<Genre[]> => {
     return response.json();
 };
 
+const getAllMedia = async () => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    return fetch(process.env.NEXT_PUBLIC_API_URL + "/media", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+};
+
 const MediaService = {
     getGenres,
+    getAllMedia,
 }
 
 export default MediaService;

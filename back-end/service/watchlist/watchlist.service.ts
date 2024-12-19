@@ -70,11 +70,31 @@ const addMediaToWatchlist = async (watchlistId: number, mediaId: number, id: num
     return watchlistDb.addMediaToWatchlist(watchlistId, mediaId);
 };
 
+const updateWatchlist = async (watchlistId: number, updates: { name?: string, description?: string }, userId: number, role: string) => {
+    const watchlist = await watchlistDb.getWatchlistById(watchlistId);
+
+    if (!watchlist) {
+        throw new Error('Watchlist not found');
+    }
+
+    if (watchlist.getUser().getId() !== userId) {
+        throw new Error('Unauthorized to update this watchlist');
+    }
+
+    return watchlistDb.updateWatchlist(watchlistId, updates);
+};
+
+const getWatchlistById = async (watchlistId: number): Promise<Watchlist | null> => {
+    return watchlistDb.getWatchlistById(watchlistId);
+}
+
 const WatchlistService = {
     getAllWatchlists,
     deleteWatchlist,
     createWatchlist,
     addMediaToWatchlist,
+    updateWatchlist,
+    getWatchlistById,
 };
 
 export default WatchlistService;

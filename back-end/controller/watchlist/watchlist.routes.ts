@@ -14,6 +14,17 @@ watchlistRouter.get('/', async (req: Request, res: Response) => {
     }
 });
 
+watchlistRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const watchlistId = parseInt(req.params.id);
+        const watchlist = await watchlistService.getWatchlistById(watchlistId);
+        res.status(200).json(watchlist);
+    } catch (error) {
+        const errorMessage = (error as Error).message;
+        res.status(400).json({ status: 'error', message: errorMessage });
+    }
+});
+
 watchlistRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const watchlist = req.body as WatchlistInput;
@@ -55,15 +66,18 @@ watchlistRouter.put('/:id/media/:mediaId', async (req: Request, res: Response) =
     }
 });
 
-// watchlistRouter.delete('/:id/media/:mediaId', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const watchlistId = parseInt(req.params.id);
-//         const mediaId = parseInt(req.params.mediaId);
-//         const watchlist = await watchlistService.deleteMediaFromWatchlist(watchlistId, mediaId);
-//         res.status(200).json(watchlist.toJSON());
-//     } catch (error) {
-//         next(error);
-//     }
-// });
+watchlistRouter.put('/:id', async (req: Request, res: Response) => {
+    try {
+        const watchlistId = parseInt(req.params.id);
+        const request = req as Request & { auth: { id: number, role: string }};
+        const { id, role } = request.auth;
+        const updates = req.body;
+        await watchlistService.updateWatchlist(watchlistId, updates, id, role);
+        res.status(200).json({ status: 'success', message: 'Watchlist updated' });
+    } catch (error) {
+        const errorMessage = (error as Error).message;
+        res.status(400).json({ status: 'error', message: errorMessage });
+    }
+});
 
 export default watchlistRouter;
