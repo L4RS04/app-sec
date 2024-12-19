@@ -102,7 +102,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                     value={series.title}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-2 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -114,7 +114,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                     onChange={handleInputChange}
                                     required
                                     rows={4}
-                                    className="block w-full px-2 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -128,7 +128,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                         value={series.releaseYear}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-2 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                     />
                                 </div>
                                 <div>
@@ -140,7 +140,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                         value={series.numberOfSeasons}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-2 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                     />
                                 </div>
                             </div>
@@ -152,7 +152,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                             key={genre}
                                             type="button"
                                             onClick={() => handleGenreToggle(genre)}
-                                            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
+                                            className={`px-2 py-2 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
                                                 series.genres.includes(genre)
                                                     ? 'bg-blue-600 text-white shadow-md'
                                                     : 'bg-blue-100 text-blue-800 hover:bg-blue-200'

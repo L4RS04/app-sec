@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Movie } from "@types";
 import { formatDuration } from "utils/utils";
-import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Trash2, Pencil, Search } from 'lucide-react';
 import GenreTag from "@components/GenreTag";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 type Props = {
     movies: Array<Movie>;
@@ -14,6 +14,7 @@ type Props = {
 
 const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }: Props) => {
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
+    const [searchTerm, setSearchTerm] = useState("");
     const router = useRouter();
 
     const handleDropdownClick = (index: number) => {
@@ -27,74 +28,92 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }:
         router.push(`/movies/edit/${movieId}`);
     };
 
+    const filteredMovies = useMemo(() => {
+        return movies.filter(m => 
+            m.title?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [movies, searchTerm]);
+
     return (
-        <div className="w-full min-w-[800px] overflow-x-auto mb-5">
-            <div className="w-full border border-gray-200 rounded-lg shadow-sm">
-                <table className="w-full border-collapse bg-white">
-                    <thead>
-                        <tr className="bg-[#1429b1] text-white">
-                            <th className="w-2/5 px-6 py-3 text-center text-xs font-medium uppercase">Title</th>
-                            <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">Duration</th>
-                            <th className="w-1/5 px-6 py-3 text-center text-xs font-medium uppercase">More</th>
-                            {isAdmin && <th className="w-1/4 px-6 py-3 text-center text-xs font-medium uppercase">Actions</th>}
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {movies.map((movie, index) => (
-                            <React.Fragment key={index}>
-                                <tr>
-                                    <td className="w-2/5 px-6 py-4 text-center">{movie.title}</td>
-                                    <td className="w-1/5 px-6 py-4 text-center">{formatDuration(movie.duration ?? 0)}</td>
-                                    <td className="w-1/5 px-6 py-4 text-center">
-                                        <button
-                                            className="text-[#007bff] hover:text-[#1429b1]"
-                                            onClick={() => handleDropdownClick(index)}
-                                        >
-                                            {expandedRows[index] ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                                        </button>
-                                    </td>
-                                    {isAdmin && (
-                                        <td className="w-1/4 px-6 py-4 text-center">
-                                            <div className="flex justify-center space-x-4">
-                                                <button
-                                                    className="text-red-500 hover:text-red-700"
-                                                    onClick={() => movie.id !== undefined && onDeleteMovie(movie.id)}
-                                                >
-                                                    <Trash2 className="w-5 h-5" />
-                                                </button>
-                                                <button
-                                                    className="text-blue-500 hover:text-blue-700"
-                                                    onClick={() => movie.id !== undefined && handleEditClick(movie.id)}
-                                                >
-                                                    <Pencil className="w-5 h-5" />
-                                                </button>
-                                            </div>
+        <div className="w-full space-y-4">
+            <div className="relative">
+                <input
+                    type="text"
+                    placeholder="Search movies..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+            </div>
+            <div className="w-full overflow-x-auto mb-8">
+                <div className="w-full min-w-[800px] overflow-hidden rounded-lg shadow-lg">
+                    <table className="w-full border-collapse bg-white">
+                        <thead>
+                            <tr className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                                <th className="w-2/5 px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Title</th>
+                                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Duration</th>
+                                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">More</th>
+                                {isAdmin && <th className="w-1/4 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Actions</th>}
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {filteredMovies.map((movie, index) => (
+                                <React.Fragment key={index}>
+                                    <tr className="hover:bg-blue-50 transition-colors duration-150 ease-in-out">
+                                        <td className="w-2/5 px-6 py-4 text-left">{movie.title}</td>
+                                        <td className="w-1/5 px-6 py-4 text-center">{formatDuration(movie.duration ?? 0)}</td>
+                                        <td className="w-1/5 px-6 py-4 text-center">
+                                            <button
+                                                className="text-blue-600 hover:text-blue-800 transition-colors duration-150 ease-in-out"
+                                                onClick={() => handleDropdownClick(index)}
+                                            >
+                                                {expandedRows[index] ? <ChevronUp className="w-5 h-5 inline" /> : <ChevronDown className="w-5 h-5 inline" />}
+                                            </button>
                                         </td>
-                                    )}
-                                </tr>
-                                {expandedRows[index] && (
-                                    <tr className="bg-blue-50">
-                                        <td colSpan={isAdmin ? 4 : 3} className="px-3 py-2">
-                                            <div className="text-sm text-gray-900 max-w-2xl">
-                                                <p className="mb-1"><span className="font-medium">Description:</span> {movie.description}</p>
-                                                <div className="mb-2">
-                                                    <span className="font-medium">Genres: </span>
-                                                    <div className="mt-1">
-                                                        {movie.genres.map((genre, i) => (
-                                                            <GenreTag key={i} genre={genre} />
-                                                        ))}
-                                                    </div>
+                                        {isAdmin && (
+                                            <td className="w-1/4 px-6 py-4 text-center">
+                                                <div className="flex justify-center space-x-4">
+                                                    <button
+                                                        className="text-red-500 hover:text-red-700 transition-colors duration-150 ease-in-out"
+                                                        onClick={() => movie.id !== undefined && onDeleteMovie(movie.id)}
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
+                                                    </button>
+                                                    <button
+                                                        className="text-blue-500 hover:text-blue-700 transition-colors duration-150 ease-in-out"
+                                                        onClick={() => movie.id !== undefined && handleEditClick(movie.id)}
+                                                    >
+                                                        <Pencil className="w-5 h-5" />
+                                                    </button>
                                                 </div>
-                                                <p className="mb-1"><span className="font-medium">Director:</span> {movie.director}</p>
-                                                <p><span className="font-medium">Released:</span> {movie.releaseYear}</p>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        )}
                                     </tr>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
+                                    {expandedRows[index] && (
+                                        <tr className="bg-blue-50">
+                                            <td colSpan={isAdmin ? 4 : 3} className="px-6 py-4">
+                                                <div className="text-sm text-gray-800 max-w-2xl">
+                                                    <p className="mb-2"><span className="font-semibold text-blue-800">Description:</span> {movie.description}</p>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold text-blue-800">Genres: </span>
+                                                        <div className="mt-2 flex flex-wrap gap-2">
+                                                            {movie.genres.map((genre, i) => (
+                                                                <GenreTag key={i} genre={genre} />
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <p className="mb-1"><span className="font-semibold text-blue-800">Director:</span> {movie.director}</p>
+                                                    <p className="mb-1"><span className="font-semibold text-blue-800">Released:</span> {movie.releaseYear}</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </React.Fragment>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
