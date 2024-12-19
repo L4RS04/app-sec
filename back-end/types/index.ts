@@ -77,7 +77,7 @@ export type WatchlistInput = {
     id?: number;
     name: string;
     description: string;
-    mediaItems: Media[];
+    mediaItems?: Media[];
     creationDate?: Date;
 };
 

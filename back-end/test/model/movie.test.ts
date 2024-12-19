@@ -78,3 +78,13 @@ test('given: undefined director, when: movie is created, then: error is thrown',
     expect(() => new Movie({ releaseYear, title, description, genres, duration, director: invalidDirector as unknown as string }))
         .toThrowError("Movie director is required");
 });
+
+test('given: undefined duration, when: movie is created, then: error is thrown', () => {
+    // given
+    const invalidDuration = undefined;
+
+    // when / then
+    expect(() => new Movie({ releaseYear, title, description, genres, duration: invalidDuration as unknown as number, director }))
+        .toThrowError("Movie duration is required");
+});
+

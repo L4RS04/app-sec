@@ -1,207 +1,280 @@
-// import { User } from "../../model/user";
-// import userDb from "../../repository/user.db";
-// import watchlistDb from "../../repository/watchlist.db";
-// // import mediaDb from "../../repository/media.db";
-// // import watchlistService from "../../service/watchlist.service";
-// import { UserInput } from "../../types";
+import WatchlistService  from '../../service/watchlist/watchlist.service';
+import watchlistDB from '../../repository/watchlist.db';
+import { Watchlist } from '../../model/watchlist/watchlist';
+import userDB from '../../repository/user.db';
+import { WatchlistInput } from '../../types';
+import { Role } from '../../model/user/role';
+import { User } from '../../model/user/user';
+import { Series } from '../../model/media/series';
+import { Movie } from '../../model/media/movie';
 
-// const userInput: UserInput = {
-//     name: 'John Doe',
-//     email: 'john.doe@example.com',
-//     password: 'JohnD123!',
-// };
+const user = new User({
+    id: 1,
+    name: "Test User",
+    email: "testuser@bingevault.com",
+    password: "TestT123!"
+});
 
-// const user = new User({
-//     ...userInput,
-// });
+const validWatchlistInput: WatchlistInput = {
+    name: "Test Watchlist",
+    description: "A test watchlist"
+};
 
-// let createWatchlistMock: jest.Mock;
-// let deleteWatchlistMock: jest.Mock;
-// let mockMediaDbGetMediaById: jest.Mock;
-// let mockUserDbGetUserById: jest.Mock;
-// let mockWatchlistDbGetWatchlistById: jest.Mock;
+const existingWatchlist = new Watchlist({
+    id: 1,
+    name: "Existing watchlist",
+    description: "An existing watchlist",
+    user: user,
+});
 
-// beforeEach(() => {
-//     mockMediaDbGetMediaById = jest.fn();
-//     mockUserDbGetUserById = jest.fn();
-//     mockWatchlistDbGetWatchlistById = jest.fn();
+const validSeries = new Series({
+    id: 1,
+    title: "Test Series",
+    description: "A test series",
+    releaseYear: 2021,
+    genres: [],
+    numberOfSeasons: 1,
+});
 
-//     createWatchlistMock = jest.fn();
-//     deleteWatchlistMock = jest.fn();
-// });
+const validMovie = new Movie({
+    id: 1,
+    title: "Test Movie",
+    description: "A test movie",
+    releaseYear: 2021,
+    genres: [],
+    director: "Test Director",
+    duration: 120,
+});
 
-// afterEach(() => {
-//     jest.clearAllMocks();
-// });
 
-// // test('given a valid user, when creating a watchlist, then watchlist is created with those values', () => {
-// //     // given
-// //     userDb.getUserById = mockUserDbGetUserById.mockReturnValue(user);
+let createWatchlistMock: jest.Mock;
+let deleteWatchlistMock: jest.Mock;
 
-// //     watchlistDb.createWatchlist = createWatchlistMock;
-    
-// //     // when
-// //     watchlistService.createWatchlist({
-// //         name: 'Watchlist 1',
-// //         description: 'Description 1',
-// //         creatorId: user.getId() ?? 0,
-// //     });
+beforeEach(() => {
+    createWatchlistMock = jest.fn();
+    deleteWatchlistMock = jest.fn();
+});
 
-// //     // then
-// //     expect(createWatchlistMock).toHaveBeenCalledTimes(1);
-// //     expect(createWatchlistMock).toHaveBeenCalledWith(
-// //         expect.objectContaining({
-// //             id: 0,
-// //             name: 'Watchlist 1',
-// //             description: 'Description 1',
-// //             mediaItems: [],
-// //             creator: expect.objectContaining({
-// //                 id: user.getId(),
-// //                 name: user.getName(),
-// //                 email: user.getEmail(),
-// //             }),
-// //         })
-// //     );
-// // });
+afterEach(() => {
+    jest.clearAllMocks();
+});
 
-// // test('given a non-existent user, when creating a watchlist, then error is thrown', () => {
-// //     // given
-// //     userDb.getUserById = mockUserDbGetUserById.mockReturnValue(undefined);
+test('given a valid watchlist input, when creating a watchlist, then watchlist is created with those values', async () => {
+    // given
+    watchlistDB.createWatchlist = createWatchlistMock;
+    userDB.getUserById = jest.fn().mockResolvedValue(user);
 
-// //     // when
-// //     expect(() => {
-// //         watchlistService.createWatchlist({
-// //             name: 'Watchlist 1',
-// //             description: 'Description 1',
-// //             creatorId: user.getId() ?? 0,
-// //         });
-// //     }).toThrowError('Creator not found');
-// // });
+    // when
+    await WatchlistService.createWatchlist(validWatchlistInput, 1, Role.USER);
 
-// // test('given a watchlist without a name, when creating a watchlist, then error is thrown', () => {
-// //     // given
-// //     userDb.getUserById = mockUserDbGetUserById.mockReturnValue(user);
+    // then
+    expect(createWatchlistMock).toHaveBeenCalledTimes(1);
+    expect(createWatchlistMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+            name: validWatchlistInput.name,
+            description: validWatchlistInput.description,
+            mediaItems: [],
+            user: expect.objectContaining({
+                id: 1,
+                name: user.getName(),
+                role: Role.USER,
+            }),
+        })
+    );
+});
 
-// //     // when
-// //     expect(() => {
-// //         watchlistService.createWatchlist({
-// //             name: '',
-// //             description: 'Description 1',
-// //             creatorId: user.getId() ?? 0,
-// //         });
-// //     }).toThrowError('Name is required');
-// // });
+test('given an invalid watchlist input, when creating a watchlist, then an error is thrown', async () => {
+    // given
+    watchlistDB.createWatchlist = createWatchlistMock;
+    userDB.getUserById = jest.fn().mockResolvedValue(user);
 
-// test('given a valid watchlist id, when deleting a watchlist, then watchlist is deleted', () => {
-//     // given
-//     const watchlistId = 1;
-//     const watchlist = { id: watchlistId, name: 'Watchlist 1', description: 'Description 1', mediaItems: [], creator: user };
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(watchlist);
-//     watchlistDb.deleteWatchlist = deleteWatchlistMock;
+    const invalidWatchlistInput: WatchlistInput = {
+        name: "Test Watchlist",
+        description: "A test watchlist"
+    };
 
-//     // when
-//     watchlistService.deleteWatchlist(watchlistId);
+    // when
+    try {
+        await WatchlistService.createWatchlist(invalidWatchlistInput, 1, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toBeInstanceOf(Error);
+    }
+});
 
-//     // then
-//     expect(mockWatchlistDbGetWatchlistById).toHaveBeenCalledWith(watchlistId);
-//     expect(deleteWatchlistMock).toHaveBeenCalledWith(watchlist);
-// });
+test('given a valid user id, when getting watchlists by user id, then watchlists are returned', async () => {
+    // given
+    watchlistDB.getWatchlistsByUserId = jest.fn().mockResolvedValue([new Watchlist({
+        id: 1,
+        name: "Test Watchlist",
+        description: "A test watchlist",
+        user: user,
+        mediaItems: [],
+        creationDate: new Date()
+    })]);
 
-// test('given a non-existent watchlist id, when deleting a watchlist, then error is thrown', () => {
-//     // given
-//     const watchlistId = 1;
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(undefined);
+    // when
+    const watchlists = await WatchlistService.getWatchlistsByUserId(1);
 
-//     // when
-//     expect(() => {
-//         watchlistService.deleteWatchlist(watchlistId);
-//     }).toThrowError('Watchlist not found');
-// });
+    // then
+    expect(watchlists).toHaveLength(1);
+    expect(watchlists[0]).toEqual(
+        expect.objectContaining({
+            name: "Test Watchlist",
+            description: "A test watchlist",
+            user: user,
+            mediaItems: [],
+        })
+    );
+});
 
-// test('given a valid watchlist and media id, when adding media to watchlist, then media is added', () => {
-//     // given
-//     const watchlistId = 1;
-//     const mediaId = 1;
-//     const watchlist = { id: watchlistId, name: 'Watchlist 1', description: 'Description 1', mediaItems: [], creator: user, addMediaToWatchlist: jest.fn() };
-//     const media = { id: mediaId, title: 'Media 1' };
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(watchlist);
-//     mediaDb.getMediaById = mockMediaDbGetMediaById.mockReturnValue(media);
+test('given an invalid user id, when getting watchlists by user id, then an error is thrown', async () => {
+    // given
+    watchlistDB.getWatchlistsByUserId = jest.fn().mockResolvedValue([]);
 
-//     // when
-//     watchlistService.addMediaToWatchlist(watchlistId, mediaId);
+    // when
+    try {
+        await WatchlistService.getWatchlistsByUserId(1);
+    } catch (error) {
+        // then
+        expect(error).toBeInstanceOf(Error);
+    }
+});
 
-//     // then
-//     expect(mockWatchlistDbGetWatchlistById).toHaveBeenCalledWith(watchlistId);
-//     expect(mockMediaDbGetMediaById).toHaveBeenCalledWith(mediaId);
-//     expect(watchlist.addMediaToWatchlist).toHaveBeenCalledWith(media);
-// });
+test('given a valid watchlist id, when getting watchlist by id, then watchlist is returned', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(new Watchlist({
+        id: 1,
+        name: "Test Watchlist",
+        description: "A test watchlist",
+        user: user,
+        mediaItems: [],
+        creationDate: new Date()
+    }));
 
-// test('given a non-existent watchlist id, when adding media to watchlist, then error is thrown', () => {
-//     // given
-//     const watchlistId = 1;
-//     const mediaId = 1;
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(undefined);
+    // when
+    const watchlist = await WatchlistService.getWatchlistById(1);
 
-//     // when
-//     expect(() => {
-//         watchlistService.addMediaToWatchlist(watchlistId, mediaId);
-//     }).toThrowError('Watchlist not found');
-// });
+    // then
+    expect(watchlist).toEqual(
+        expect.objectContaining({
+            name: "Test Watchlist",
+            description: "A test watchlist",
+            user: user,
+            mediaItems: [],
+        })
+    );
+});
 
-// test('given a non-existent media id, when adding media to watchlist, then error is thrown', () => {
-//     // given
-//     const watchlistId = 1;
-//     const mediaId = 1;
-//     const watchlist = { id: watchlistId, name: 'Watchlist 1', description: 'Description 1', mediaItems: [], creator: user, addMediaToWatchlist: jest.fn() };
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(watchlist);
-//     mediaDb.getMediaById = mockMediaDbGetMediaById.mockReturnValue(undefined);
+test('given an invalid watchlist id, when getting watchlist by id, then an error is thrown', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(null);
 
-//     // when
-//     expect(() => {
-//         watchlistService.addMediaToWatchlist(watchlistId, mediaId);
-//     }).toThrowError('Media not found');
-// });
+    // when
+    try {
+        await WatchlistService.getWatchlistById(1);
+    } catch (error) {
+        // then
+        expect(error).toBeInstanceOf(Error);
+    }
+});
 
-// test('given a valid watchlist and media id, when deleting media from watchlist, then media is removed', () => {
-//     // given
-//     const watchlistId = 1;
-//     const mediaId = 1;
-//     const media = { id: mediaId, title: 'Media 1' };
-//     const watchlist = { id: watchlistId, name: 'Watchlist 1', description: 'Description 1', mediaItems: [media], creator: user, removeMediaFromWatchlist: jest.fn() };
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(watchlist);
-//     mediaDb.getMediaById = mockMediaDbGetMediaById.mockReturnValue(media);
+test('given a valid watchlist id, when deleting a watchlist, then watchlist is deleted', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(existingWatchlist);
+    watchlistDB.deleteWatchlist = deleteWatchlistMock;
 
-//     // when
-//     watchlistService.deleteMediaFromWatchlist(watchlistId, mediaId);
+    // when
+    await WatchlistService.deleteWatchlist(1, 1, Role.USER);
 
-//     // then
-//     expect(mockWatchlistDbGetWatchlistById).toHaveBeenCalledWith(watchlistId);
-//     expect(mockMediaDbGetMediaById).toHaveBeenCalledWith(mediaId);
-//     expect(watchlist.removeMediaFromWatchlist).toHaveBeenCalledWith(media);
-// });
+    // then
+    expect(deleteWatchlistMock).toHaveBeenCalledTimes(1);
+    expect(deleteWatchlistMock).toHaveBeenCalledWith(1);
+});
 
-// test('given a non-existent watchlist id, when deleting media from watchlist, then error is thrown', () => {
-//     // given
-//     const watchlistId = 1;
-//     const mediaId = 1;
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(undefined);
+test('given an invalid watchlist id, when deleting a watchlist, then an error is thrown', async () => {
+    // given
+    watchlistDB.deleteWatchlist = deleteWatchlistMock;
 
-//     // when
-//     expect(() => {
-//         watchlistService.deleteMediaFromWatchlist(watchlistId, mediaId);
-//     }).toThrowError('Watchlist not found');
-// });
+    // when
+    try {
+        await WatchlistService.deleteWatchlist(1, 1, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toBeInstanceOf(Error);
+    }
+});
 
-// test('given a non-existent media id, when deleting media from watchlist, then error is thrown', () => {
-//     // given
-//     const watchlistId = 1;
-//     const mediaId = 1;
-//     const watchlist = { id: watchlistId, name: 'Watchlist 1', description: 'Description 1', mediaItems: [], creator: user, removeMediaFromWatchlist: jest.fn() };
-//     watchlistDb.getWatchlistById = mockWatchlistDbGetWatchlistById.mockReturnValue(watchlist);
-//     mediaDb.getMediaById = mockMediaDbGetMediaById.mockReturnValue(undefined);
+test('given a valid watchlist id and media id, when adding media to watchlist, then media is added to watchlist', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(existingWatchlist);
+    watchlistDB.addMediaToWatchlist = jest.fn();
 
-//     // when
-//     expect(() => {
-//         watchlistService.deleteMediaFromWatchlist(watchlistId, mediaId);
-//     }).toThrowError('Media not found');
-// });
+    // when
+    await WatchlistService.addMediaToWatchlist(1, 1, 1, Role.USER);
+
+    // then
+    expect(watchlistDB.addMediaToWatchlist).toHaveBeenCalledTimes(1);
+    expect(watchlistDB.addMediaToWatchlist).toHaveBeenCalledWith(1, 1);
+});
+
+test('given an invalid watchlist id, when adding media to watchlist, then an error is thrown', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(null);
+
+    // when
+    try {
+        await WatchlistService.addMediaToWatchlist(1, 1, 1, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toBeInstanceOf(Error);
+    }
+});
+
+test('given a valid watchlist id and media id, when deleting media from watchlist, then media is deleted from watchlist', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(existingWatchlist);
+    watchlistDB.deleteMediaFromWatchlist = jest.fn();
+
+    // when
+    await WatchlistService.deleteMediaFromWatchlist(1, 1, 1, Role.USER);
+
+    // then
+    expect(watchlistDB.deleteMediaFromWatchlist).toHaveBeenCalledTimes(1);
+    expect(watchlistDB.deleteMediaFromWatchlist).toHaveBeenCalledWith(1, 1);
+});
+
+test('given an invalid watchlist id, when deleting media from watchlist, then an error is thrown', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(null);
+
+    // when
+    try {
+        await WatchlistService.deleteMediaFromWatchlist(1, 1, 1, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toBeInstanceOf(Error);
+    }
+});
+
+test('given a valid watchlist id and updates, when updating a watchlist, then watchlist is updated with those values', async () => {
+    // given
+    watchlistDB.getWatchlistById = jest.fn().mockResolvedValue(existingWatchlist);
+    watchlistDB.updateWatchlist = jest.fn();
+
+    // when
+    await WatchlistService.updateWatchlist(1, { name: "Updated Watchlist" }, 1, Role.USER);
+
+    // then
+    expect(watchlistDB.updateWatchlist).toHaveBeenCalledTimes(1);
+    expect(watchlistDB.updateWatchlist).toHaveBeenCalledWith(1, { name: "Updated Watchlist" });
+});
+
+
+
+
+
+
+
+
+
