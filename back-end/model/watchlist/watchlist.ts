@@ -15,7 +15,7 @@ export class Watchlist {
         id?: number,
         name: string,
         description: string,
-        mediaItems: Media[],
+        mediaItems?: Media[],
         user: User,
         creationDate?: Date
     }) {
@@ -25,7 +25,7 @@ export class Watchlist {
         this.name = watchlist.name;
         this.description = watchlist.description;
         this.creationDate = watchlist.creationDate || new Date();
-        this.mediaItems = watchlist.mediaItems;
+        this.mediaItems = watchlist.mediaItems || [];
         this.user = watchlist.user;
     }
 
@@ -87,7 +87,6 @@ export class Watchlist {
     private validate(watchlist: {
         name: string,
         description: string,
-        mediaItems: Media[],
         user: User
     }): void {
         if (!watchlist.name || !watchlist.name.trim()) {
@@ -96,10 +95,6 @@ export class Watchlist {
 
         if (!watchlist.description || !watchlist.description.trim()) {
             throw new Error("Description is required and cannot be empty.");
-        }
-
-        if (!Array.isArray(watchlist.mediaItems)) {
-            throw new Error("Media items must be an array.");
         }
 
         if (!watchlist.user) {

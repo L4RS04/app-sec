@@ -16,6 +16,21 @@ const getWatchlistById = async (watchlistId: number): Promise<Watchlist | null> 
     }
 };
 
+const getWatchlistsByUserId = async (userId: number): Promise<Watchlist[]> => {
+    try {
+        const watchlistsPrisma = await prisma.watchlist.findMany({
+            where: {
+                userId,
+            },
+            include: { mediaItems: true, user: true },
+        });
+        return watchlistsPrisma.map((watchlistPrisma) => Watchlist.from(watchlistPrisma));
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.')
+    }
+};
+
 const getAllWatchlists  = async (): Promise<Watchlist[]> => {
     try {
         const watchlistsPrisma = await prisma.watchlist.findMany({
@@ -41,11 +56,35 @@ const deleteWatchlist = async (watchlistId: number) => {
     }
 };
 
+const createWatchlist = async (watchlist: Watchlist): Promise<Watchlist> => {
+    try {
+        const watchlistPrisma = await prisma.watchlist.create({
+            data: {
+                name: watchlist.getName(),
+                description: watchlist.getDescription(),
+                user: {
+                    connect: {
+                        id: watchlist.getUser().getId(),
+                    },
+                },
+            },
+            include: { mediaItems: true, user: true },
+        });
+        return Watchlist.from(watchlistPrisma);
+    }
+    catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.')
+    }
+};
+
 
 export default { 
     getWatchlistById,
     getAllWatchlists,
     deleteWatchlist,
+    createWatchlist,
+    getWatchlistsByUserId,
  };
 
 
