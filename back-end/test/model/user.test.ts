@@ -67,3 +67,28 @@ test('given: empty email, when: user is created, then: error is thrown', () => {
 test('given: invalid email, when: user is created, then: error is thrown', () => {
     expect(() => new User({name: name, password: password, email: 'invalid-email'})).toThrow('Email is not valid');
 });
+
+test('given: no email, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: name, password: password, email: null as unknown as string})).toThrow('Email is required');
+});
+
+test('given: no password, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: name, password: null as unknown as string, email: email})).toThrow('Password is required');
+});
+
+test('given: no name, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: null as unknown as string, password: password, email: email})).toThrow('Username is required');
+});
+
+test('given: no name, no password, no email, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: null as unknown as string, password: null as unknown as string, email: null as unknown as string})).toThrow('Username is required');
+});
+
+test('given: empty name, empty password, empty email, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: '', password: '', email: ''})).toThrow('Username is required');
+});
+
+test('given: empty name, short password, invalid email, when: user is created, then: error is thrown', () => {
+    expect(() => new User({name: '', password: 'short', email: 'invalid-email'})).toThrow('Username is required');
+});
+

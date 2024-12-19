@@ -1,6 +1,5 @@
 import { Media } from '../../model/media/media';
 import { Genre } from '../../model/genre/genre';
-// import { Rating } from '../../model/rating';
 
 // Test data
 const title = 'Inception';
@@ -9,13 +8,12 @@ const releaseYear = 2010;
 const genre1 = Genre.ACTION;
 const genre2 = Genre.ADVENTURE;
 const genres = [genre1];
-// const rating1 = new Rating(5);
-// const rating2 = new Rating(4);
+
 const type = 'movie';
 
 test('given: valid values for media, when: media is created, then: media is created with those values', () => {
     // given
-    
+
     // when
     const media = new Media({ title, description, releaseYear, genres, type });
 
@@ -60,4 +58,5 @@ test('given: no release year, when: media is created, then: an error is thrown',
     // when & then
     expect(() => new Media({ title, description, releaseYear: invalidReleaseYear, genres, type })).toThrow("Release year is required");
 });
+
 

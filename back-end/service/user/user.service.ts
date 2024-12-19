@@ -12,6 +12,10 @@ const getAllUsers = async (role: Role): Promise<Partial<User>[]> => {
     return await userDB.getAllUsers();
 }
 
+const getUserById = async (id: number): Promise<User | null> => {
+    return await userDB.getUserById(id);
+}
+
 const createUser = async (userInput: UserInput): Promise<User> => {
     const existingUserByEmail = await userDB.getUserByEmail(userInput.email);
     if (existingUserByEmail) {
@@ -68,7 +72,8 @@ const authenticate = async ({ name, password }: UserLoginInput): Promise<Authent
 const UserService = {
     authenticate,
     getAllUsers,
-    createUser
+    createUser,
+    getUserById
 };
 
 export default UserService;

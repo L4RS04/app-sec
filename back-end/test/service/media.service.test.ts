@@ -200,6 +200,30 @@ test('given invalid role, when creating media, then an error is thrown', async (
 }
 );
 
+test('given invalid role, when deleting media, then an error is thrown', async () => {
+    // when
+    try {
+        await MediaService.deleteMedia(1, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toEqual(new Error('Forbidden, only admins can delete media'));
+    }
+}
+);
+
+test('given invalid role, when updating media, then an error is thrown', async () => {
+    // when
+    try {
+        await MediaService.updateMedia(1, { title: movieTitle, description: movieDescription, releaseYear: movieReleaseYear, genres: movieGenres, type: movieType, director: movieDirector, duration: movieDuration }, Role.USER);
+    } catch (error) {
+        // then
+        expect(error).toEqual(new Error('Forbidden, only admins can update media'));
+    }
+}
+);
+
+
+
     
 
 

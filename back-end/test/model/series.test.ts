@@ -8,7 +8,6 @@ const releaseYear = 2008;
 const numberOfSeasons = 5;
 const genre1 = Genre.ACTION;
 const genres = [genre1];
-const type = "Series";
 
 test('given: valid values for series, when: series is created, then: series is created with those values', () => {
     // given
@@ -39,3 +38,4 @@ test('given: series with negative numberOfSeasons, when: series is created, then
     // when & then
     expect(() => new Series(invalidSeriesData)).toThrowError("Series number of seasons is required");
 });
+
