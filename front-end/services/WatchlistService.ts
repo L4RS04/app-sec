@@ -98,13 +98,30 @@ const updateWatchlist = async (watchlistId: number, updates: { name?: string, de
     });
 };
 
+const deleteMediaFromWatchlist = async (watchlistId: number, mediaId: number) => {
+    const token = JSON.parse(sessionStorage.getItem("loggedInUser") as string).token;
+
+    if (!token) {
+        throw new Error("No token found");
+    }
+
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/watchlists/${watchlistId}/media/${mediaId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+};
+
 const WatchlistService = {
     getAllWatchlists,
     deleteWatchlist,
     createWatchlist,
     addMediaToWatchlist,
     getWatchlistById,
-    updateWatchlist
+    updateWatchlist,
+    deleteMediaFromWatchlist,
 };
 
 export default WatchlistService;

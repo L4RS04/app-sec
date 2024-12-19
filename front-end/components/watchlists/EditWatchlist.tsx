@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import WatchlistService from '@services/WatchlistService';
-import MediaService from '@services/MediaService';
+import MovieService from '@services/MovieService';
+import SeriesService from '@services/SeriesService';
 import { Watchlist, MediaItem } from '../../types';
 import Head from 'next/head';
 import Header from '../header';
@@ -14,7 +15,8 @@ interface EditWatchlistProps {
 const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistUpdated }) => {
     const router = useRouter();
     const [watchlist, setWatchlist] = useState<Watchlist | null>(null);
-    const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+    const [movies, setMovies] = useState<MediaItem[]>([]);
+    const [series, setSeries] = useState<MediaItem[]>([]);
     const [newName, setNewName] = useState<string>('');
     const [newDescription, setNewDescription] = useState<string>('');
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
@@ -25,23 +27,28 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
             setIsAuthorized(true);
             const fetchWatchlistAndMediaItems = async () => {
                 try {
-                    const [fetchedWatchlist, fetchedMediaItems] = await Promise.all([
+                    const [fetchedWatchlist, fetchedMovies, fetchedSeries] = await Promise.all([
                         WatchlistService.getWatchlistById(Number(watchlistId)),
-                        MediaService.getAllMedia()
+                        MovieService.getAllMovies(),
+                        SeriesService.getAllSeries()
                     ]);
 
                     if (!fetchedWatchlist.ok) {
                         throw new Error(`Error fetching watchlist: ${fetchedWatchlist.statusText}`);
                     }
-                    if (!fetchedMediaItems.ok) {
-                        throw new Error(`Error fetching media items: ${fetchedMediaItems.statusText}`);
+                    if (!fetchedMovies.ok) {
+                        throw new Error(`Error fetching movies: ${fetchedMovies.statusText}`);
+                    }
+                    if (!fetchedSeries.ok) {
+                        throw new Error(`Error fetching series: ${fetchedSeries.statusText}`);
                     }
 
                     const watchlistData = await fetchedWatchlist.json();
                     setWatchlist(watchlistData);
                     setNewName(watchlistData.name);
                     setNewDescription(watchlistData.description);
-                    setMediaItems(await fetchedMediaItems.json());
+                    setMovies(await fetchedMovies.json());
+                    setSeries(await fetchedSeries.json());
                 } catch (error) {
                     console.error('Error fetching watchlist or media items:', error);
                 }
@@ -92,12 +99,30 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                 } else {
                     throw new Error('Watchlist ID is undefined');
                 }
-                const updatedWatchlist = await WatchlistService.getWatchlistById(watchlist.id);
-                setWatchlist(await updatedWatchlist.json());
             } catch (error) {
                 console.error('Error adding media to watchlist:', error);
             }
         }
+    };
+
+    const handleDeleteMedia = async (mediaId: number) => {
+        if (watchlist) {
+            try {
+                if (watchlist.id !== undefined) {
+                    await WatchlistService.deleteMediaFromWatchlist(watchlist.id, mediaId);
+                    const updatedWatchlist = await WatchlistService.getWatchlistById(watchlist.id);
+                    setWatchlist(await updatedWatchlist.json());
+                } else {
+                    throw new Error('Watchlist ID is undefined');
+                }
+            } catch (error) {
+                console.error('Error deleting media from watchlist:', error);
+            }
+        }
+    };
+
+    const isMediaInWatchlist = (mediaId: number) => {
+        return watchlist?.mediaItems.some(item => item.id === mediaId);
     };
 
     if (isAuthorized === null || watchlist === null) {
@@ -150,17 +175,53 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                 </button>
                             </div>
                         </form>
-                        <h3 className="text-xl font-bold mb-4 mt-6">Media Items</h3>
+                        <h3 className="text-xl font-bold mb-4 mt-6">Movies</h3>
                         <ul>
-                            {mediaItems.map((mediaItem) => (
+                            {movies.map((mediaItem) => (
                                 <li key={mediaItem.id} className="flex justify-between items-center mb-2">
                                     <span>{mediaItem.title}</span>
-                                    <button
-                                        onClick={() => handleAddMedia(mediaItem.id)}
-                                        className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition-colors duration-200"
-                                    >
-                                        Add to Watchlist
-                                    </button>
+                                    <div className="flex space-x-2">
+                                        {isMediaInWatchlist(mediaItem.id) ? (
+                                            <button
+                                                onClick={() => handleDeleteMedia(mediaItem.id)}
+                                                className="bg-red-500 text-white font-bold py-1 px-2 rounded hover:bg-red-700 transition-colors duration-200"
+                                            >
+                                                Remove from Watchlist
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleAddMedia(mediaItem.id)}
+                                                className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition-colors duration-200"
+                                            >
+                                                Add to Watchlist
+                                            </button>
+                                        )}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                        <h3 className="text-xl font-bold mb-4 mt-6">Series</h3>
+                        <ul>
+                            {series.map((mediaItem) => (
+                                <li key={mediaItem.id} className="flex justify-between items-center mb-2">
+                                    <span>{mediaItem.title}</span>
+                                    <div className="flex space-x-2">
+                                        {isMediaInWatchlist(mediaItem.id) ? (
+                                            <button
+                                                onClick={() => handleDeleteMedia(mediaItem.id)}
+                                                className="bg-red-500 text-white font-bold py-1 px-2 rounded hover:bg-red-700 transition-colors duration-200"
+                                            >
+                                                Remove from Watchlist
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleAddMedia(mediaItem.id)}
+                                                className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition-colors duration-200"
+                                            >
+                                                Add to Watchlist
+                                            </button>
+                                        )}
+                                    </div>
                                 </li>
                             ))}
                         </ul>
