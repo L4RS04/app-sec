@@ -171,7 +171,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                     value={newName}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-2 py-2 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -183,7 +183,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                     onChange={handleInputChange}
                                     required
                                     rows={4}
-                                    className="block w-full px-2 py-2 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>

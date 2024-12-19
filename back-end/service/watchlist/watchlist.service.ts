@@ -32,7 +32,7 @@ const createWatchlist = async (watchlistInput: WatchlistInput, id: number, role:
         throw new Error('User not found');
     }
 
-    const userWatchlists = await watchlistDb.getWatchlistsByUserId(id) || []; // Initialize as empty array if undefined
+    const userWatchlists = await watchlistDb.getWatchlistsByUserId(id) || [];
 
     if (role === 'USER') {
         if (userWatchlists.length >= 1) {

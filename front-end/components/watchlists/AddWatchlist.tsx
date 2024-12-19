@@ -63,7 +63,7 @@ const AddWatchlist: React.FC = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
-                                    className="block w-full px-4 py-2 text-lg border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -74,7 +74,7 @@ const AddWatchlist: React.FC = () => {
                                     onChange={(e) => setDescription(e.target.value)}
                                     required
                                     rows={4}
-                                    className="block w-full px-4 py-2 text-lg border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             {error && (
@@ -86,7 +86,7 @@ const AddWatchlist: React.FC = () => {
                             <div>
                                 <button 
                                     type="submit" 
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
                                 >
                                     Add Watchlist
                                 </button>
