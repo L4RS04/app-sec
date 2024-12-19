@@ -43,7 +43,7 @@ const Header: React.FC = () => {
                         </Link>
                         )}
                         {loggedInUser && (
-                        <Link href="/watchlist" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
+                        <Link href="/watchlists" className="text-lg font-medium text-[#1429b1] no-underline transition-colors duration-300 hover:text-[#007bff] px-2 py-1 rounded hover:bg-gray-100">
                             Watchlists
                         </Link>
                         )}

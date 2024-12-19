@@ -2,7 +2,7 @@ import Head from "next/head";
 import Header from "@components/header";
 import { useEffect, useState } from "react";
 import type { Watchlist } from "@types";
-import WatchlistOverview from "@components/watchlist/WatchlistOverview";
+import WatchlistOverview from "@components/watchlists/WatchlistOverview";
 import WatchlistService from "@services/WatchlistService";
 import { CirclePlus } from "lucide-react";
 import { useRouter } from "next/router";
