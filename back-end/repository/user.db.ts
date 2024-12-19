@@ -1,6 +1,18 @@
 import { User } from '../model/user/user';
 import prisma from './database';
 
+const getUserById = async (id: number): Promise<User | null> => {
+    try {
+        const userPrisma = await prisma.user.findUnique({
+            where: { id }
+        });
+        return userPrisma ? User.from(userPrisma) : null;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
+
 const getUserByEmail = async (email: string): Promise<User | null> => {
     try {
         const userPrisma = await prisma.user.findUnique({
@@ -62,4 +74,5 @@ export default {
     getUserByName,
     getAllUsers,
     createUser,
+    getUserById,
 };

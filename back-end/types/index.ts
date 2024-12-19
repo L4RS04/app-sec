@@ -4,6 +4,7 @@ import { Role } from "../model/user/role";
 
 export type AuthenticationResponse = {
     token: string;
+    id: number;
     name: string;
     role: Role;
 };
@@ -25,6 +26,26 @@ export type Movie = {
     director: string;
     type: 'MOVIE';
 };
+
+export type User = {
+    id?: number;
+    name: string;
+    password: string;
+    email: string;
+    role: Role;
+    watchlists: Watchlist[];
+    creationDate: Date;
+};
+
+export type Watchlist = {
+    id?: number;
+    name: string;
+    description: string;
+    user: User;
+    mediaItems: Media[];
+    creationDate: Date;
+};
+
 
 export type Series = {
     id?: number;
@@ -56,8 +77,7 @@ export type WatchlistInput = {
     id?: number;
     name: string;
     description: string;
-    creatorId: number;
-    mediaItems?: Media[];
+    mediaItems: Media[];
     creationDate?: Date;
 };
 
