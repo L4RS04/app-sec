@@ -94,4 +94,20 @@ watchlistRouter.delete('/:id/media/:mediaId', async (req: Request, res: Response
     }
 });
 
+watchlistRouter.get('/user/:id', async (req: Request, res: Response) => {
+    try {
+        const userId = parseInt(req.params.id, 10);
+        if (isNaN(userId)) {
+            throw new Error('Invalid user ID');
+        }
+        console.log('Parsed userId:', userId);
+        const watchlists = await watchlistService.getWatchlistsByUserId(userId);
+        res.status(200).json(watchlists);
+    } catch (error) {
+        const errorMessage = (error as Error).message;
+        console.error('Error fetching watchlists:', errorMessage);
+        res.status(400).json({ status: 'error', message: errorMessage });
+    }
+});
+
 export default watchlistRouter;

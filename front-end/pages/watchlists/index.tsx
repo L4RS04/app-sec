@@ -24,16 +24,6 @@ const Watchlists: React.FC = () => {
         }
     };
 
-    const createWatchlist = async (newWatchlist: Watchlist) => {
-        try {
-            const response = await WatchlistService.createWatchlist(newWatchlist);
-            const addedWatchlist: Watchlist = await response.json();
-            setWatchlists(prevWatchlists => [...prevWatchlists, addedWatchlist]);
-        } catch (error) {
-            console.error("An error occurred while creating the watchlist: ", error);
-        }
-    };
-
     const deleteWatchlist = async (watchlistId: number) => {
         try {
             await WatchlistService.deleteWatchlist(watchlistId);
@@ -74,11 +64,9 @@ const Watchlists: React.FC = () => {
             <main className="d-flex flex-column justify-content-center align-items-center">
                 <h1 className="mt-8 font-extrabold text-4xl">Watchlists</h1>
                 <div className="flex justify-end mb-4">
-                    {isAdmin && (
-                        <button onClick={navigateToAddWatchlist} className="bg-stale-200 text-blue-900 font-bold py-2 px-4 rounded">
-                            <CirclePlus size={35} />
-                        </button>
-                    )}
+                    <button onClick={navigateToAddWatchlist} className="bg-stale-200 text-blue-900 font-bold py-2 px-4 rounded">
+                        <CirclePlus size={35} />
+                    </button>
                 </div>
                 <section>
                     {watchlists.length > 0 ? (

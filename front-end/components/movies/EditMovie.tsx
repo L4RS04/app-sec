@@ -102,7 +102,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movieId, onMovieUpdated }) => {
                                     value={movie.title}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -114,7 +114,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movieId, onMovieUpdated }) => {
                                     onChange={handleInputChange}
                                     required
                                     rows={4}
-                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -128,7 +128,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movieId, onMovieUpdated }) => {
                                         value={movie.releaseYear}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                     />
                                 </div>
                                 <div>
@@ -140,7 +140,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movieId, onMovieUpdated }) => {
                                         value={movie.duration}
                                         onChange={handleInputChange}
                                         required
-                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                     />
                                 </div>
                             </div>
@@ -153,7 +153,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movieId, onMovieUpdated }) => {
                                     value={movie.director}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-gray-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -178,7 +178,7 @@ const EditMovie: React.FC<EditMovieProps> = ({ movieId, onMovieUpdated }) => {
                             <div>
                                 <button 
                                     type="submit" 
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
                                 >
                                     Update movie
                                 </button>

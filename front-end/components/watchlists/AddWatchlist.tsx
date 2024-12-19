@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import { Watchlist } from "../../types";
 import WatchlistService from "@services/WatchlistService";
@@ -10,17 +10,50 @@ const AddWatchlist: React.FC = () => {
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [userRole, setUserRole] = useState<string>('');
+    const [userId, setUserId] = useState<number | null>(null);
+    const [hasWatchlist, setHasWatchlist] = useState<boolean>(false);
     const router = useRouter();
+
+    useEffect(() => {
+        const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser') as string);
+        if (loggedInUser) {
+            setUserRole(loggedInUser.role);
+            setUserId(loggedInUser.id);
+            if (loggedInUser.role === 'USER' && loggedInUser.id !== null) {
+                checkExistingWatchlists(loggedInUser.id);
+            }
+        } else {
+            router.push('/not-authorized');
+        }
+    }, [router]);
+
+    const checkExistingWatchlists = async (userId: number) => {
+        try {
+            const response = await WatchlistService.getWatchlistsByUserId(userId);
+            const userWatchlists = await response.json();
+            if (userWatchlists.length >= 1) {
+                setHasWatchlist(true);
+            }
+        } catch (error) {
+            console.error("An error occurred while checking existing watchlists: ", error);
+        }
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setError(null);
 
+        if (hasWatchlist) {
+            setError("You can only have one watchlist.");
+            return;
+        }
+
         const newWatchlist: Watchlist = {
             name,
             description,
             creationDate: new Date(),
-            user: { id: 0, name: '', role: '' }, 
+            user: { id: userId ?? 0, name: '', role: userRole }, 
             mediaItems: []
         };
 
@@ -63,7 +96,7 @@ const AddWatchlist: React.FC = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
-                                    className="block w-full px-4 py-2 text-lg border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             <div>
@@ -74,7 +107,7 @@ const AddWatchlist: React.FC = () => {
                                     onChange={(e) => setDescription(e.target.value)}
                                     required
                                     rows={4}
-                                    className="block w-full px-4 py-2 text-lg border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                    className="block w-full px-2 py-1 text-lg border border-blue-300 rounded-md shadow-sm transition duration-150 ease-in-out"
                                 />
                             </div>
                             {error && (
@@ -86,7 +119,7 @@ const AddWatchlist: React.FC = () => {
                             <div>
                                 <button 
                                     type="submit" 
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
                                 >
                                     Add Watchlist
                                 </button>
@@ -100,4 +133,3 @@ const AddWatchlist: React.FC = () => {
 };
 
 export default AddWatchlist;
-

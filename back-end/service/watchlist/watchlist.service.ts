@@ -32,7 +32,7 @@ const createWatchlist = async (watchlistInput: WatchlistInput, id: number, role:
         throw new Error('User not found');
     }
 
-    const userWatchlists = await watchlistDb.getWatchlistsByUserId(id) || []; // Initialize as empty array if undefined
+    const userWatchlists = await watchlistDb.getWatchlistsByUserId(id) || [];
 
     if (role === 'USER') {
         if (userWatchlists.length >= 1) {
@@ -102,6 +102,10 @@ const deleteMediaFromWatchlist = async (watchlistId: number, mediaId: number, us
     return watchlistDb.deleteMediaFromWatchlist(watchlistId, mediaId);
 };
 
+const getWatchlistsByUserId = async (userId: number): Promise<Watchlist[]> => {
+    return watchlistDb.getWatchlistsByUserId(userId);
+};
+
 const WatchlistService = {
     getAllWatchlists,
     deleteWatchlist,
@@ -110,6 +114,7 @@ const WatchlistService = {
     updateWatchlist,
     getWatchlistById,
     deleteMediaFromWatchlist,
+    getWatchlistsByUserId,
 };
 
 export default WatchlistService;
