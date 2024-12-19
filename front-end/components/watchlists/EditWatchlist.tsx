@@ -6,7 +6,7 @@ import SeriesService from '@services/SeriesService';
 import { Watchlist, MediaItem } from '../../types';
 import Head from 'next/head';
 import Header from '../header';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Search } from 'lucide-react';
 
 interface EditWatchlistProps {
     watchlistId: string;
@@ -21,6 +21,8 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
     const [newName, setNewName] = useState<string>('');
     const [newDescription, setNewDescription] = useState<string>('');
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [mediaTypeFilter, setMediaTypeFilter] = useState<'all' | 'movies' | 'series'>('all');
 
     useEffect(() => {
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser') as string);
@@ -123,8 +125,16 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
     };
 
     const isMediaInWatchlist = (mediaId: number) => {
-        return watchlist?.mediaItems.some(item => item.id === mediaId);
+        return Array.isArray(watchlist?.mediaItems) && watchlist.mediaItems.some(item => item.id === mediaId);
     };
+
+    const filteredMedia = [...movies, ...series].filter(item => {
+        const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesType = mediaTypeFilter === 'all' || 
+            (mediaTypeFilter === 'movies' && movies.some(movie => movie.id === item.id)) ||
+            (mediaTypeFilter === 'series' && series.some(serie => serie.id === item.id));
+        return matchesSearch && matchesType;
+    });
 
     if (isAuthorized === null || watchlist === null) {
         return <div>Loading...</div>;
@@ -185,34 +195,32 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                 </button>
                             </div>
                         </form>
-                        <h3 className="text-2xl font-bold mb-6 mt-10 text-blue-900">Movies</h3>
-                        <ul className="space-y-4">
-                            {movies.map((mediaItem) => (
-                                <li key={mediaItem.id} className="flex justify-between items-center p-4 bg-blue-50 rounded-lg shadow">
-                                    <span className="text-lg font-medium text-blue-800">{mediaItem.title}</span>
-                                    <div className="flex space-x-2">
-                                        {isMediaInWatchlist(mediaItem.id) ? (
-                                            <button
-                                                onClick={() => handleDeleteMedia(mediaItem.id)}
-                                                className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
-                                            >
-                                                Remove
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleAddMedia(mediaItem.id)}
-                                                className="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
-                                            >
-                                                Add
-                                            </button>
-                                        )}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                        <h3 className="text-2xl font-bold mb-6 mt-10 text-blue-900">Series</h3>
-                        <ul className="space-y-4">
-                            {series.map((mediaItem) => (
+                        <div className="mt-10 space-y-4">
+                            <h3 className="text-2xl font-bold text-blue-900">Add media to the watchlist:</h3>
+                            <div className="flex items-center space-x-4">
+                                <div className="relative flex-grow">
+                                    <input
+                                        type="text"
+                                        placeholder="Search movies and series..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    />
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                                </div>
+                                <select
+                                    value={mediaTypeFilter}
+                                    onChange={(e) => setMediaTypeFilter(e.target.value as 'all' | 'movies' | 'series')}
+                                    className="px-4 py-2 border border-blue-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                    <option value="all">All</option>
+                                    <option value="movies">Movies</option>
+                                    <option value="series">Series</option>
+                                </select>
+                            </div>
+                        </div>
+                        <ul className="mt-6 space-y-4">
+                            {filteredMedia.map((mediaItem) => (
                                 <li key={mediaItem.id} className="flex justify-between items-center p-4 bg-blue-50 rounded-lg shadow">
                                     <span className="text-lg font-medium text-blue-800">{mediaItem.title}</span>
                                     <div className="flex space-x-2">
@@ -243,4 +251,3 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
 };
 
 export default EditWatchlist;
-
