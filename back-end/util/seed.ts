@@ -184,13 +184,46 @@ const main = async () => {
         },
     });
 
+    const media13 = await prisma.media.create({
+        data: {
+            title: "The Mandalorian",
+            description: "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
+            releaseYear: 2019,
+            type: "SERIES",
+            genres: [Genre.SCIFI, Genre.ACTION, Genre.ADVENTURE],
+            numberOfSeasons: 2,
+        }
+    });
+
+    const media14 = await prisma.media.create({
+        data: {
+            title: "The Falcon and the Winter Soldier",
+            description: "Following the events of 'Avengers: Endgame,' Sam Wilson/Falcon and Bucky Barnes/Winter Soldier team up in a global adventure that tests their abilities -- and their patience.",
+            releaseYear: 2021,
+            type: "SERIES",
+            genres: [Genre.SCIFI, Genre.ACTION, Genre.ADVENTURE],
+            numberOfSeasons: 1,
+        }
+    });
+
+    const media15 = await prisma.media.create({
+        data: {
+            title: "Game of Thrones",
+            description: "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.",
+            releaseYear: 2011,
+            type: "SERIES",
+            genres: [Genre.FANTASY, Genre.DRAMA],
+            numberOfSeasons: 8,
+        }
+    });
+
     await prisma.watchlist.create({
         data: {
             name: "Xander's Watchlist",
             description: "Movies that Xander really likes!",
             userId: user1.id,
             mediaItems: {
-                connect: [{ id: media1.id }, { id: media4.id }, { id: media5.id }],
+                connect: [ { id: media1.id }, { id: media2.id }, { id: media3.id }, { id: media4.id }, { id: media5.id }, { id: media6.id }, { id: media13.id }, { id: media15.id } ],
             },
         },
     });
@@ -201,15 +234,15 @@ const main = async () => {
             description: "The best movies ever!",
             userId: user2.id,
             mediaItems: {
-                connect: [{ id: media2.id }, { id: media3.id }, { id: media4.id }],
+                connect: [ { id: media2.id }, { id: media7.id }, { id: media8.id }, { id: media9.id }, { id: media10.id }, { id: media11.id }, { id: media12.id }, { id: media14.id } ],
             },
         },
     });
 
     await prisma.watchlist.create({
         data: {
-            name: "All Star Wars movies",
-            description: "A watchlist with all Star Wars movies!",
+            name: "Star Wars starter pack",
+            description: "A watchlist containing all Star Wars movies and series!",
             userId: user3.id,
             mediaItems: {
                 connect: [
@@ -222,7 +255,25 @@ const main = async () => {
                     { id: media10.id },
                     { id: media11.id },
                     { id: media12.id },
+                    { id: media13.id },
+                ],
+            },
+        },
+    });
+
+    await prisma.watchlist.create({
+        data: {
+            name: "Binge worthy series",
+            description: "A watchlist containing the best series to binge-watch!",
+            userId: user1.id,
+            mediaItems: {
+                connect: [
                     { id: media2.id },
+                    { id: media4.id },
+                    { id: media5.id },
+                    { id: media13.id },
+                    { id: media14.id },
+                    { id: media15.id },
                 ],
             },
         },
