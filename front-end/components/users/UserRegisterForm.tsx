@@ -2,8 +2,10 @@ import { useRouter } from "next/navigation";
 import UserService from "../../services/UserService";
 import React, { useState } from "react";
 import { StatusMessage } from "../../types";
+import { useTranslation } from 'next-i18next';
 
 const UserRegisterForm: React.FC = () => {
+    const { t } = useTranslation('common');
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -36,7 +38,7 @@ const UserRegisterForm: React.FC = () => {
             const response = await UserService.registerUser(newUser);
     
             if (response.ok) {
-                setStatusMessages([{ type: "success", message: "Registration successful! Redirecting to login..." }]);
+                setStatusMessages([{ type: "success", message: t('registrationSuccess') }]);
                 setTimeout(() => {
                     router.push("/login");
                 }, 1000);
@@ -45,7 +47,7 @@ const UserRegisterForm: React.FC = () => {
                 setStatusMessages([{ type: "error", message: errorData.message }]);
             }
         } catch (error) {
-            setStatusMessages([{ type: "error", message: "An error occurred whilst registering the user" }]);
+            setStatusMessages([{ type: "error", message: t('registrationError') }]);
         } finally {
             setIsLoading(false);
         }
@@ -56,7 +58,7 @@ const UserRegisterForm: React.FC = () => {
             <div className="w-full max-w-md space-y-8 bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
                 <div>
                     <h2 className="mt-2 text-center text-3xl font-extrabold text-blue-900">
-                        Create your account
+                        {t('createAccount')}
                     </h2>
                 </div>
                 {statusMessages.length > 0 && (
@@ -64,7 +66,7 @@ const UserRegisterForm: React.FC = () => {
                         <div className="flex">
                             <div className="ml-3">
                                 <h3 className={`text-sm font-medium ${statusMessages[0].type === "error" ? "text-red-800" : "text-green-800"}`}>
-                                    {statusMessages[0].type === "error" ? "There was an error with your submission" : "Success"}
+                                    {statusMessages[0].type === "error" ? t('submissionError') : t('success')}
                                 </h3>
                                 <div className={`mt-2 text-sm ${statusMessages[0].type === "error" ? "text-red-700" : "text-green-700"}`}>
                                     <ul className="list-disc pl-5 space-y-1">
@@ -80,7 +82,7 @@ const UserRegisterForm: React.FC = () => {
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-4 rounded-md">
                         <div>
-                            <label htmlFor="nameInput" className="block text-sm font-medium text-gray-700">Username:</label>
+                            <label htmlFor="nameInput" className="block text-sm font-medium text-gray-700">{t('username')}:</label>
                             <input
                                 id="nameInput"
                                 name="name"
@@ -95,7 +97,7 @@ const UserRegisterForm: React.FC = () => {
                             {nameError && <p className="mt-2 text-sm text-red-600" id="name-error">{nameError}</p>}
                         </div>
                         <div>
-                            <label htmlFor="emailInput" className="block text-sm font-medium text-gray-700">Email:</label>
+                            <label htmlFor="emailInput" className="block text-sm font-medium text-gray-700">{t('email')}:</label>
                             <input
                                 id="emailInput"
                                 name="email"
@@ -110,7 +112,7 @@ const UserRegisterForm: React.FC = () => {
                             {emailError && <p className="mt-2 text-sm text-red-600" id="email-error">{emailError}</p>}
                         </div>
                         <div>
-                            <label htmlFor="passwordInput" className="block text-sm font-medium text-gray-700">Password:</label>
+                            <label htmlFor="passwordInput" className="block text-sm font-medium text-gray-700">{t('password')}:</label>
                             <input
                                 id="passwordInput"
                                 name="password"
@@ -140,9 +142,9 @@ const UserRegisterForm: React.FC = () => {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Registering...
+                                    {t('registering')}
                                 </>
-                            ) : 'Register'}
+                            ) : t('register')}
                         </button>
                     </div>
                 </form>
@@ -152,4 +154,3 @@ const UserRegisterForm: React.FC = () => {
 };
 
 export default UserRegisterForm;
-

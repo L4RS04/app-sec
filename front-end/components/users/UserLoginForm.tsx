@@ -2,8 +2,10 @@ import { useRouter } from "next/navigation";
 import UserService from "../../services/UserService";
 import React, { useState } from "react";
 import { StatusMessage } from "../../types";
+import { useTranslation } from 'next-i18next';
 
 const UserLoginForm: React.FC = () => {
+    const { t } = useTranslation('common');
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [nameError, setNameError] = useState<string | null>(null);
@@ -22,12 +24,12 @@ const UserLoginForm: React.FC = () => {
         let result = true;
 
         if (!name || name.trim() === "") {
-            setNameError("Name is required");
+            setNameError(t('nameRequired'));
             result = false;
         }
 
         if (!password || password.trim() === "") {
-            setPasswordError("Password is required");
+            setPasswordError(t('passwordRequired'));
             result = false;
         }
 
@@ -52,7 +54,7 @@ const UserLoginForm: React.FC = () => {
                 setStatusMessages([
                     {
                         type: "success", 
-                        message: "Login successful, redirecting..."
+                        message: t('loginSuccess')
                     },
                 ]);
 
@@ -75,7 +77,7 @@ const UserLoginForm: React.FC = () => {
                 setStatusMessages([
                     {
                         type: "error",
-                        message: "Name or password is invalid"
+                        message: t('invalidCredentials')
                     },
                 ]);
             }
@@ -83,7 +85,7 @@ const UserLoginForm: React.FC = () => {
             setStatusMessages([
                 {
                     type: "error",
-                    message: "Unknown error occurred"
+                    message: t('unknownError')
                 },
             ]);
         } finally {
@@ -96,7 +98,7 @@ const UserLoginForm: React.FC = () => {
             <div className="w-full max-w-md space-y-8 bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
                 <div>
                     <h2 className="mt-2 text-center text-3xl font-extrabold text-blue-900">
-                        Sign in to your account
+                        {t('signIn')}
                     </h2>
                 </div>
                 {statusMessages.length > 0 && (
@@ -104,7 +106,7 @@ const UserLoginForm: React.FC = () => {
                         <div className="flex">
                             <div className="ml-3">
                                 <h3 className={`text-sm font-medium ${statusMessages[0].type === "error" ? "text-red-800" : "text-green-800"}`}>
-                                    {statusMessages[0].type === "error" ? "There was an error with your submission" : "Success"}
+                                    {statusMessages[0].type === "error" ? t('submissionError') : t('success')}
                                 </h3>
                                 <div className={`mt-2 text-sm ${statusMessages[0].type === "error" ? "text-red-700" : "text-green-700"}`}>
                                     <ul className="list-disc pl-5 space-y-1">
@@ -120,7 +122,7 @@ const UserLoginForm: React.FC = () => {
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-4 rounded-md">
                         <div>
-                            <label htmlFor="nameInput" className="block text-sm font-medium text-gray-700">Username:</label>
+                            <label htmlFor="nameInput" className="block text-sm font-medium text-gray-700">{t('username')}:</label>
                             <input
                                 id="nameInput"
                                 name="name"
@@ -135,7 +137,7 @@ const UserLoginForm: React.FC = () => {
                             {nameError && <p className="mt-2 text-sm text-red-600" id="name-error">{nameError}</p>}
                         </div>
                         <div>
-                            <label htmlFor="passwordInput" className="block text-sm font-medium text-gray-700">Password:</label>
+                            <label htmlFor="passwordInput" className="block text-sm font-medium text-gray-700">{t('password')}:</label>
                             <input
                                 id="passwordInput"
                                 name="password"
@@ -165,9 +167,9 @@ const UserLoginForm: React.FC = () => {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Signing in...
+                                    {t('signingIn')}
                                 </>
-                            ) : 'Sign in'}
+                            ) : t('signIn')}
                         </button>
                     </div>
                 </form>
@@ -177,4 +179,3 @@ const UserLoginForm: React.FC = () => {
 };
 
 export default UserLoginForm;
-
