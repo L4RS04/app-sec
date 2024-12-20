@@ -29,7 +29,6 @@ export class Movie extends Media {
         this.director = movie.director;
     }
 
-    // Getters
     public getDuration(): number {
         return this.duration;
     }
@@ -38,7 +37,6 @@ export class Movie extends Media {
         return this.director;
     }
 
-    // Setters
     public setDuration(duration: number): void {
         this.duration = duration;
     }
@@ -47,7 +45,6 @@ export class Movie extends Media {
         this.director = director;
     }
 
-    // Validation
     private validate_movie(movie: {
         duration: number;
         director: string;

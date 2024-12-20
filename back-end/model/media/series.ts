@@ -26,17 +26,14 @@ export class Series extends Media {
         this.numberOfSeasons = series.numberOfSeasons;
     }
 
-    // Getters
     public getNumberOfSeasons(): number {
         return this.numberOfSeasons;
     }
 
-    // Setters
     public setNumberOfSeasons(numberOfSeasons: number): void {
         this.numberOfSeasons = numberOfSeasons;
     }
-
-    // Validation
+    
     private validate_series(series: {
         numberOfSeasons: number
     }): void {
