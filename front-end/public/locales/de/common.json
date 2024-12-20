@@ -77,7 +77,18 @@
     "error": "Fehler",
     "singleWatchlistError": "Sie können nur eine Beobachtungsliste haben.",
     "createWatchlistError": "Beim Erstellen der Beobachtungsliste ist ein Fehler aufgetreten.",
-    "checkWatchlistsError": "Beim Überprüfen vorhandener Beobachtungslisten ist ein Fehler aufgetreten."
+    "checkWatchlistsError": "Beim Überprüfen vorhandener Beobachtungslisten ist ein Fehler aufgetreten.",
+    "testCredentials": "Testanmeldedaten",
+    "role": "Rolle",
+    "note": "Hinweis",
+    "registerNote": "Sie können ein neues Konto registrieren, um die normale Benutzerrolle zu testen, da neuen Konten automatisch die Benutzerrolle zugewiesen wird.",
+    "rolesAndPermissions": "Rollen und Berechtigungen",
+    "admins": "Admins",
+    "adminsPermissions": "Können alles erstellen, bearbeiten und löschen.",
+    "premium": "Premium",
+    "premiumPermissions": "Kann eine unendliche Anzahl von Beobachtungslisten erstellen und eine unendliche Anzahl von Elementen zu ihrer Beobachtungsliste hinzufügen, kann jedoch keine Medien erstellen oder löschen.",
+    "user": "Benutzer",
+    "userPermissions": "Kann nur eine Beobachtungsliste erstellen und maximal 10 Elemente hinzufügen."
   }
 
   

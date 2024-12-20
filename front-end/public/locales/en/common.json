@@ -77,5 +77,16 @@
     "error": "Error",
     "singleWatchlistError": "You can only have one watchlist.",
     "createWatchlistError": "An error occurred while creating the watchlist.",
-    "checkWatchlistsError": "An error occurred while checking existing watchlists."
+    "checkWatchlistsError": "An error occurred while checking existing watchlists.",
+    "testCredentials": "Test Credentials",
+    "role": "Role",
+    "note": "Note",
+    "registerNote": "You can register a new account to test the normal user role as new accounts are automatically assigned the user role.",
+    "rolesAndPermissions": "Roles and Permissions",
+    "admins": "Admins",
+    "adminsPermissions": "Can create, edit, and delete anything.",
+    "premium": "Premium",
+    "premiumPermissions": "Can create an infinite amount of watchlists and add an infinite amount of items to their watchlist but cannot create or delete any media.",
+    "user": "User",
+    "userPermissions": "Can create only one watchlist and add a maximum of 10 items to it."
   }
