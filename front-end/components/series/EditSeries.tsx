@@ -5,6 +5,7 @@ import SeriesService from '../../services/SeriesService';
 import MediaService from '../../services/MediaService';
 import Header from '../header';
 import Head from 'next/head';
+import { useTranslation } from 'react-i18next';
 
 interface EditSeriesProps {
     seriesId: string;
@@ -16,6 +17,8 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
     const [series, setSeries] = useState<Series | null>(null);
     const [genres, setGenres] = useState<Genre[]>([]);
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser') as string);
@@ -83,18 +86,18 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
     return (
         <>  
             <Head>
-                <title>Edit series</title>
+                <title>{t('editSeries')}</title>
             </Head>
             <Header />
             <div className="min-h-screen bg-gradient-to-b from-blue-100 to-blue-200 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto bg-white shadow-2xl rounded-lg overflow-hidden">
                     <div className="px-6 py-8">
                         <h1 className="text-4xl font-extrabold text-center text-blue-900 mb-8">
-                            Edit series
+                            {t('editSeries')}
                         </h1>
                         <form onSubmit={handleUpdateSeries} className="space-y-6">
                             <div>
-                                <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-1">Title:</label>
+                                <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-1">{t('title')}:</label>
                                 <input
                                     type="text"
                                     id="title"
@@ -106,7 +109,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                 />
                             </div>
                             <div>
-                                <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-1">Description:</label>
+                                <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-1">{t('description')}:</label>
                                 <textarea
                                     id="description"
                                     name="description"
@@ -119,7 +122,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div>
-                                    <label htmlFor="releaseYear" className="block text-sm font-semibold text-gray-700 mb-1">Release Year:</label>
+                                    <label htmlFor="releaseYear" className="block text-sm font-semibold text-gray-700 mb-1">{t('releaseYear')}:</label>
                                     <input
                                         type="number"
                                         id="releaseYear"
@@ -132,7 +135,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="numberOfSeasons" className="block text-sm font-semibold text-gray-700 mb-1">Number of seasons:</label>
+                                    <label htmlFor="numberOfSeasons" className="block text-sm font-semibold text-gray-700 mb-1">{t('numberOfSeasons')}:</label>
                                     <input
                                         type="number"
                                         id="numberOfSeasons"
@@ -145,7 +148,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Genres:</label>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">{t('genres')}:</label>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                     {genres.map(genre => (
                                         <button
@@ -168,7 +171,7 @@ const EditSeries: React.FC<EditSeriesProps> = ({ seriesId, onSeriesUpdated }) =>
                                     type="submit" 
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
                                 >
-                                    Update series
+                                    {t('updateSeries')}
                                 </button>
                             </div>
                         </form>

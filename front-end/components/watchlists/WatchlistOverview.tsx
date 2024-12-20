@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Trash2, Pencil, Calendar, User, Film, TvIcon } from 'lucide-react';
 import { useRouter } from 'next/router';
 import { Watchlist, MediaItem } from "../../types";
+import { useTranslation } from 'next-i18next';
 
 type Props = {
   watchlists: Array<Watchlist>;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const WatchlistOverview: React.FC<Props> = ({ watchlists, onDeleteWatchlist, isAdmin, loggedInUserName }: Props) => {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [expandedWatchlists, setExpandedWatchlists] = useState<Record<number, boolean>>({});
 
@@ -58,14 +60,14 @@ const WatchlistOverview: React.FC<Props> = ({ watchlists, onDeleteWatchlist, isA
                   <button
                     className="p-2 bg-gray-600 bg-opacity-70 rounded-full hover:bg-opacity-90 transition-colors duration-200"
                     onClick={() => watchlist.id !== undefined && onDeleteWatchlist(watchlist.id)}
-                    aria-label="Delete watchlist"
+                    aria-label={t('deleteWatchlist')}
                   >
                     <Trash2 className="w-5 h-5 text-white" />
                   </button>
                   <button
                     className="p-2 bg-gray-600 bg-opacity-70 rounded-full hover:bg-opacity-90 transition-colors duration-200"
                     onClick={() => watchlist.id !== undefined && handleEditClick(watchlist.id)}
-                    aria-label="Edit watchlist"
+                    aria-label={t('editWatchlist')}
                   >
                     <Pencil className="w-5 h-5 text-white" />
                   </button>
@@ -84,7 +86,7 @@ const WatchlistOverview: React.FC<Props> = ({ watchlists, onDeleteWatchlist, isA
               </div>
               <div className="flex items-center">
                 <Film className="w-5 h-5 mr-2 opacity-80" />
-                <span>{watchlist.mediaItems.length} items</span>
+                <span>{watchlist.mediaItems.length} {t('items')}</span>
               </div>
             </div>
           </div>
@@ -98,7 +100,7 @@ const WatchlistOverview: React.FC<Props> = ({ watchlists, onDeleteWatchlist, isA
                   <div key={type} className="mb-6 last:mb-0">
                     <h5 className="font-medium text-gray-700 mb-3 flex items-center">
                       {getIconForType(type)}
-                      {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
+                      {t(type.toLowerCase())}
                     </h5>
                     <div className="flex flex-wrap gap-3">
                       {(itemsToShow as MediaItem[]).map((item: MediaItem) => (
@@ -115,7 +117,7 @@ const WatchlistOverview: React.FC<Props> = ({ watchlists, onDeleteWatchlist, isA
                         className="mt-2 text-blue-600 hover:underline"
                         onClick={() => watchlist.id !== undefined && toggleExpand(watchlist.id)}
                       >
-                        {isExpanded ? 'Show Less' : 'Show More'}
+                        {isExpanded ? t('showLess') : t('showMore')}
                       </button>
                     )}
                   </div>

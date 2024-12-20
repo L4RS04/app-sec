@@ -3,6 +3,7 @@ import { Series } from "@types";
 import { ChevronDown, ChevronUp, Trash2, Pencil, Search } from 'lucide-react';
 import GenreTag from "@components/GenreTag";
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
   series: Array<Series>;
@@ -12,6 +13,7 @@ type Props = {
 }
 
 const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin }: Props) => {
+  const { t } = useTranslation('common');
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
@@ -38,7 +40,7 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
       <div className="relative">
         <input
           type="text"
-          placeholder="Search series..."
+          placeholder={t('searchSeries')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 rounded-md"
@@ -50,10 +52,10 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
           <table className="w-full border-collapse bg-white">
             <thead>
               <tr className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-                <th className="w-2/5 px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Title</th>
-                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Seasons</th>
-                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">More</th>
-                {isAdmin && <th className="w-1/4 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Actions</th>}
+                <th className="w-2/5 px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">{t('title')}</th>
+                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">{t('seasons')}</th>
+                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">{t('more')}</th>
+                {isAdmin && <th className="w-1/4 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">{t('actions')}</th>}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -93,16 +95,16 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
                     <tr className="bg-blue-50">
                       <td colSpan={isAdmin ? 4 : 3} className="px-6 py-4">
                         <div className="text-sm text-gray-800 max-w-2xl">
-                          <p className="mb-2"><span className="font-semibold text-blue-800">Description:</span> {series.description}</p>
+                          <p className="mb-2"><span className="font-semibold text-blue-800">{t('description')}:</span> {series.description}</p>
                           <div className="mb-2">
-                            <span className="font-semibold text-blue-800">Genres: </span>
+                            <span className="font-semibold text-blue-800">{t('genres')}: </span>
                             <div className="mt-2 flex flex-wrap gap-2">
                               {series.genres.map((genre, i) => (
                                 <GenreTag key={i} genre={genre} />
                               ))}
                             </div>
                           </div>
-                          <p className="mb-1"><span className="font-semibold text-blue-800">Released:</span> {series.releaseYear}</p>
+                          <p className="mb-1"><span className="font-semibold text-blue-800">{t('released')}:</span> {series.releaseYear}</p>
                         </div>
                       </td>
                     </tr>
@@ -118,4 +120,3 @@ const SeriesOverviewTable: React.FC<Props> = ({ series, onDeleteSeries, isAdmin 
 };
 
 export default SeriesOverviewTable;
-

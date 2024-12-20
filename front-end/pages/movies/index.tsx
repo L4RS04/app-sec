@@ -6,12 +6,15 @@ import MovieOverviewTable from "@components/movies/MovieOverviewTable";
 import MovieService from "@services/MovieService";
 import { CirclePlus } from "lucide-react";
 import { useRouter } from "next/router";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Movies: React.FC = () => {
     const [movies, setMovies] = useState<Array<Movie>>([]);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const router = useRouter();
+    const { t } = useTranslation();
 
     const getMovies = async () => {
         try {
@@ -65,11 +68,11 @@ const Movies: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Movies</title>
+                <title>{t('movies')}</title>
             </Head>
             <Header />
             <main className="d-flex flex-column justify-content-center align-items-center">
-                <h1 className="mt-8 font-extrabold text-4xl">Movies</h1>
+                <h1 className="mt-8 font-extrabold text-4xl">{t('movies')}</h1>
                 <div className="flex justify-end mb-4">
                     {isAdmin && (
                         <button onClick={navigateToAddMovie} className="bg-stale-200 text-blue-900 font-bold py-2 px-4 rounded">
@@ -81,12 +84,18 @@ const Movies: React.FC = () => {
                     {movies.length > 0 ? (
                         <MovieOverviewTable movies={movies} onAddMovie={createMovie} onDeleteMovie={deleteMovie} isAdmin={isAdmin} />
                     ) : (
-                        <p>No movies found</p>
+                        <p>{t('nomoviesfound')}</p>
                     )}
                 </section>
             </main>
         </>
     );
 };
+
+export const getStaticProps = async ({ locale }: { locale: string }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 
 export default Movies;

@@ -7,6 +7,7 @@ import { Watchlist, MediaItem } from '../../types';
 import Head from 'next/head';
 import Header from '../header';
 import { ArrowLeft, Search } from 'lucide-react';
+import { useTranslation } from 'next-i18next';
 
 interface EditWatchlistProps {
     watchlistId: string;
@@ -14,6 +15,7 @@ interface EditWatchlistProps {
 }
 
 const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistUpdated }) => {
+    const { t } = useTranslation('common');
     const router = useRouter();
     const [watchlist, setWatchlist] = useState<Watchlist | null>(null);
     const [movies, setMovies] = useState<MediaItem[]>([]);
@@ -55,7 +57,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                     setMovies(await fetchedMovies.json());
                     setSeries(await fetchedSeries.json());
                 } catch (error) {
-                    console.error('Error fetching watchlist or media items:', error);
+                    console.error(t('fetchWatchlistOrMediaItemsError'), error);
                 }
             };
             fetchWatchlistAndMediaItems();
@@ -63,7 +65,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
             setIsAuthorized(false);
             router.push('/not-authorized');
         }
-    }, [router, watchlistId]);
+    }, [router, watchlistId, t]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -90,14 +92,14 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                 throw new Error('Watchlist ID is undefined');
             }
         } catch (error) {
-            console.error('Error updating watchlist:', error);
+            console.error(t('updateWatchlistError'), error);
         }
     };
 
     const handleAddMedia = async (mediaId: number) => {
         if (watchlist) {
             if (userRole === 'USER' && watchlist.mediaItems.length >= 10) {
-                alert("You can only add up to 10 media items to your watchlist.");
+                alert(t('maxMediaItemsAlert'));
                 return;
             }
             try {
@@ -109,7 +111,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                     throw new Error('Watchlist ID is undefined');
                 }
             } catch (error) {
-                console.error('Error adding media to watchlist:', error);
+                console.error(t('addMediaError'), error);
             }
         }
     };
@@ -125,7 +127,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                     throw new Error('Watchlist ID is undefined');
                 }
             } catch (error) {
-                console.error('Error deleting media from watchlist:', error);
+                console.error(t('deleteMediaError'), error);
             }
         }
     };
@@ -143,13 +145,13 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
     });
 
     if (isAuthorized === null || watchlist === null) {
-        return <div>Loading...</div>;
+        return <div>{t('loading')}</div>;
     }
 
     return (
         <>
             <Head>
-                <title>Edit Watchlist</title>
+                <title>{t('editWatchlist')}</title>
             </Head>
             <Header />
             <div className="min-h-screen bg-gradient-to-b from-blue-100 to-blue-200 py-12 px-4 sm:px-6 lg:px-8">
@@ -157,19 +159,19 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                     <div className="px-8 py-10">
                         <div className="flex justify-between items-center mb-8">
                             <h1 className="text-4xl font-extrabold text-blue-900 tracking-tight">
-                                Edit Watchlist
+                                {t('editWatchlist')}
                             </h1>
                             <button
                                 onClick={() => router.push('/watchlists')}
                                 className="flex items-center text-blue-700 hover:text-blue-900 transition-colors duration-200 font-semibold"
                             >
                                 <ArrowLeft className="w-5 h-5 mr-2" />
-                                Back to Watchlists
+                                {t('backToWatchlists')}
                             </button>
                         </div>
                         <form onSubmit={handleUpdateWatchlist} className="space-y-6">
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name:</label>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">{t('name')}:</label>
                                 <input
                                     type="text"
                                     id="name"
@@ -181,7 +183,7 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                 />
                             </div>
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description:</label>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">{t('description')}:</label>
                                 <textarea
                                     id="description"
                                     name="description"
@@ -197,17 +199,17 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                     type="submit" 
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-900 transition duration-150 ease-in-out"
                                 >
-                                    Update Watchlist
+                                    {t('updateWatchlist')}
                                 </button>
                             </div>
                         </form>
                         <div className="mt-10 space-y-4">
-                            <h3 className="text-2xl font-bold text-blue-900">Add media to the watchlist:</h3>
+                            <h3 className="text-2xl font-bold text-blue-900">{t('addMediaToWatchlist')}:</h3>
                             <div className="flex items-center space-x-4">
                                 <div className="relative flex-grow">
                                     <input
                                         type="text"
-                                        placeholder="Search movies and series..."
+                                        placeholder={t('searchMoviesAndSeries')}
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         className="w-full pl-10 pr-4 py-2 border border-blue-300 rounded-md shadow-sm"
@@ -219,9 +221,9 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                     onChange={(e) => setMediaTypeFilter(e.target.value as 'all' | 'movies' | 'series')}
                                     className="px-4 py-2 border border-blue-300 rounded-md shadow-sm"
                                 >
-                                    <option value="all">All</option>
-                                    <option value="movies">Movies</option>
-                                    <option value="series">Series</option>
+                                    <option value="all">{t('all')}</option>
+                                    <option value="movies">{t('movies')}</option>
+                                    <option value="series">{t('series')}</option>
                                 </select>
                             </div>
                         </div>
@@ -235,14 +237,14 @@ const EditWatchlist: React.FC<EditWatchlistProps> = ({ watchlistId, onWatchlistU
                                                 onClick={() => handleDeleteMedia(mediaItem.id)}
                                                 className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition duration-150 ease-in-out"
                                             >
-                                                Remove
+                                                {t('remove')}
                                             </button>
                                         ) : (
                                             <button
                                                 onClick={() => handleAddMedia(mediaItem.id)}
                                                 className="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition duration-150 ease-in-out"
                                             >
-                                                Add
+                                                {t('add')}
                                             </button>
                                         )}
                                     </div>

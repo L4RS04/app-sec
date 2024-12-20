@@ -6,6 +6,8 @@ import WatchlistOverview from "@components/watchlists/WatchlistOverview";
 import WatchlistService from "@services/WatchlistService";
 import { CirclePlus } from "lucide-react";
 import { useRouter } from "next/router";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Watchlists: React.FC = () => {
     const [watchlists, setWatchlists] = useState<Array<Watchlist>>([]);
@@ -13,6 +15,7 @@ const Watchlists: React.FC = () => {
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const [loggedInUserName, setLoggedInUserName] = useState<string>('');
     const router = useRouter();
+    const { t } = useTranslation();
 
     const getWatchlists = async () => {
         try {
@@ -58,11 +61,11 @@ const Watchlists: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Watchlists</title>
+                <title>{t('watchlists')}</title>
             </Head>
             <Header />
             <main className="d-flex flex-column justify-content-center align-items-center">
-                <h1 className="mt-8 font-extrabold text-4xl">Watchlists</h1>
+                <h1 className="mt-8 font-extrabold text-4xl">{t('watchlists')}</h1>
                 <div className="flex justify-end mb-4">
                     <button onClick={navigateToAddWatchlist} className="bg-stale-200 text-blue-900 font-bold py-2 px-4 rounded">
                         <CirclePlus size={35} />
@@ -72,12 +75,18 @@ const Watchlists: React.FC = () => {
                     {watchlists.length > 0 ? (
                         <WatchlistOverview watchlists={watchlists} onDeleteWatchlist={deleteWatchlist} isAdmin={isAdmin} loggedInUserName={loggedInUserName} />
                     ) : (
-                        <p>No watchlists found</p>
+                        <p>{t('nowatchlistsfound')}</p>
                     )}
                 </section>
             </main>
         </>
     );
 };
+
+export const getStaticProps = async ({ locale }: { locale: string }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 
 export default Watchlists;
