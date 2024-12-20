@@ -217,6 +217,51 @@ const main = async () => {
         }
     });
 
+    const media16 = await prisma.media.create({
+        data: {
+            title: "Lupin",
+            description: "Inspired by the adventures of Arsène Lupin, gentleman thief Assane Diop sets out to avenge his father for an injustice inflicted by a wealthy family.",
+            releaseYear: 2021,
+            type: "SERIES",
+            genres: [Genre.ACTION, Genre.CRIME],
+            numberOfSeasons: 3,
+        }
+    });
+
+    const media17 = await prisma.media.create({
+        data: {
+            title: "The Queen's Gambit",
+            description: "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.",
+            releaseYear: 2020,
+            type: "SERIES",
+            genres: [Genre.DRAMA],
+            numberOfSeasons: 1,
+        }
+    });
+
+    const media18 = await prisma.media.create({
+        data: {
+            title: "The Witcher",
+            description: "Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.",
+            releaseYear: 2019,
+            type: "SERIES",
+            genres: [Genre.FANTASY, Genre.ACTION],
+            numberOfSeasons: 2,
+        }
+    });
+
+    const media19 = await prisma.media.create({
+        data: {
+            title: "Money Heist",
+            description: "An unusual group of robbers attempt to carry out the most perfect robbery in Spanish history - stealing 2.4 billion euros from the Royal Mint of Spain.",
+            releaseYear: 2017,
+            type: "SERIES",
+            genres: [Genre.ACTION, Genre.CRIME],
+            numberOfSeasons: 5,
+        }
+    });
+            
+
     await prisma.watchlist.create({
         data: {
             name: "Xander's Watchlist",
@@ -277,6 +322,23 @@ const main = async () => {
                 ],
             },
         },
+    });
+
+    await prisma.watchlist.create({
+        data: {
+            name: "Want to watch",
+            description: "A watchlist containing media items that I want to watch!",
+            userId: user2.id,
+            mediaItems: {
+                connect: [
+                    { id: media16.id },
+                    { id: media17.id },
+                    { id: media18.id },
+                    { id: media19.id },
+                    { id: media1.id },
+                ],
+            },
+        }
     });
 
     console.log("Data seeded successfully");
