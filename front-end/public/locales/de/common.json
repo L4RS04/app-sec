@@ -52,5 +52,32 @@
     "numberOfSeasons": "Anzahl der Staffeln",
     "addSeries": "Serie hinzufügen",
     "addSeriesToApp": "Eine Serie zur Anwendung hinzufügen",
-    "addSeriesError": "Fehler beim Hinzufügen der Serie"
+    "addSeriesError": "Fehler beim Hinzufügen der Serie",
+    "nowatchlistsfound": "Keine Beobachtungslisten gefunden",
+    "deleteWatchlist": "Beobachtungsliste löschen",
+    "editWatchlist": "Beobachtungsliste bearbeiten",
+    "items": "Elemente",
+    "movie": "Film",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
+    "name": "Name",
+    "updateWatchlist": "Beobachtungsliste aktualisieren",
+    "addMediaToWatchlist": "Medien zur Beobachtungsliste hinzufügen",
+    "searchMoviesAndSeries": "Filme und Serien suchen...",
+    "all": "Alle",
+    "remove": "Entfernen",
+    "add": "Hinzufügen",
+    "backToWatchlists": "Zurück zu den Beobachtungslisten",
+    "fetchWatchlistOrMediaItemsError": "Fehler beim Abrufen der Beobachtungsliste oder der Medienelemente",
+    "updateWatchlistError": "Fehler beim Aktualisieren der Beobachtungsliste",
+    "maxMediaItemsAlert": "Sie können nur bis zu 10 Medienelemente zu Ihrer Beobachtungsliste hinzufügen.",
+    "addMediaError": "Fehler beim Hinzufügen von Medien zur Beobachtungsliste",
+    "deleteMediaError": "Fehler beim Löschen von Medien aus der Beobachtungsliste",
+    "addWatchlist": "Beobachtungsliste hinzufügen",
+    "error": "Fehler",
+    "singleWatchlistError": "Sie können nur eine Beobachtungsliste haben.",
+    "createWatchlistError": "Beim Erstellen der Beobachtungsliste ist ein Fehler aufgetreten.",
+    "checkWatchlistsError": "Beim Überprüfen vorhandener Beobachtungslisten ist ein Fehler aufgetreten."
   }
+
+  

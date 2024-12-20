@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const AddMoviePage: React.FC = () => {
-    const { t } = useTranslation('common');
+    const { t } = useTranslation();
 
     return (
         <div>

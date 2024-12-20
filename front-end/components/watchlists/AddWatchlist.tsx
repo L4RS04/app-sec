@@ -5,8 +5,10 @@ import WatchlistService from "@services/WatchlistService";
 import Head from 'next/head';
 import Header from '../header';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'next-i18next';
 
 const AddWatchlist: React.FC = () => {
+    const { t } = useTranslation('common');
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
@@ -36,7 +38,7 @@ const AddWatchlist: React.FC = () => {
                 setHasWatchlist(true);
             }
         } catch (error) {
-            console.error("An error occurred while checking existing watchlists: ", error);
+            console.error(t('checkWatchlistsError'), error);
         }
     };
 
@@ -45,7 +47,7 @@ const AddWatchlist: React.FC = () => {
         setError(null);
 
         if (hasWatchlist) {
-            setError("You can only have one watchlist.");
+            setError(t('singleWatchlistError'));
             return;
         }
 
@@ -61,15 +63,15 @@ const AddWatchlist: React.FC = () => {
             await WatchlistService.createWatchlist(newWatchlist);
             router.push('/watchlists');
         } catch (error) {
-            setError("An error occurred while creating the watchlist.");
-            console.error("An error occurred while creating the watchlist: ", error);
+            setError(t('createWatchlistError'));
+            console.error(t('createWatchlistError'), error);
         }
     };
 
     return (
         <>
             <Head>
-                <title>Add New Watchlist</title>
+                <title>{t('addWatchlist')}</title>
             </Head>
             <Header />
             <div className="min-h-screen bg-gradient-to-b from-blue-100 to-blue-200 py-12 px-4 sm:px-6 lg:px-8">
@@ -77,19 +79,19 @@ const AddWatchlist: React.FC = () => {
                     <div className="px-8 py-10">
                         <div className="flex justify-between items-center mb-8">
                             <h1 className="text-4xl font-extrabold text-blue-900 tracking-tight">
-                                Add New Watchlist
+                                {t('addWatchlist')}
                             </h1>
                             <button
                                 onClick={() => router.push('/watchlists')}
                                 className="flex items-center text-blue-700 hover:text-blue-900 transition-colors duration-200 font-semibold"
                             >
                                 <ArrowLeft className="w-5 h-5 mr-2" />
-                                Back to Watchlists
+                                {t('backToWatchlists')}
                             </button>
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name:</label>
+                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">{t('name')}:</label>
                                 <input
                                     type="text"
                                     id="name"
@@ -100,7 +102,7 @@ const AddWatchlist: React.FC = () => {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Description:</label>
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">{t('description')}:</label>
                                 <textarea
                                     id="description"
                                     value={description}
@@ -112,7 +114,7 @@ const AddWatchlist: React.FC = () => {
                             </div>
                             {error && (
                                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                    <strong className="font-bold">Error: </strong>
+                                    <strong className="font-bold">{t('error')}: </strong>
                                     <span className="block sm:inline">{error}</span>
                                 </div>
                             )}
@@ -121,7 +123,7 @@ const AddWatchlist: React.FC = () => {
                                     type="submit" 
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
                                 >
-                                    Add Watchlist
+                                    {t('addWatchlist')}
                                 </button>
                             </div>
                         </form>
