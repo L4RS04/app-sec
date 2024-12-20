@@ -5,12 +5,14 @@ import MovieService from '../../services/MovieService';
 import MediaService from '../../services/MediaService';
 import Header from '../header';
 import Head from 'next/head';
+import { useTranslation } from 'next-i18next';
 
 interface AddMovieProps {
     onMovieAdded?: () => void;
 }
 
 const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
+    const { t } = useTranslation('common');
     const router = useRouter();
     const [newMovie, setNewMovie] = useState<Movie>({
         genres: [],
@@ -28,7 +30,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                     const genres = await MediaService.getGenres();
                     setGenres(genres);
                 } catch (error) {
-                    console.error('Error fetching genres:', error);
+                    console.error(t('fetchGenresError'), error);
                 }
             };
             getGenres();
@@ -36,7 +38,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
             setIsAuthorized(false);
             router.push('/not-authorized');
         }
-    }, [router]);
+    }, [router, t]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -64,7 +66,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
             }
             router.push('/movies');
         } catch (error) {
-            console.error('Error adding movie:', error);
+            console.error(t('addMovieError'), error);
         }
     };
 
@@ -77,18 +79,18 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
     return (
         <>  
             <Head>
-                <title>Add movie</title>
+                <title>{t('addMovie')}</title>
             </Head>
             <Header />
             <div className="min-h-screen bg-gradient-to-b from-blue-100 to-blue-200 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mx-auto bg-white shadow-2xl rounded-lg overflow-hidden">
                     <div className="px-6 py-8">
                         <h1 className="text-4xl font-extrabold text-center text-blue-900 mb-8">
-                            Add a movie to the application
+                            {t('addMovieToApp')}
                         </h1>
                         <form onSubmit={handleAddMovie} className="space-y-6">
                             <div>
-                                <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-1">Title:</label>
+                                <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-1">{t('title')}:</label>
                                 <input
                                     type="text"
                                     id="title"
@@ -100,7 +102,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-1">Description:</label>
+                                <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-1">{t('description')}:</label>
                                 <textarea
                                     id="description"
                                     name="description"
@@ -113,7 +115,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div>
-                                    <label htmlFor="releaseYear" className="block text-sm font-semibold text-gray-700 mb-1">Release Year:</label>
+                                    <label htmlFor="releaseYear" className="block text-sm font-semibold text-gray-700 mb-1">{t('releaseYear')}:</label>
                                     <input
                                         type="number"
                                         id="releaseYear"
@@ -126,7 +128,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                                     />
                                 </div>
                                 <div>
-                                    <label htmlFor="duration" className="block text-sm font-semibold text-gray-700 mb-1">Duration (minutes):</label>
+                                    <label htmlFor="duration" className="block text-sm font-semibold text-gray-700 mb-1">{t('duration')} ({t('minutes')}):</label>
                                     <input
                                         type="number"
                                         id="duration"
@@ -139,7 +141,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                                 </div>
                             </div>
                             <div>
-                                <label htmlFor="director" className="block text-sm font-semibold text-gray-700 mb-1">Director:</label>
+                                <label htmlFor="director" className="block text-sm font-semibold text-gray-700 mb-1">{t('director')}:</label>
                                 <input
                                     type="text"
                                     id="director"
@@ -151,7 +153,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Genres:</label>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">{t('genres')}:</label>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                     {genres.map(genre => (
                                         <button
@@ -174,7 +176,7 @@ const AddMovie: React.FC<AddMovieProps> = ({ onMovieAdded }) => {
                                     type="submit" 
                                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-lg font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out"
                                 >
-                                    Add movie
+                                    {t('addMovie')}
                                 </button>
                             </div>
                         </form>

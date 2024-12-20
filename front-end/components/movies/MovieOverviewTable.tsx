@@ -4,6 +4,7 @@ import { formatDuration } from "utils/utils";
 import { ChevronDown, ChevronUp, Trash2, Pencil, Search } from 'lucide-react';
 import GenreTag from "@components/GenreTag";
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 type Props = {
     movies: Array<Movie>;
@@ -13,6 +14,7 @@ type Props = {
 }
 
 const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }: Props) => {
+    const { t } = useTranslation('common');
     const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>({});
     const [searchTerm, setSearchTerm] = useState("");
     const router = useRouter();
@@ -39,7 +41,7 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }:
             <div className="relative">
                 <input
                     type="text"
-                    placeholder="Search movies..."
+                    placeholder={t('searchMovies')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 rounded-md"
@@ -51,10 +53,10 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }:
                     <table className="w-full border-collapse bg-white">
                         <thead>
                             <tr className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-                                <th className="w-2/5 px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Title</th>
-                                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Duration</th>
-                                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">More</th>
-                                {isAdmin && <th className="w-1/4 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Actions</th>}
+                                <th className="w-2/5 px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">{t('title')}</th>
+                                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">{t('duration')}</th>
+                                <th className="w-1/5 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">{t('more')}</th>
+                                {isAdmin && <th className="w-1/4 px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">{t('actions')}</th>}
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -94,17 +96,17 @@ const MovieOverviewTable: React.FC<Props> = ({ movies, onDeleteMovie, isAdmin }:
                                         <tr className="bg-blue-50">
                                             <td colSpan={isAdmin ? 4 : 3} className="px-6 py-4">
                                                 <div className="text-sm text-gray-800 max-w-2xl">
-                                                    <p className="mb-2"><span className="font-semibold text-blue-800">Description:</span> {movie.description}</p>
+                                                    <p className="mb-2"><span className="font-semibold text-blue-800">{t('description')}:</span> {movie.description}</p>
                                                     <div className="mb-2">
-                                                        <span className="font-semibold text-blue-800">Genres: </span>
+                                                        <span className="font-semibold text-blue-800">{t('genres')}: </span>
                                                         <div className="mt-2 flex flex-wrap gap-2">
                                                             {movie.genres.map((genre, i) => (
                                                                 <GenreTag key={i} genre={genre} />
                                                             ))}
                                                         </div>
                                                     </div>
-                                                    <p className="mb-1"><span className="font-semibold text-blue-800">Director:</span> {movie.director}</p>
-                                                    <p className="mb-1"><span className="font-semibold text-blue-800">Released:</span> {movie.releaseYear}</p>
+                                                    <p className="mb-1"><span className="font-semibold text-blue-800">{t('director')}:</span> {movie.director}</p>
+                                                    <p className="mb-1"><span className="font-semibold text-blue-800">{t('released')}:</span> {movie.releaseYear}</p>
                                                 </div>
                                             </td>
                                         </tr>

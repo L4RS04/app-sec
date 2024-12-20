@@ -6,12 +6,15 @@ import SeriesOverviewTable from "@components/series/SeriesOverviewTable";
 import SeriesService from "@services/SeriesService";
 import { CirclePlus } from "lucide-react";
 import { useRouter } from "next/router";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Series: React.FC = () => {
     const [series, setSeries] = useState<Array<Series>>([]);
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
     const router = useRouter();
+    const { t } = useTranslation();
 
     const getSeries = async () => {
         try {
@@ -65,11 +68,11 @@ const Series: React.FC = () => {
     return (
         <>
             <Head>
-                <title>Series</title>
+                <title>{t('series')}</title>
             </Head>
             <Header />
             <main className="d-flex flex-column justify-content-center align-items-center">
-                <h1 className="mt-8 font-extrabold text-4xl">Series</h1>
+                <h1 className="mt-8 font-extrabold text-4xl">{t('series')}</h1>
                 <div className="flex justify-end mb-4">
                     {isAdmin && (
                         <button onClick={navigateToAddSeries} className="bg-stale-200 text-blue-900 font-bold py-2 px-4 rounded">
@@ -81,12 +84,18 @@ const Series: React.FC = () => {
                     {series.length > 0 ? (
                         <SeriesOverviewTable series={series} onAddSeries={createSeries} onDeleteSeries={deleteSeries} isAdmin={isAdmin} />
                     ) : (
-                        <p>No series found</p>
+                        <p>{t('noseriesfound')}</p>
                     )}
                 </section>
             </main>
         </>
     );
 };
+
+export const getStaticProps = async ({ locale }: { locale: string }) => ({
+    props: {
+        ...(await serverSideTranslations(locale, ['common'])),
+    },
+});
 
 export default Series;
