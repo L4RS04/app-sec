@@ -29,7 +29,6 @@ export class Watchlist {
         this.user = watchlist.user;
     }
 
-    // Getters
     public getId(): number | undefined {
         return this.id;
     }
@@ -54,7 +53,6 @@ export class Watchlist {
         return this.user;
     }
     
-    // Setters
     public setName(name: string): void {
         this.name = name;
     }
@@ -71,7 +69,6 @@ export class Watchlist {
         this.user = user;
     }
 
-    // Add & remove methods
     public addMediaToWatchlist(media: Media): void {
         this.mediaItems.push(media);
     }
@@ -83,7 +80,6 @@ export class Watchlist {
         }
     }
 
-    // Validation
     private validate(watchlist: {
         name: string,
         description: string,

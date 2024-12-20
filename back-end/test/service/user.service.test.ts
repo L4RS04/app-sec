@@ -10,7 +10,6 @@ const validPassword = "TestT123!";
 let validUser: User;
 let createUserMock: jest.Mock;
 
-
 beforeEach(() => {
     validUser = new User({ name: validName, email: validEmail, password: validPassword });
     validUser.setRole(Role.USER);

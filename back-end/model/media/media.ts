@@ -27,7 +27,6 @@ export class Media {
         this.type = media.type;
     }
 
-    // Getters
     public getId(): number | undefined {
         return this.id;
     }
@@ -52,7 +51,6 @@ export class Media {
         return this.type;
     }
 
-    // Setters
     public setTitle(title: string): void {
         this.title = title;
     }
@@ -73,12 +71,9 @@ export class Media {
         this.genres = genres;
     }
 
-    // Add methods
     public addGenre(genre: Genre): void {
         this.genres.push(genre);
     }
-
-    // Validation
     private validate(media: {
         title: string,
         description: string,

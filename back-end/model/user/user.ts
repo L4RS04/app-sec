@@ -28,7 +28,6 @@ export class User {
         this.role = Role.USER;
     }
 
-    // Getters
     public getId(): number | undefined {
         return this.id;
     }
@@ -57,7 +56,6 @@ export class User {
         return this.role;
     }
 
-    // Setters
     public setName(name: string): void {
         this.name = name;
     }
@@ -74,7 +72,6 @@ export class User {
         this.role = role;
     }
 
-    // Methods to manage watchlists
     public addWatchlistToUser(watchlist: Watchlist): void {
         this.watchlists.push(watchlist);
     }
