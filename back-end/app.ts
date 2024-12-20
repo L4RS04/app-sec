@@ -9,8 +9,10 @@ import mediaRouter from './controller/media/media.routes';
 import watchlistRouter from './controller/watchlist/watchlist.routes';
 import { Request, Response, NextFunction } from 'express';
 import { expressjwt } from 'express-jwt';
+import helmet from 'helmet';
 
 const app = express();
+app.use(helmet());
 
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
