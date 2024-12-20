@@ -88,5 +88,7 @@
     "premium": "Premium",
     "premiumPermissions": "Can create an infinite amount of watchlists and add an infinite amount of items to their watchlist but cannot create or delete any media.",
     "user": "User",
-    "userPermissions": "Can create only one watchlist and add a maximum of 10 items to it."
+    "userPermissions": "Can create only one watchlist and add a maximum of 10 items to it.",
+    "notAuthorizedTitle": "Not Authorized",
+    "notAuthorizedMessage": "You are not authorized to access this page!"
   }

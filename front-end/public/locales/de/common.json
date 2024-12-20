@@ -88,7 +88,9 @@
     "premium": "Premium",
     "premiumPermissions": "Kann eine unendliche Anzahl von Beobachtungslisten erstellen und eine unendliche Anzahl von Elementen zu ihrer Beobachtungsliste hinzufügen, kann jedoch keine Medien erstellen oder löschen.",
     "user": "Benutzer",
-    "userPermissions": "Kann nur eine Beobachtungsliste erstellen und maximal 10 Elemente hinzufügen."
+    "userPermissions": "Kann nur eine Beobachtungsliste erstellen und maximal 10 Elemente hinzufügen.",
+    "notAuthorizedTitle": "Nicht autorisiert",
+    "notAuthorizedMessage": "Sie sind nicht berechtigt, auf diese Seite zuzugreifen!"
   }
 
-  
+    
