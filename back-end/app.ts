@@ -20,6 +20,10 @@ const port = process.env.APP_PORT || 3000;
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
 
+if (!process.env.JWT_SECRET) {
+    console.warn("Warning: JWT_SECRET is not defined in .env!");
+}
+
 app.use(
     expressjwt({
         secret: process.env.JWT_SECRET || 'default_secret',
@@ -36,6 +40,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         res.status(400).json({ status: 'application error', message: err.message }); 
     }
 });
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  });
+  
 
 app.use('/users', userRouter);
 app.use('/media', mediaRouter);

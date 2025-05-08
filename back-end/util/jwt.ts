@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { Algorithm } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Role } from '../model/user/role';
 
@@ -12,7 +12,11 @@ if (!secretKey) {
 }
 
 const generateJwtToken = (id: number, name: string, role: Role): string => {
-    const options = { expiresIn: `${expiresIn}h`, issuer: "BingeVault" };
+    const options = { 
+        expiresIn: '1h',
+        issuer: "BingeVault",
+        algorithm: 'HS256' as Algorithm
+    };
 
     try {
         const token = jwt.sign({ id, name, role }, secretKey, options);

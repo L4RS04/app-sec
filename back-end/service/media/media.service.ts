@@ -5,6 +5,7 @@ import { Series } from '../../model/media/series';
 import { Genre } from '../../model/genre/genre';
 import { MediaInput } from '../../types';
 import { Role } from '../../model/user/role';
+import { sanitizeString } from '../../util/sanitize';
 
 const getAllMedia = async (): Promise<Media[]> => {
     return mediaDB.getAllMedia();
@@ -45,9 +46,16 @@ const createMedia = async (mediaInput: MediaInput, role: Role): Promise<Media> =
         throw new Error('Forbidden, only admins can create media');
     }
 
-    if (!mediaInput.title || !mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
+    if (!mediaInput.title || typeof mediaInput.title !== 'string' || mediaInput.title.length < 2) {
+        throw new Error('Invalid title');
+    }
+
+    if (!mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
         throw new Error('Missing required media properties');
     }
+
+    const title = sanitizeString(mediaInput.title);
+    const description = sanitizeString(mediaInput.description);
 
     if (mediaInput.type !== 'MOVIE' && mediaInput.type !== 'SERIES') {
         throw new Error('Invalid media type');
@@ -58,8 +66,8 @@ const createMedia = async (mediaInput: MediaInput, role: Role): Promise<Media> =
     let media: Media;
     if (mediaInput.type === 'MOVIE') {
         media = new Movie({
-            title: mediaInput.title,
-            description: mediaInput.description,
+            title,
+            description,
             releaseYear: mediaInput.releaseYear,
             genres,
             director: mediaInput.director!,
@@ -67,8 +75,8 @@ const createMedia = async (mediaInput: MediaInput, role: Role): Promise<Media> =
         });
     } else if (mediaInput.type === 'SERIES') {
         media = new Series({
-            title: mediaInput.title,
-            description: mediaInput.description,
+            title,
+            description,
             releaseYear: mediaInput.releaseYear,
             genres,
             numberOfSeasons: mediaInput.numberOfSeasons!
@@ -98,9 +106,16 @@ const updateMedia = async (id: number, mediaInput: MediaInput, role: Role): Prom
         throw new Error('Forbidden, only admins can update media');
     }
 
-    if (!mediaInput.title || !mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
+    if (!mediaInput.title || typeof mediaInput.title !== 'string' || mediaInput.title.length < 2) {
+        throw new Error('Invalid title');
+    }
+
+    if (!mediaInput.description || !mediaInput.releaseYear || !mediaInput.genres || !mediaInput.type) {
         throw new Error('Missing required media properties');
     }
+
+    const title = sanitizeString(mediaInput.title);
+    const description = sanitizeString(mediaInput.description);
 
     if (mediaInput.type !== 'MOVIE' && mediaInput.type !== 'SERIES') {
         throw new Error('Invalid media type');
@@ -113,8 +128,8 @@ const updateMedia = async (id: number, mediaInput: MediaInput, role: Role): Prom
         throw new Error('Media not found');
     }
 
-    existingMedia.setTitle(mediaInput.title);
-    existingMedia.setDescription(mediaInput.description);
+    existingMedia.setTitle(title);
+    existingMedia.setDescription(description);
     existingMedia.setReleaseYear(mediaInput.releaseYear);
     existingMedia.setGenres(genres);
 
