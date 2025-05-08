@@ -1,0 +1,84 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@cyclonedx/cyclonedx-library": {
+      "name": "@cyclonedx/cyclonedx-library",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "libxmljs2"
+      ],
+      "effects": [
+        "@cyclonedx/cyclonedx-npm"
+      ],
+      "range": ">=1.14.0-rc.0",
+      "nodes": [
+        "node_modules/@cyclonedx/cyclonedx-library"
+      ],
+      "fixAvailable": true
+    },
+    "@cyclonedx/cyclonedx-npm": {
+      "name": "@cyclonedx/cyclonedx-npm",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        "@cyclonedx/cyclonedx-library"
+      ],
+      "effects": [],
+      "range": ">=1.11.0",
+      "nodes": [
+        "node_modules/@cyclonedx/cyclonedx-npm"
+      ],
+      "fixAvailable": true
+    },
+    "libxmljs2": {
+      "name": "libxmljs2",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1100657,
+          "name": "libxmljs2",
+          "dependency": "libxmljs2",
+          "title": "libxmljs2 vulnerable to type confusion when parsing specially crafted XML",
+          "url": "https://github.com/advisories/GHSA-78h3-pg4x-j8cv",
+          "severity": "critical",
+          "cwe": [
+            "CWE-843"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<=0.35.0"
+        }
+      ],
+      "effects": [
+        "@cyclonedx/cyclonedx-library"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/libxmljs2"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 3,
+      "total": 3
+    },
+    "dependencies": {
+      "prod": 2,
+      "dev": 0,
+      "optional": 181,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 182
+    }
+  }
+}
