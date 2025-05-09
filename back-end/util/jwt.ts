@@ -5,7 +5,7 @@ import { Role } from '../model/user/role';
 dotenv.config();
 
 const secretKey = process.env.JWT_SECRET;
-const expiresIn = process.env.JWT_EXPIRES_HOURS;
+const expiresIn = process.env.JWT_EXPIRES_HOURS ? parseInt(process.env.JWT_EXPIRES_HOURS) * 3600 : 3600; // Default to 1 hour if not defined
 
 if (!secretKey) {
     throw new Error('JWT_SECRET environment variable is not defined');
@@ -13,7 +13,7 @@ if (!secretKey) {
 
 const generateJwtToken = (id: number, name: string, role: Role): string => {
     const options = { 
-        expiresIn: '1h',
+        expiresIn,
         issuer: "BingeVault",
         algorithm: 'HS256' as Algorithm
     };

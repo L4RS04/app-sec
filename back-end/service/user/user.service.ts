@@ -60,20 +60,73 @@ const authenticate = async ({ name, password }: UserLoginInput): Promise<Authent
         throw new Error('Invalid password');
     }
 
+    const id = user.getId();
+    const userName = user.getName();
+    const role = user.getRole();
+
+    console.log("Auth values:", { id, userName, role });
+
+    const token = generateJwtToken(id as number, userName, role);
+    console.log("Generated token:", token);
+
     return {
-        token: generateJwtToken(user.getId() as number, user.getName(), user.getRole()),
-        id: user.getId() as number,
-        name: user.getName(),
-        role: user.getRole()
+        token,
+        id: id as number,
+        name: userName,
+        role
     };
 };
 
+const deleteUser = async (id: number, role: Role): Promise<void> => {
+    if (role !== Role.ADMIN) {
+        throw new Error('Forbidden: Only admins can delete users');
+    }
+
+    const user = await userDB.getUserById(id);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    await userDB.deleteUser(id);
+};
+
+const changePassword = async (
+    userId: number,
+    oldPassword: string,
+    newPassword: string
+): Promise<void> => {
+    const user = await userDB.getUserById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.getPassword());
+    if (!isMatch) {
+        throw new Error('Incorrect current password');
+    }
+
+    const validatePassword = (password: string): boolean => {
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+        return regex.test(password);
+    };
+
+    if (!validatePassword(newPassword)) {
+        throw new Error(
+            'Password must be at least 8 characters and include letters, numbers, and special characters'
+        );
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 12);
+    await userDB.updatePassword(userId, hashed);
+};
 
 const UserService = {
     authenticate,
     getAllUsers,
     createUser,
-    getUserById
+    getUserById,
+    deleteUser,
+    changePassword
 };
 
 export default UserService;

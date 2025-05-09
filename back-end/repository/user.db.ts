@@ -41,9 +41,7 @@ const getUserByName = async (name: string): Promise<User | null> => {
 const getAllUsers = async (): Promise<User[]> => {
     try {
         const usersPrisma = await prisma.user.findMany({
-            include: {watchlists: {include: {mediaItems: true}
-        },
-        },
+            include: { watchlists: { include: { mediaItems: true } } },
         });
         return usersPrisma.map((userPrisma) => User.from(userPrisma));
     } catch (error) {
@@ -67,7 +65,30 @@ const createUser = async (user: User): Promise<User> => {
         console.error(error);
         throw new Error('Database error. See console for details.');
     }
-}
+};
+
+const deleteUser = async (id: number): Promise<void> => {
+    try {
+        await prisma.user.delete({
+            where: { id }
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
+
+const updatePassword = async (userId: number, hashedPassword: string): Promise<void> => {
+    try {
+        await prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword }
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See console for details.');
+    }
+};
 
 export default {
     getUserByEmail,
@@ -75,4 +96,6 @@ export default {
     getAllUsers,
     createUser,
     getUserById,
+    deleteUser,
+    updatePassword,
 };
